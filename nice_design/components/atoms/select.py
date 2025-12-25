@@ -47,13 +47,14 @@ class select(ui.select):
 
             # SLOT: The Selected Item ('selected-item')
             self.add_slot('selected-item', r'''
-                <q-chip dense :removable="false" :color="props.opt.label.color" text-color="white" class="my-0">
-                    <q-avatar :icon="props.opt.label.icon" text-color="white" />
-                    {{ props.opt.label.label }}
-                </q-chip>
+                <div class="row items-center no-wrap nd-gap-sm">
+                    <q-icon :name="props.opt.label.icon" :color="props.opt.label.color" size="xs" />
+                    <div>{{ props.opt.label.label }}</div>
+                </div>
             ''')
             
-        self.props('outlined rounded standout="bg-primary text-white"')
+        self.props('outlined rounded standout="bg-primary text-on-primary"')
+        self.classes('nd-select')
 
 
 
