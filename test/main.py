@@ -6,54 +6,80 @@ from nice_design.core.presets import SOLARIZED_PALETTE, STANDARD_SKIN, STANDARD_
 # 1. Initialize the Theme Engine
 engine = ThemeEngine()
 
-# Create a custom glossy skin for the demo
-glossy_skin = STANDARD_SKIN
-glossy_skin.texture_cls = 'texture-glossy'
-glossy_skin.roundness = 1.5
+# Create a custom skin to demonstrate the new systems
+custom_skin = STANDARD_SKIN
+custom_skin.texture_cls = 'texture-glossy'
+custom_skin.roundness = 1.2
+custom_skin.base_space = 1.0
+custom_skin.base_border = 1     # 1px base
+custom_skin.shadow_intensity = 1.2 # Stronger shadows
+custom_skin.transition_speed = 0.6  # Slower, more dramatic transitions
 
-theme = engine.compile(SOLARIZED_PALETTE, glossy_skin, STANDARD_TYPO)
+# Customize the palette with a themed shadow
+custom_palette = SOLARIZED_PALETTE
+# Let's make the shadow a dark blue tint instead of pure black
+custom_palette.shadow = "#001a21" 
+
+theme = engine.compile(custom_palette, custom_skin, STANDARD_TYPO)
 
 # 2. Setup the Design System
 nice.setup(theme)
 
-# 3. Build the UI using lowercase "nice" components (familiar API)
-with nice.card().classes('absolute-center w-[28rem] p-10 items-center gap-8'):
-    with ui.column().classes('items-center w-full gap-2'):
-        with ui.avatar('palette', color='primary', text_color='white').classes('shadow-xl'):
+# 3. Build the UI
+with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
+    
+    # Hero Card
+    with nice.card().classes('w-[32rem] items-center nd-gap-lg nd-shadow-xl'):
+        with ui.avatar('layers', color='primary', text_color='white').classes('shadow-xl'):
             ui.icon('style')
         ui.label('Nice Design System').classes('text-4xl font-extrabold tracking-tight')
-        ui.label('Example of a styleable button system').classes('text-lg opacity-60 text-center')
-    
-    with ui.row().classes('gap-4 w-full justify-center'):
-        nice.button('Brand Action', variant='primary', icon='rocket')
-        nice.button('Settings', variant='secondary', icon='settings')
-    
-    with ui.column().classes('w-full gap-4 mt-2'):
+        ui.label('Standardized Design Tokens').classes('text-lg opacity-60 text-center')
+        
+        with ui.row().classes('nd-gap-md w-full justify-center'):
+            nice.button('Primary Action', variant='primary', icon='rocket')
+            nice.button('Secondary', variant='secondary', icon='settings')
+
+    # Token Showcase Row
+    with ui.row().classes('nd-gap-xl'):
+        # Border Showcase
+        with nice.card().classes('nd-gap-md nd-p-lg'):
+            ui.label('Border System').classes('text-sm font-bold uppercase opacity-40')
+            with ui.row().classes('nd-gap-sm'):
+                ui.label('SM').classes('nd-p-sm nd-border-sm border-white/20 rounded')
+                ui.label('MD').classes('nd-p-sm nd-border-md border-white/20 rounded')
+                ui.label('LG').classes('nd-p-sm nd-border-lg border-white/20 rounded')
+        
+        # Shadow Showcase
+        with nice.card().classes('nd-gap-md nd-p-lg'):
+            ui.label('Shadow System').classes('text-sm font-bold uppercase opacity-40')
+            with ui.row().classes('nd-gap-md'):
+                ui.label('SM').classes('nd-p-sm bg-white/5 nd-shadow-sm rounded')
+                ui.label('MD').classes('nd-p-sm bg-white/5 nd-shadow-md rounded')
+                ui.label('LG').classes('nd-p-sm bg-white/5 nd-shadow-lg rounded')
+
+    # Layout Controls
+    with nice.card().classes('w-[32rem] nd-gap-md'):
         ui.label('Configuration').classes('text-xs uppercase tracking-widest opacity-40 font-bold ml-1')
         
-        # New Select Component
         nice.select(
-            options=['Solarized Dark', 'Cyberpunk', 'Nordic', 'Glassmorphism'],
-            label='Application Theme',
-            value='Solarized Dark'
+            options=['Dark Mode', 'Light Mode', 'Auto'],
+            label='System Theme',
+            value='Dark Mode'
         ).classes('w-full')
         
-        # Minimal Select Demo
         with ui.row().classes('w-full items-center justify-between'):
-            ui.label('Focus Mode').classes('opacity-60 font-medium')
+            ui.label('Compact Layout').classes('opacity-60 font-medium')
             nice.select(
-                options=['Normal', 'Quiet', 'Zen'],
-                value='Normal',
+                options=['Relaxed', 'Standard', 'Minimal'],
+                value='Standard',
                 minimal=True
             )
         
-        nice.button('View Documentation', variant='ghost', icon='menu_book').classes('w-full')
-        
-        with nice.button('More Options', variant='ghost', icon='more_vert').classes('w-full'):
+        with nice.button('Extra Settings', variant='ghost', icon='more_horiz').classes('w-full'):
             with nice.menu():
-                nice.menu_item('Profile Settings', on_click=lambda: ui.notify('Profile'))
-                nice.menu_item('System Status', on_click=lambda: ui.notify('Status'))
+                nice.menu_item('Export Theme', on_click=lambda: ui.notify('Exporting...'))
+                nice.menu_item('Reset Defaults', on_click=lambda: ui.notify('Resetting...'))
                 ui.separator().classes('bg-white/10')
-                nice.menu_item('Logout', on_click=lambda: ui.notify('Logged out'))
+                nice.menu_item('Delete System', on_click=lambda: ui.notify('Self-destruct in 3... 2... 1...'))
 
-ui.run(title='Styleable Button Example')
+ui.run(title='Nice Design Tokens', reload=False, show=False)

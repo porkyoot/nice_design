@@ -22,7 +22,9 @@ pip install --upgrade pip
 pip install -r requirements.txt
 pip install -e ..
 
-echo "✨ Starting NiceGUI Hello World..."
+echo "✨ Starting NiceGUI with Hot Reload..."
+echo "📂 Watching: test/ and nice_design/"
 
-# Run the application
-python3 main.py
+# Run the application with watchfiles to restart when either the app 
+# or the library code (including CSS/Assets) changes.
+python3 -m watchfiles "python3 main.py" . ../nice_design

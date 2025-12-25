@@ -36,10 +36,18 @@ def apply_theme(theme: Theme):
     if 'primary' in theme.colors:
         css_vars.append("--nd-on-primary: white;")
     
-    # Apply Layout (Radii & Fonts)
+    # Apply Layout (Radii, Fonts, Spacing, Borders, Shadows, Transition)
     for name, value in theme.layout.items():
         if name.startswith('font-'):
             css_vars.append(f"--nd-{name}: {value};")
+        elif name.startswith('space-'):
+            css_vars.append(f"--nd-{name}: {value};")
+        elif name.startswith('border-'):
+            css_vars.append(f"--nd-{name}: {value};")
+        elif name.startswith('shadow-'):
+            css_vars.append(f"--nd-{name}: {value};")
+        elif name == 'transition-speed':
+            css_vars.append(f"--nd-transition-speed: {value};")
         else:
             css_vars.append(f"--nd-radius-{name}: {value};")
     
@@ -53,8 +61,6 @@ def apply_theme(theme: Theme):
 def setup(theme: Theme = None):
     """
     Convenience function to load the system and optionally apply a theme.
-    We use ui.on('connect') or similar if we wanted per-client, 
-    but for a simple global setup, we just call the loaders.
     """
     load_design_system()
     if theme:

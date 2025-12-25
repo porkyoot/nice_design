@@ -10,6 +10,7 @@ class Palette:
     accent: str
     surfaces: Dict[str, str]  # {'1': '#...', '2': '#...'}
     status: Dict[str, str]    # {'success': '...', 'error': '...'}
+    shadow: str = "#000000"   # Default shadow color
 
 @dataclass
 class Skin:
@@ -19,6 +20,14 @@ class Skin:
     roundness: float = 1.0  
     # 0.0 = Transparent, 1.0 = Solid. Used for glassmorphism calculation.
     opacity: float = 1.0    
+    # Base spacing unit in rem (standard is 1.0)
+    base_space: float = 1.0
+    # Base border width in px
+    base_border: int = 1
+    # Shadow intensity multiplier (0.0 to 1.0)
+    shadow_intensity: float = 1.0
+    # Base transition speed in seconds
+    transition_speed: float = 0.3
     # CSS class to inject for texture (e.g., 'texture-glossy')
     texture_cls: str = 'texture-flat' 
     shadows: bool = True
