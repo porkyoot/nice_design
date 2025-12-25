@@ -5,7 +5,7 @@
 
 :root {
     /* Fallbacks or constants that don't change with theme */
-    --nds-transition-speed: 0.3s;
+    --nd-transition-speed: 0.3s;
 }
 
 html,

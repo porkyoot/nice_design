@@ -1,8 +1,8 @@
 from nicegui import ui
 from typing import Optional, Literal
 
-# Use generic names like "NDSButton" (Nice Design System Button)
-class NDSButton(ui.button):
+# Mirroring NiceGUI's API structure
+class button(ui.button):
     def __init__(
         self, 
         text: str = '', 
@@ -14,8 +14,8 @@ class NDSButton(ui.button):
         
         # Apply design system classes
         # We use .classes() to add our custom styles
-        self.classes('nds-btn')
-        self.classes(f'nds-btn--{variant}')
+        self.classes('nd-btn')
+        self.classes(f'nd-btn--{variant}')
         
         # Remove Quasar defaults to prevent styling conflicts
         self.props('unelevated no-caps')

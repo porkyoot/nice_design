@@ -2,8 +2,10 @@ from pathlib import Path
 from nicegui import ui
 from .core.engine import ThemeEngine
 from .core.definitions import Theme
-from .components.button import NDSButton
-from .components.card import AppCard
+from .components.atoms.button import button
+from .components.atoms.card import card
+from .components.atoms.select import select
+from .components.atoms.menu import menu, menu_item
 
 def load_design_system():
     """Injects the library's CSS into the NiceGUI head."""
@@ -28,18 +30,18 @@ def apply_theme(theme: Theme):
     
     # Apply Colors
     for name, value in theme.colors.items():
-        css_vars.append(f"--nds-{name}: {value};")
+        css_vars.append(f"--nd-{name}: {value};")
     
     # Extra: Map primary to a readable contrast color if not provided
     if 'primary' in theme.colors:
-        css_vars.append("--nds-on-primary: white;")
+        css_vars.append("--nd-on-primary: white;")
     
     # Apply Layout (Radii & Fonts)
     for name, value in theme.layout.items():
         if name.startswith('font-'):
-            css_vars.append(f"--nds-{name}: {value};")
+            css_vars.append(f"--nd-{name}: {value};")
         else:
-            css_vars.append(f"--nds-radius-{name}: {value};")
+            css_vars.append(f"--nd-radius-{name}: {value};")
     
     style_content = ":root {\n  " + "\n  ".join(css_vars) + "\n}"
     ui.add_head_html(f"<style>{style_content}</style>")

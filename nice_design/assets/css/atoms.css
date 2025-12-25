@@ -1,7 +1,7 @@
 /* Base Button Styles */
-.nds-btn {
-    border-radius: var(--nds-radius-md);
-    font-family: var(--nds-font-main);
+.nd-btn {
+    border-radius: var(--nd-radius-md);
+    font-family: var(--nd-font-main);
     font-weight: 600;
     padding: 0.75rem 1.5rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -16,68 +16,181 @@
 }
 
 /* Primary Variant */
-.nds-btn--primary {
-    background-color: var(--nds-primary);
-    color: var(--nds-on-primary);
+.nd-btn--primary {
+    background-color: var(--nd-primary);
+    color: var(--nd-on-primary);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.nds-btn--primary:hover {
+.nd-btn--primary:hover {
     filter: brightness(1.1);
     transform: translateY(-1px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.nds-btn--primary:active {
+.nd-btn--primary:active {
     transform: translateY(0);
 }
 
 /* Secondary Variant */
-.nds-btn--secondary {
-    background-color: var(--nds-secondary);
+.nd-btn--secondary {
+    background-color: var(--nd-secondary);
     color: white;
 }
 
-.nds-btn--secondary:hover {
+.nd-btn--secondary:hover {
     filter: brightness(1.1);
 }
 
 /* Ghost Variant */
-.nds-btn--ghost {
+.nd-btn--ghost {
     background-color: transparent;
-    color: var(--nds-primary);
-    border-color: var(--nds-primary);
+    color: var(--nd-primary);
+    border-color: var(--nd-primary);
 }
 
-.nds-btn--ghost:hover {
-    background-color: color-mix(in srgb, var(--nds-primary), transparent 90%);
+.nd-btn--ghost:hover {
+    background-color: color-mix(in srgb, var(--nd-primary), transparent 90%);
 }
 
 /* Card Styles */
-.nds-card {
-    background-color: var(--nds-surface-2);
-    border-radius: var(--nds-radius-lg);
+.nd-card {
+    background-color: var(--nd-surface-2);
+    border-radius: var(--nd-radius-lg);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 2rem;
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.nds-card:hover {
+.nd-card:hover {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
+/* Select Styles */
+.nd-select {
+    width: 100%;
+}
+
+.nd-select .q-field__control {
+    background-color: var(--nd-surface-3) !important;
+    border-radius: var(--nd-radius-md) !important;
+    color: var(--nd-on-surface) !important;
+}
+
+.nd-select .q-field__label,
+.nd-select .q-field__native,
+.nd-select .q-icon {
+    color: var(--nd-on-surface) !important;
+    opacity: 0.8;
+}
+
+/* Minimal Mode (Icon Only) */
+.nd-select--minimal {
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px;
+    background-color: var(--nd-surface-3) !important;
+    border-radius: 50% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nd-select--minimal:hover {
+    background-color: var(--nd-primary) !important;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--nd-primary), transparent 60%);
+}
+
+.nd-select--minimal .q-field__control,
+.nd-select--minimal .q-field__marginal {
+    padding: 0 !important;
+    min-height: 42px !important;
+    height: 42px !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.nd-select--minimal .q-field__native,
+.nd-select--minimal .q-field__label,
+.nd-select--minimal .q-field__control-container {
+    display: none !important;
+}
+
+.nd-select--minimal .q-field__append {
+    padding-left: 0 !important;
+}
+
+/* Smooth Chevron Rotation */
+.nd-select .q-select__dropdown-icon {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.nd-select.q-field--focused .q-select__dropdown-icon {
+    transform: rotate(180deg);
+}
+
+.nd-select--minimal.q-field--focused {
+    background-color: var(--nd-primary) !important;
+}
+
+/* Select Menu (Dropdown) */
+.nd-select-menu {
+    background-color: var(--nd-surface-2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--nd-radius-md) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2) !important;
+}
+
+.nd-select-menu .q-item {
+    color: var(--nd-on-surface) !important;
+    transition: background 0.2s;
+}
+
+.nd-select-menu .q-item--active {
+    background-color: var(--nd-primary) !important;
+    color: var(--nd-on-primary) !important;
+}
+
+.nd-select-menu .q-item:hover:not(.q-item--active) {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Menu Styles */
+.nd-menu {
+    background-color: var(--nd-surface-2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--nd-radius-md) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3) !important;
+    overflow: hidden;
+}
+
+.nd-menu-item {
+    color: var(--nd-on-surface) !important;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    padding: 0.5rem 1rem !important;
+}
+
+.nd-menu-item:hover {
+    background-color: var(--nd-primary) !important;
+    color: var(--nd-on-primary) !important;
+}
+
 /* Texture Overrides */
-body.texture-glossy .nds-btn {
+body.texture-glossy .nd-btn {
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.05));
     border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /* Global Body Styling from Theme */
 body {
-    background-color: var(--nds-surface-1);
-    color: var(--nds-on-surface, #f8f9fa);
-    font-family: var(--nds-font-main);
+    background-color: var(--nd-surface-1);
+    color: var(--nd-on-surface, #f8f9fa);
+    font-family: var(--nd-font-main);
     margin: 0;
     min-height: 100vh;
 }
