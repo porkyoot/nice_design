@@ -1,58 +1,63 @@
 from nicegui import ui
-from typing import List, Any, Optional
+from typing import List, Any, Optional, Callable, Dict
+
 
 class select(ui.select):
-    def __init__(
-        self,
-        options: List[Any],
-        *,
-        label: Optional[str] = None,
-        value: Any = None,
-        on_change = None,
-        minimal: bool = False,
-        with_icons: bool = False
-    ):
-        super().__init__(options=options, label=label, value=value, on_change=on_change)
+    def __init__(self, options: Any, *args, **kwargs):
+        # 1. Compatibility: Consume legacy 'with_icons' argument
+        kwargs.pop('with_icons', None)
 
-        # Apply design system classes
-        self.classes('nd-select')
-        if minimal:
-            self.classes('nd-select--minimal')
-            self.props('borderless dense')
-        else:
-            self.props('outlined standout="bg-primary text-white" rounded')
+        # 2. Compatibility: Adapt List[Dict] to Dict[key, Dict] (Rich Options)
+        #    If input is [{'label': 'A', 'value': 'a', ...}], convert to {'a': {'label': 'A', 'value': 'a', ...}}
+        if isinstance(options, list) and options and isinstance(options[0], dict):
+            new_options = {}
+            for opt in options:
+                key = opt.get('value')
+                if key is not None:
+                    new_options[key] = opt
+            options = new_options
 
-        # Remove Quasar defaults and apply premium props
-        self.props('unelevated')
+            # 2a. Fix 'value' argument if it was passed as a dict
+            if 'value' in kwargs and isinstance(kwargs['value'], dict):
+                kwargs['value'] = kwargs['value'].get('value')
+
+        super().__init__(options, *args, **kwargs)
         
-        # Ensure the popup menu matches the design system
-        self.props('popup-content-class="nd-select-menu"')
+        # Check if options is a dictionary of dictionaries (Rich Options)
+        # e.g. {'yt': {'label': 'Youtube', 'icon': 'smart_display', 'color': 'red'}}
+        is_rich_options = (
+            isinstance(options, dict) and 
+            options and 
+            isinstance(next(iter(options.values())), dict) and
+            'icon' in next(iter(options.values()))
+        )
 
-        # Add support for icons in options if explicitly requested
-        if with_icons:
-            self._setup_option_icons()
+        if is_rich_options:
+            # SLOT: The Dropdown List ('option')
+            self.add_slot('option', r'''
+                <q-item v-bind="props.itemProps">
+                    <q-item-section avatar>
+                        <q-icon :name="props.opt.label.icon" :color="props.opt.label.color" />
+                    </q-item-section>
+                    <q-item-section>
+                        <q-item-label>{{ props.opt.label.label }}</q-item-label>
+                    </q-item-section>
+                </q-item>
+            ''')
 
-    def _setup_option_icons(self):
-        """
-        Sets up Quasar slots for rendering icons in options.
-        Requires option-value, option-label, and map-options props to be set.
-        """
-        # Option slot (dropdown list)
-        self.add_slot('option', '''
-            <q-item v-bind="scope.itemProps" class="nd-menu-item">
-                <q-item-section avatar v-if="scope.opt.icon">
-                    <q-icon :name="scope.opt.icon" class="nd-icon" />
-                </q-item-section>
-                <q-item-section>
-                    <q-item-label v-html="scope.opt.label" />
-                </q-item-section>
-            </q-item>
-        ''')
-        
-        # Selected slot (main display)
-        self.add_slot('selected', '''
-            <div class="row items-center no-wrap" v-if="scope && scope.opt">
-                <q-icon v-if="scope.opt && scope.opt.icon" :name="scope.opt.icon" class="q-mr-sm nd-icon" />
-                <div v-if="scope.opt && scope.opt.label" v-html="scope.opt.label"></div>
-            </div>
-        ''')
+            # SLOT: The Selected Item ('selected-item')
+            self.add_slot('selected-item', r'''
+                <q-chip dense :removable="false" :color="props.opt.label.color" text-color="white" class="my-0">
+                    <q-avatar :icon="props.opt.label.icon" text-color="white" />
+                    {{ props.opt.label.label }}
+                </q-chip>
+            ''')
+            
+        self.props('outlined rounded standout="bg-primary text-white"')
+
+
+
+
+
+
+

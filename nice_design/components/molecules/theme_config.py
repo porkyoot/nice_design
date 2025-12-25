@@ -37,10 +37,9 @@ class ThemeConfig(ui.row):
         self.on_font_change = on_font_change
         self.is_dark = is_dark
         
-        # 1. Create the Trigger (Minimal Select)
+        # 1. Create the Trigger (Borderless Select)
         self.trigger = select(
-            options=[], 
-            minimal=True
+            options=[]
         )
         # Add icon via slot (new pattern)
         with self.trigger.add_slot('prepend'):
@@ -69,13 +68,9 @@ class ThemeConfig(ui.row):
                     ]
                     self.texture_select = select(
                         options=textures,
-                        value=None, 
-                        minimal=True,
-                        on_change=lambda e: self._handle_texture_change(e.value),
-                        with_icons=True
+                        value=textures[0],  # Set to first option dict
+                        on_change=lambda e: self._handle_texture_change(e.value if isinstance(e.value, str) else e.value.get('value') if isinstance(e.value, dict) else None),
                     )
-                    self.texture_select.props('option-value="value" option-label="label" emit-value map-options')
-                    self.texture_select.value = 'flat'
 
                 ui.separator().classes('bg-white/10')
 
@@ -87,13 +82,10 @@ class ThemeConfig(ui.row):
                     
                     self.palette_select = select(
                         options=self.themes,
-                        value=None,
-                        on_change=lambda e: self._handle_theme_change(e.value),
-                        with_icons=True
+                        value=self.themes[0] if self.themes else None,  # Set to first theme dict
+                        on_change=lambda e: self._handle_theme_change(e.value if isinstance(e.value, str) else e.value.get('value') if isinstance(e.value, dict) else None),
                     )
                     self.palette_select.classes('w-full')
-                    self.palette_select.props('option-value="value" option-label="label" emit-value map-options')
-                    self.palette_select.value = palette_value
 
                 # Row 3: Font Selection (Normal Select)
                 with ui.column().classes('w-full nd-gap-xs'):
@@ -103,13 +95,10 @@ class ThemeConfig(ui.row):
                     
                     self.font_select = select(
                         options=self.fonts,
-                        value=None,
-                        on_change=lambda e: self._handle_font_change(e.value),
-                        with_icons=True
+                        value=self.fonts[0] if self.fonts else None,  # Set to first font dict
+                        on_change=lambda e: self._handle_font_change(e.value if isinstance(e.value, str) else e.value.get('value') if isinstance(e.value, dict) else None),
                     )
                     self.font_select.classes('w-full')
-                    self.font_select.props('option-value="value" option-label="label" emit-value map-options')
-                    self.font_select.value = font_value
 
     def toggle_mode(self):
         self.is_dark = not self.is_dark

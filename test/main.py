@@ -184,21 +184,28 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
             )
         
         nice.select(
-            options=['Dark Mode', 'Light Mode', 'Auto'],
+            options=[
+                {'label': 'Dark Mode', 'value': 'Dark Mode', 'icon': 'mdi-moon-waning-crescent'},
+                {'label': 'Light Mode', 'value': 'Light Mode', 'icon': 'mdi-white-balance-sunny'},
+                {'label': 'Auto', 'value': 'Auto', 'icon': 'mdi-brightness-auto'}
+            ],
             label='System Theme',
-            value='Dark Mode'
+            value={'label': 'Dark Mode', 'value': 'Dark Mode', 'icon': 'mdi-moon-waning-crescent'},
+            with_icons=True
         ).classes('w-full')
         
         with ui.row().classes('w-full items-center justify-between'):
             ui.label('Compact Layout').classes('opacity-60 font-medium')
-            compact_select = nice.select(
-                options=['Relaxed', 'Standard', 'Minimal'],
-                value='Standard',
-                minimal=True
+            nice.select(
+                options=[
+                    {'label': 'Relaxed', 'value': 'Relaxed', 'icon': 'mdi-arrow-expand-horizontal'},
+                    {'label': 'Standard', 'value': 'Standard', 'icon': 'mdi-view-compact'},
+                    {'label': 'Minimal', 'value': 'Minimal', 'icon': 'mdi-arrow-collapse-horizontal'}
+                ],
+                value={'label': 'Standard', 'value': 'Standard', 'icon': 'mdi-view-compact'},
+                with_icons=True
             )
-            # Add icon via slot (new pattern)
-            with compact_select.add_slot('prepend'):
-                nice.icon('mdi-tune').classes('nd-select__icon').style('color: var(--nd-primary) !important')
+
         
         with nice.button('Extra Settings', variant='ghost', icon='mdi-dots-horizontal').classes('w-full'):
             with nice.menu():
