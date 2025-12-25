@@ -1,23 +1,42 @@
 from dataclasses import dataclass, field
-from typing import Literal, Dict
+from typing import Literal, Dict, List
 
 @dataclass
 class Palette:
-    """Defines the raw colors."""
+    """
+    The core color data. 
+    Separates raw ordered scales from semantic roles.
+    """
     name: str
-    mode: Literal['dark', 'light']  # Theme mode
+    mode: Literal['dark', 'light']
+    
+    # 1. Main Accents
     primary: str
     secondary: str
-    colors: Dict[str, str]    # Named colors: blue, cyan, green, yellow, orange, red, magenta, purple
-    foregrounds: Dict[str, str]  # {'1': '#...', '2': '#...'} - text/foreground colors
-    backgrounds: Dict[str, str]  # {'1': '#...', '2': '#...'} - solid backgrounds
-    status: Dict[str, str]    # {'success': '...', 'error': '...'}
-    shadow: str = "#000000"   # Default shadow color
+    
+    # 2. The Rainbow (Hue Order) for palette pickers
+    # e.g. {'blue': '#...', 'cyan': '#...'}
+    colors: Dict[str, str]
+    
+    # 3. Tonal Scales (Ordered by intensity)
+    # Backgrounds: 0=Deepest/Base, 1=Surface, 2=Overlay, etc.
+    backgrounds: List[str]
+    
+    # Foregrounds: 0=Strongest, 1=Normal, 2=Muted, 3=Faint
+    foregrounds: List[str]
+    
+    # 4. Semantic Status Colors
+    # e.g. {'success': '#...', 'error': '#...', 'warning': '#...'}
+    status: Dict[str, str]
+    
+    # 5. Effects
+    highlight: str  # For glass/glossy effects
+    shadow: str      # Base shadow color
 
 @dataclass
 class Shape:
     """Defines geometric properties."""
-    name: str
+    name: str = "default"
     # 0.0 = Sharp, 1.0 = Standard, 2.0 = Round
     roundness: float = 1.0  
     # Base border width in px
@@ -26,7 +45,7 @@ class Shape:
 @dataclass
 class Texture:
     """Defines visual effects and surface properties."""
-    name: str
+    name: str = "default"
     # 0.0 = Transparent, 1.0 = Solid. Used for glassmorphism calculation.
     opacity: float = 1.0    
     # Shadow intensity multiplier (0.0 to 1.0)
@@ -38,26 +57,34 @@ class Texture:
 @dataclass
 class Layout:
     """Defines spacing and layout properties (user-adjustable)."""
-    name: str
+    name: str = "default"
     # Base spacing unit in rem (standard is 1.0)
     base_space: float = 1.0
 
 @dataclass
-class Animation:
-    """Defines animation and transition properties (user-adjustable)."""
-    name: str
-    # Base transition speed in seconds
-    transition_speed: float = 0.3
-
-@dataclass
 class Typography:
-    font_family: str
-    mono_family: str
+    name: str = "default"
+    font_main: str = "sans-serif"
+    font_mono: str = "monospace"
     scale_ratio: float = 1.25 # Ratio between h1, h2, etc.
 
 @dataclass
+class Animation:
+    name: str = "default"
+    transition_speed: float = 0.3 # seconds
+
+@dataclass
 class Theme:
-    """The compiled result object used by components."""
-    colors: Dict[str, str]  # Compiled CSS variables
-    layout: Dict[str, str]  # Compiled Spacing/Radii
-    classes: list[str]      # Global classes to apply to Body
+    palette: Palette
+    texture: Texture = field(default_factory=Texture)
+    shape: Shape = field(default_factory=Shape)
+    layout: Layout = field(default_factory=Layout)
+    typography: Typography = field(default_factory=Typography)
+    animation: Animation = field(default_factory=Animation)
+    prefix: str = "nd"
+
+@dataclass
+class CompiledTheme:
+    colors: Dict[str, str]
+    layout: Dict[str, str] # Note: This maps CSS variable suffixes to values
+    classes: List[str]

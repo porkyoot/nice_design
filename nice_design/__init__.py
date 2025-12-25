@@ -1,7 +1,7 @@
 from pathlib import Path
 from nicegui import ui
 from .core.engine import ThemeEngine
-from .core.definitions import Theme
+from .core.definitions import Theme, CompiledTheme
 from .components.atoms.button import button
 from .components.atoms.card import card
 from .components.atoms.select import select
@@ -33,7 +33,7 @@ def load_design_system():
     # 4. Load MDI Icons
     ui.add_head_html('<link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet">')
 
-def apply_theme(theme: Theme):
+def apply_theme(theme: CompiledTheme):
     """Applies the compiled theme to the UI via CSS variables."""
     css_vars = []
     

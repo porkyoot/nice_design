@@ -16,23 +16,25 @@ SOLARIZED_PALETTE = Palette(
         'magenta': '#d33682',
         'purple': '#6c71c4',
     },
-    foregrounds={
-        '1': '#fdf6e3',  # Base3 - emphasized content
-        '2': '#eee8d5',  # Base2 - body content
-        '3': '#93a1a1',  # Base1 - secondary content
-    },
-    backgrounds={
-        '1': '#002b36',  # Base03 - darkest background
-        '2': '#073642',  # Base02 - dark background
-        '3': '#586e75',  # Base01 - medium (comments)
-    },
+    foregrounds=[
+        '#fdf6e3',  # Base3 - emphasized content
+        '#eee8d5',  # Base2 - body content
+        '#93a1a1',  # Base1 - secondary content
+    ],
+    backgrounds=[
+        '#002b36',  # Base03 - darkest background
+        '#073642',  # Base02 - dark background
+        '#586e75',  # Base01 - medium (comments)
+    ],
     status={
         'success': '#859900',
         'error': '#dc322f',
         'warning': '#b58900',
         'info': '#268bd2',
         'debug': '#586e75',  # Base01 - grey for debug/logging
-    }
+    },
+    highlight="#ffffff",
+    shadow="#000000"
 )
 
 # Define a standard Shape
@@ -65,7 +67,7 @@ STANDARD_ANIMATION = Animation(
 
 # Define a standard Typography
 STANDARD_TYPO = Typography(
-    font_family="Inter, Roboto, sans-serif",
-    mono_family="Fira Code, monospace",
+    font_main="Inter, Roboto, sans-serif",
+    font_mono="Fira Code, monospace",
     scale_ratio=1.25
 )

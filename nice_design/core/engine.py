@@ -1,4 +1,4 @@
-from .definitions import Theme, Palette, Shape, Texture, Layout, Animation, Typography
+from .definitions import Theme, Palette, Shape, Texture, Layout, Animation, Typography, CompiledTheme
 from .registry import ThemeRegistry
 
 class ThemeEngine:
@@ -6,7 +6,7 @@ class ThemeEngine:
         self.registry = ThemeRegistry()
         self.registry.discover_plugins()
 
-    def compile(self, palette: Palette, shape: Shape, texture: Texture, layout: Layout, animation: Animation, typo: Typography) -> Theme:
+    def compile(self, palette: Palette, shape: Shape, texture: Texture, layout: Layout, animation: Animation, typo: Typography) -> CompiledTheme:
         # 1. Calculate Radii based on Shape's Roundness
         base_radius = 0.5 # rem
         radii = {
@@ -68,30 +68,37 @@ class ThemeEngine:
             if opacity >= 1.0: return hex_color
             return f"color-mix(in srgb, {hex_color}, transparent {int((1-opacity)*100)}%)"
 
+        def get_color(color_list, index, default):
+            try:
+                return color_list[index]
+            except IndexError:
+                return default
+
         colors = {
             'primary': palette.primary,
             'secondary': palette.secondary,
-            'foreground-1': mix(palette.foregrounds.get('1', '#ffffff'), texture.opacity),
-            'foreground-2': mix(palette.foregrounds.get('2', '#f0f0f0'), texture.opacity),
-            'foreground-3': mix(palette.foregrounds.get('3', '#e0e0e0'), texture.opacity),
-            'background-1': mix(palette.backgrounds.get('1', '#000000'), texture.opacity),
-            'background-2': mix(palette.backgrounds.get('2', '#111111'), texture.opacity),
-            'background-3': mix(palette.backgrounds.get('3', '#222222'), texture.opacity),
+            'foreground-1': mix(get_color(palette.foregrounds, 0, '#ffffff'), texture.opacity),
+            'foreground-2': mix(get_color(palette.foregrounds, 1, '#f0f0f0'), texture.opacity),
+            'foreground-3': mix(get_color(palette.foregrounds, 2, '#e0e0e0'), texture.opacity),
+            'background-1': mix(get_color(palette.backgrounds, 0, '#000000'), texture.opacity),
+            'background-2': mix(get_color(palette.backgrounds, 1, '#111111'), texture.opacity),
+            'background-3': mix(get_color(palette.backgrounds, 2, '#222222'), texture.opacity),
+            'highlight': palette.highlight,
         }
         
         # Add named colors from palette
         for color_name, color_value in palette.colors.items():
-            colors[color_name] = color_value
+            colors['color-' + color_name] = color_value
         
         for s_type, s_color in palette.status.items():
-            colors[f'status-{s_type}'] = s_color
+            colors['status-' + s_type] = s_color
 
-        radii['font-main'] = typo.font_family
-        radii['font-mono'] = typo.mono_family
+        radii['font-main'] = typo.font_main
+        radii['font-mono'] = typo.font_mono
 
         # 8. Determine CSS Classes from Texture
         css_classes = [texture.texture_cls]
         if not texture.shadows:
             css_classes.append('no-shadows')
 
-        return Theme(colors=colors, layout=radii, classes=css_classes)
+        return CompiledTheme(colors=colors, layout=radii, classes=css_classes)

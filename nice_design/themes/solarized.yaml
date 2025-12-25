@@ -1,0 +1,71 @@
+themes:
+  - name: solarized
+  
+    palettes:
+      - name: solarized
+        mode: dark
+        primary: "#268bd2"
+        secondary: "#cb4b16"
+      
+        colors:
+          blue: "#268bd2" 
+          cyan: "#2aa198"
+          green: "#859900" 
+          yellow: "#b58900"
+          orange: "#cb4b16" 
+          red: "#dc322f" 
+          magenta: "#d33682"
+          violet: "#6c71c4"
+        
+        backgrounds:
+          - "#002b36" # BASE03
+          - "#073642" # BASE02
+          - "#586e75" # BASE01
+      
+        foregrounds:
+          - "#fdf6e3" # BASE3
+          - "#93a1a1" # BASE1
+          - "#586e75" # BASE01
+      
+        status:
+          success: "#859900"
+          warning: "#b58900"
+          error: "#dc322f"
+          info: "#268bd2"
+          debug: "#586e75"
+        
+        highlight: "#fdf6e3"
+        shadow: "#fdf6e3"
+
+      - name: solarized #inherits because of same name palette
+        mode: light
+        
+        backgrounds:
+          - "#fdf6e3" # BASE3
+          - "#93a1a1" # BASE1
+          - "#586e75" # BASE01
+      
+        foregrounds:
+          - "#fdf6e3" # BASE3
+          - "#93a1a1" # BASE1
+          - "#586e75" # BASE01
+
+        shadow: "#002b36"
+  
+    shapes:
+      - name: rounded
+        roundness: 0.5
+        base_border: 1
+
+    typographies:
+      - name: recursive
+        font_main: "'Recursive', sans-serif"
+        font_mono: "monospace"
+        scale_ratio: 1.25
+    
+    textures:
+      - name: paper
+        opacity: 0.85
+        texture_cls: texture-paper
+        shadows: true
+        shadow_intensity: 1.5

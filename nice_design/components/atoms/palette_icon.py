@@ -17,8 +17,8 @@ class palette_icon(ui.element):
         super().__init__('svg')
         
         # Extract colors from the palette
-        background_color = palette.backgrounds.get('1', '#002b36')
-        foreground_color = palette.foregrounds.get('1', '#fdf6e3')
+        background_color = palette.backgrounds[0] if palette.backgrounds else '#002b36'
+        foreground_color = palette.foregrounds[0] if palette.foregrounds else '#fdf6e3'
         colors = palette.colors
         
         # Set SVG attributes
