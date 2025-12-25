@@ -144,6 +144,12 @@
     font-size: 1.1rem;
 }
 
+.nd-icon {
+    font-size: 1.25rem;
+    color: inherit;
+    transition: color var(--nd-transition-speed) ease;
+}
+
 /* Smooth Chevron Rotation */
 .nd-select .q-select__dropdown-icon {
     transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;

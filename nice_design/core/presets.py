@@ -5,11 +5,25 @@ SOLARIZED_PALETTE = Palette(
     name="solarized-dark",
     primary="#268bd2",
     secondary="#2aa198",
-    accent="#d33682",
+    colors={
+        'blue': '#268bd2',
+        'cyan': '#2aa198',
+        'green': '#859900',
+        'yellow': '#b58900',
+        'orange': '#cb4b16',
+        'red': '#dc322f',
+        'magenta': '#d33682',
+        'purple': '#6c71c4',
+    },
     surfaces={
         '1': '#002b36',
         '2': '#073642',
         '3': '#586e75'
+    },
+    backgrounds={
+        '1': '#002b36',  # Base03 - darkest
+        '2': '#073642',  # Base02 - dark
+        '3': '#586e75',  # Base01 - medium dark
     },
     status={
         'success': '#859900',

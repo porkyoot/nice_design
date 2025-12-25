@@ -6,7 +6,8 @@ from .components.atoms.button import button
 from .components.atoms.card import card
 from .components.atoms.select import select
 from .components.atoms.menu import menu, menu_item
-from .components.organisms.theme_selector import ThemeSelector
+from .components.atoms.icon import icon
+from .components.molecules.theme_config import ThemeConfig
 
 def load_design_system():
     """Injects the library's CSS into the NiceGUI head."""

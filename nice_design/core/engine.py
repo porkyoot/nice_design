@@ -71,11 +71,17 @@ class ThemeEngine:
         colors = {
             'primary': palette.primary,
             'secondary': palette.secondary,
-            'accent': palette.accent,
             'surface-1': mix(palette.surfaces.get('1', '#ffffff'), skin.opacity),
             'surface-2': mix(palette.surfaces.get('2', '#f0f0f0'), skin.opacity),
             'surface-3': mix(palette.surfaces.get('3', '#e0e0e0'), skin.opacity),
+            'background-1': mix(palette.backgrounds.get('1', '#ffffff'), skin.opacity),
+            'background-2': mix(palette.backgrounds.get('2', '#f0f0f0'), skin.opacity),
+            'background-3': mix(palette.backgrounds.get('3', '#e0e0e0'), skin.opacity),
         }
+        
+        # Add named colors from palette
+        for color_name, color_value in palette.colors.items():
+            colors[color_name] = color_value
         
         for s_type, s_color in palette.status.items():
             colors[f'status-{s_type}'] = s_color

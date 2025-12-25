@@ -31,7 +31,7 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
     # Hero Card
     with nice.card().classes('w-[32rem] items-center nd-gap-lg nd-shadow-xl'):
         with ui.avatar('mdi-layers', color='primary', text_color='white').classes('shadow-xl'):
-            ui.icon('mdi-palette')
+            nice.icon('mdi-palette')
         ui.label('Nice Design System').classes('text-4xl font-extrabold tracking-tight')
         ui.label('Standardized Design Tokens').classes('text-lg opacity-60 text-center')
         
@@ -61,10 +61,21 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
     with nice.card().classes('w-[32rem] nd-gap-md'):
         with ui.row().classes('w-full items-center justify-between'):
             ui.label('Configuration').classes('text-xs uppercase tracking-widest opacity-40 font-bold ml-1')
-            nice.ThemeSelector(
-                themes=['Solarized Dark', 'Nordic Night', 'Cyberpunk', 'Minimalist'],
-                on_theme_change=lambda t: ui.notify(f"Theme changed to: {t}"),
-                on_mode_toggle=lambda dark: ui.notify(f"Dark mode: {dark}")
+            nice.ThemeConfig(
+                themes=[
+                    {'label': 'Solarized Dark', 'value': 'Solarized Dark', 'icon': 'mdi-palette'},
+                    {'label': 'Nordic Night', 'value': 'Nordic Night', 'icon': 'mdi-snowflake'},
+                    {'label': 'Cyberpunk', 'value': 'Cyberpunk', 'icon': 'mdi-flash'}
+                ],
+                fonts=[
+                    {'label': 'Inter', 'value': 'Inter', 'icon': 'mdi-alphabetical-variant'},
+                    {'label': 'JetBrains Mono', 'value': 'JetBrains Mono', 'icon': 'mdi-code-braces'},
+                    {'label': 'Poppins', 'value': 'Poppins', 'icon': 'mdi-format-text-variant'}
+                ],
+                on_theme_change=lambda t: ui.notify(f"Theme: {t}"),
+                on_mode_toggle=lambda dark: ui.notify(f"Dark Mode: {dark}"),
+                on_texture_change=lambda tex: ui.notify(f"Texture: {tex}"),
+                on_font_change=lambda font: ui.notify(f"Font: {font}")
             )
         
         nice.select(
@@ -75,13 +86,14 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
         
         with ui.row().classes('w-full items-center justify-between'):
             ui.label('Compact Layout').classes('opacity-60 font-medium')
-            nice.select(
+            compact_select = nice.select(
                 options=['Relaxed', 'Standard', 'Minimal'],
                 value='Standard',
-                minimal=True,
-                icon='mdi-tune',
-                icon_color='var(--nd-primary)'
+                minimal=True
             )
+            # Add icon via slot (new pattern)
+            with compact_select.add_slot('prepend'):
+                nice.icon('mdi-tune').classes('nd-select__icon').style('color: var(--nd-primary) !important')
         
         with nice.button('Extra Settings', variant='ghost', icon='mdi-dots-horizontal').classes('w-full'):
             with nice.menu():

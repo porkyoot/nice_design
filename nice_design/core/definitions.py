@@ -7,8 +7,9 @@ class Palette:
     name: str
     primary: str
     secondary: str
-    accent: str
+    colors: Dict[str, str]    # Named colors: blue, cyan, green, yellow, orange, red, magenta, purple
     surfaces: Dict[str, str]  # {'1': '#...', '2': '#...'}
+    backgrounds: Dict[str, str]  # {'1': '#...', '2': '#...'} - solid backgrounds
     status: Dict[str, str]    # {'success': '...', 'error': '...'}
     shadow: str = "#000000"   # Default shadow color
 
