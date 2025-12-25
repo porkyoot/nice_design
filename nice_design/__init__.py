@@ -6,6 +6,7 @@ from .components.atoms.button import button
 from .components.atoms.card import card
 from .components.atoms.select import select
 from .components.atoms.menu import menu, menu_item
+from .components.organisms.theme_selector import ThemeSelector
 
 def load_design_system():
     """Injects the library's CSS into the NiceGUI head."""
@@ -23,6 +24,9 @@ def load_design_system():
     # 3. Load Atoms
     with open(css_path / 'atoms.css') as f:
         ui.add_head_html(f"<style>{f.read()}</style>")
+        
+    # 4. Load MDI Icons
+    ui.add_head_html('<link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet">')
 
 def apply_theme(theme: Theme):
     """Applies the compiled theme to the UI via CSS variables."""

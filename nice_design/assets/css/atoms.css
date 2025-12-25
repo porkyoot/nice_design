@@ -15,6 +15,15 @@
     letter-spacing: 0.025em;
 }
 
+/* Icon Rotation Support */
+.nd-btn--rotate .q-icon {
+    transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.nd-btn--rotated .q-icon {
+    transform: rotate(180deg);
+}
+
 /* Primary Variant */
 .nd-btn--primary {
     background-color: var(--nd-primary);
@@ -87,31 +96,35 @@
 
 /* Minimal Mode (Icon Only) */
 .nd-select--minimal {
-    width: 42px !important;
-    min-width: 42px !important;
-    height: 42px;
+    width: auto !important;
+    padding: 0 8px !important;
     background-color: var(--nd-surface-3) !important;
-    border-radius: 50% !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: var(--nd-radius-md) !important;
+    display: inline-flex !important;
+    align-items: center !important;
     transition: all var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.nd-select--minimal:hover {
-    background-color: var(--nd-primary) !important;
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--nd-primary), transparent 60%);
+
+/* Support for Buttons using this style */
+.nd-select--minimal.q-btn {
+    padding: 0 !important;
+    color: var(--nd-on-surface) !important;
+}
+
+.nd-select--minimal.q-btn:hover {
+    color: var(--nd-on-primary) !important;
 }
 
 .nd-select--minimal .q-field__control,
 .nd-select--minimal .q-field__marginal {
     padding: 0 !important;
-    min-height: 42px !important;
-    height: 42px !important;
+    min-height: unset !important;
+    height: 36px !important;
     display: flex !important;
-    justify-content: center !important;
+    align-items: center !important;
 }
+
 
 .nd-select--minimal .q-field__native,
 .nd-select--minimal .q-field__label,
@@ -120,7 +133,15 @@
 }
 
 .nd-select--minimal .q-field__append {
-    padding-left: 0 !important;
+    padding-left: 2px !important;
+}
+
+.nd-select--minimal .q-field__prepend {
+    padding-right: 2px !important;
+}
+
+.nd-select__icon {
+    font-size: 1.1rem;
 }
 
 /* Smooth Chevron Rotation */
@@ -132,9 +153,6 @@
     transform: rotate(180deg);
 }
 
-.nd-select--minimal.q-field--focused {
-    background-color: var(--nd-primary) !important;
-}
 
 /* Select Menu (Dropdown) */
 .nd-select-menu {

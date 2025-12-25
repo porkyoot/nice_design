@@ -30,14 +30,14 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
     
     # Hero Card
     with nice.card().classes('w-[32rem] items-center nd-gap-lg nd-shadow-xl'):
-        with ui.avatar('layers', color='primary', text_color='white').classes('shadow-xl'):
-            ui.icon('style')
+        with ui.avatar('mdi-layers', color='primary', text_color='white').classes('shadow-xl'):
+            ui.icon('mdi-palette')
         ui.label('Nice Design System').classes('text-4xl font-extrabold tracking-tight')
         ui.label('Standardized Design Tokens').classes('text-lg opacity-60 text-center')
         
         with ui.row().classes('nd-gap-md w-full justify-center'):
-            nice.button('Primary Action', variant='primary', icon='rocket')
-            nice.button('Secondary', variant='secondary', icon='settings')
+            nice.button('Primary Action', variant='primary', icon='mdi-rocket')
+            nice.button('Secondary', variant='secondary', icon='mdi-cog')
 
     # Token Showcase Row
     with ui.row().classes('nd-gap-xl'):
@@ -59,7 +59,13 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
 
     # Layout Controls
     with nice.card().classes('w-[32rem] nd-gap-md'):
-        ui.label('Configuration').classes('text-xs uppercase tracking-widest opacity-40 font-bold ml-1')
+        with ui.row().classes('w-full items-center justify-between'):
+            ui.label('Configuration').classes('text-xs uppercase tracking-widest opacity-40 font-bold ml-1')
+            nice.ThemeSelector(
+                themes=['Solarized Dark', 'Nordic Night', 'Cyberpunk', 'Minimalist'],
+                on_theme_change=lambda t: ui.notify(f"Theme changed to: {t}"),
+                on_mode_toggle=lambda dark: ui.notify(f"Dark mode: {dark}")
+            )
         
         nice.select(
             options=['Dark Mode', 'Light Mode', 'Auto'],
@@ -72,10 +78,12 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
             nice.select(
                 options=['Relaxed', 'Standard', 'Minimal'],
                 value='Standard',
-                minimal=True
+                minimal=True,
+                icon='mdi-tune',
+                icon_color='var(--nd-primary)'
             )
         
-        with nice.button('Extra Settings', variant='ghost', icon='more_horiz').classes('w-full'):
+        with nice.button('Extra Settings', variant='ghost', icon='mdi-dots-horizontal').classes('w-full'):
             with nice.menu():
                 nice.menu_item('Export Theme', on_click=lambda: ui.notify('Exporting...'))
                 nice.menu_item('Reset Defaults', on_click=lambda: ui.notify('Resetting...'))

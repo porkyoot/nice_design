@@ -1,6 +1,11 @@
 from .definitions import Theme, Palette, Skin, Typography
+from .registry import ThemeRegistry
 
 class ThemeEngine:
+    def __init__(self):
+        self.registry = ThemeRegistry()
+        self.registry.discover_plugins()
+
     def compile(self, palette: Palette, skin: Skin, typo: Typography) -> Theme:
         # 1. Calculate Radii based on Skin's Roundness
         base_radius = 0.5 # rem

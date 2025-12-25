@@ -9,7 +9,9 @@ class select(ui.select):
         label: Optional[str] = None,
         value: Any = None,
         on_change = None,
-        minimal: bool = False
+        minimal: bool = False,
+        icon: Optional[str] = None,
+        icon_color: Optional[str] = None
     ):
         super().__init__(options=options, label=label, value=value, on_change=on_change)
 
@@ -18,11 +20,18 @@ class select(ui.select):
         if minimal:
             self.classes('nd-select--minimal')
             self.props('borderless dense')
+            if icon:
+                with self.add_slot('prepend'):
+                    i = ui.icon(icon).classes('nd-select__icon')
+                    if icon_color:
+                        i.style(f'color: {icon_color} !important')
+                    else:
+                        i.style('color: var(--nd-on-surface) !important')
         else:
             self.props('outlined standout="bg-primary text-white" rounded')
 
         # Remove Quasar defaults and apply premium props
         self.props('unelevated')
-
-        # Ensure the popup menu is also themed (Quasar uses portal for menus)
-        self.props('menu-props="content-class=nd-select-menu"')
+        
+        # Ensure the popup menu matches the design system
+        self.props('popup-content-class="nd-select-menu"')

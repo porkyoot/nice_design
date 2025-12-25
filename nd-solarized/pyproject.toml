@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nd-solarized"
+version = "0.1.0"
+description = "Solarized theme plugin for NiceDesign"
+requires-python = ">=3.8"
+dependencies = [
+    "nice_design",
+]
+
+[project.entry-points."nice_design.palettes"]
+solarized-dark = "nd_solarized.themes:SOLARIZED_DARK_PALETTE"
+
+[project.entry-points."nice_design.skins"]
+solarized-premium = "nd_solarized.themes:SOLARIZED_PREMIUM_SKIN"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nd_solarized*"]
