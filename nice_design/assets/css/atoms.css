@@ -1,3 +1,28 @@
+/* Texture Icon Styles */
+.nd-texture-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nd-texture-icon__circle--interactive:hover {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+}
+
+/* Shape Icon Styles */
+.nd-shape-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+}
+
+.nd-shape-icon__element--interactive:hover {
+    transform: scale(1.15);
+    border-color: var(--nd-primary);
+}
+
 /* Base Button Styles */
 .nd-btn {
     border-radius: var(--nd-radius-md);
@@ -64,7 +89,7 @@
 
 /* Card Styles */
 .nd-card {
-    background-color: var(--nd-surface-2);
+    background-color: var(--nd-background-2);
     border-radius: var(--nd-radius-lg);
     border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1);
     padding: var(--nd-space-xl);
@@ -82,15 +107,15 @@
 }
 
 .nd-select .q-field__control {
-    background-color: var(--nd-surface-3) !important;
+    background-color: var(--nd-background-3) !important;
     border-radius: var(--nd-radius-md) !important;
-    color: var(--nd-on-surface) !important;
+    color: var(--nd-foreground-1) !important;
 }
 
 .nd-select .q-field__label,
 .nd-select .q-field__native,
 .nd-select .q-icon {
-    color: var(--nd-on-surface) !important;
+    color: var(--nd-foreground-1) !important;
     opacity: 0.8;
 }
 
@@ -98,7 +123,7 @@
 .nd-select--minimal {
     width: auto !important;
     padding: 0 8px !important;
-    background-color: var(--nd-surface-3) !important;
+    background-color: var(--nd-background-3) !important;
     border-radius: var(--nd-radius-md) !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -109,7 +134,7 @@
 /* Support for Buttons using this style */
 .nd-select--minimal.q-btn {
     padding: 0 !important;
-    color: var(--nd-on-surface) !important;
+    color: var(--nd-foreground-1) !important;
 }
 
 .nd-select--minimal.q-btn:hover {
@@ -162,14 +187,14 @@
 
 /* Select Menu (Dropdown) */
 .nd-select-menu {
-    background-color: var(--nd-surface-2) !important;
+    background-color: var(--nd-background-2) !important;
     border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1) !important;
     border-radius: var(--nd-radius-md) !important;
     box-shadow: var(--nd-shadow-lg) !important;
 }
 
 .nd-select-menu .q-item {
-    color: var(--nd-on-surface) !important;
+    color: var(--nd-foreground-1) !important;
     transition: background var(--nd-transition-speed);
 }
 
@@ -184,7 +209,7 @@
 
 /* Menu Styles */
 .nd-menu {
-    background-color: var(--nd-surface-2) !important;
+    background-color: var(--nd-background-2) !important;
     border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1) !important;
     border-radius: var(--nd-radius-md) !important;
     box-shadow: var(--nd-shadow-lg) !important;
@@ -192,7 +217,7 @@
 }
 
 .nd-menu-item {
-    color: var(--nd-on-surface) !important;
+    color: var(--nd-foreground-1) !important;
     font-size: 0.9rem;
     font-weight: 500;
     transition: all var(--nd-transition-speed) ease;
@@ -331,8 +356,8 @@ body.texture-glossy .nd-btn {
 
 /* Global Body Styling from Theme */
 body {
-    background-color: var(--nd-surface-1);
-    color: var(--nd-on-surface, #f8f9fa);
+    background-color: var(--nd-background-1);
+    color: var(--nd-foreground-1, #f8f9fa);
     font-family: var(--nd-font-main);
     margin: 0;
     min-height: 100vh;

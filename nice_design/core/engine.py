@@ -1,4 +1,4 @@
-from .definitions import Theme, Palette, Skin, Typography
+from .definitions import Theme, Palette, Shape, Texture, Layout, Animation, Typography
 from .registry import ThemeRegistry
 
 class ThemeEngine:
@@ -6,18 +6,18 @@ class ThemeEngine:
         self.registry = ThemeRegistry()
         self.registry.discover_plugins()
 
-    def compile(self, palette: Palette, skin: Skin, typo: Typography) -> Theme:
-        # 1. Calculate Radii based on Skin's Roundness
+    def compile(self, palette: Palette, shape: Shape, texture: Texture, layout: Layout, animation: Animation, typo: Typography) -> Theme:
+        # 1. Calculate Radii based on Shape's Roundness
         base_radius = 0.5 # rem
         radii = {
-            'sm': f"{base_radius * 0.5 * skin.roundness}rem",
-            'md': f"{base_radius * skin.roundness}rem",
-            'lg': f"{base_radius * 2 * skin.roundness}rem",
-            'full': '9999px' if skin.roundness > 0 else '0px'
+            'sm': f"{base_radius * 0.5 * shape.roundness}rem",
+            'md': f"{base_radius * shape.roundness}rem",
+            'lg': f"{base_radius * 2 * shape.roundness}rem",
+            'full': '9999px' if shape.roundness > 0 else '0px'
         }
 
-        # 2. Calculate Spacing based on Skin's base_space
-        bs = skin.base_space
+        # 2. Calculate Spacing based on Layout's base_space
+        bs = layout.base_space
         radii.update({
             'space-xs': f"{bs * 0.25}rem",
             'space-sm': f"{bs * 0.5}rem",
@@ -26,8 +26,8 @@ class ThemeEngine:
             'space-xl': f"{bs * 2.0}rem",
         })
 
-        # 3. Calculate Borders based on Skin's base_border (px)
-        bb = skin.base_border
+        # 3. Calculate Borders based on Shape's base_border (px)
+        bb = shape.base_border
         radii.update({
             'border-xs': '0px',
             'border-sm': f"{bb}px",
@@ -46,9 +46,9 @@ class ThemeEngine:
         shadow_rgb = hex_to_rgb_commas(palette.shadow)
         radii['shadow-color'] = shadow_rgb
 
-        # 5. Calculate Shadows based on Intensity
-        si = skin.shadow_intensity
-        if not skin.shadows:
+        # 5. Calculate Shadows based on Texture's Intensity
+        si = texture.shadow_intensity
+        if not texture.shadows:
             si = 0
             
         s_col = "var(--nd-shadow-color)"
@@ -60,10 +60,10 @@ class ThemeEngine:
             'shadow-xl': f"0 20px 25px -5px rgba({s_col}, {0.1 * si:.2f}), 0 8px 10px -6px rgba({s_col}, {0.1 * si:.2f})",
         })
 
-        # 6. Add Transition Speed
-        radii['transition-speed'] = f"{skin.transition_speed}s"
+        # 6. Add Transition Speed from Animation
+        radii['transition-speed'] = f"{animation.transition_speed}s"
 
-        # 7. Calculate Colors (Handling Opacity for Glass/Ghost skins)
+        # 7. Calculate Colors (Handling Opacity for Glass/Ghost textures)
         def mix(hex_color, opacity):
             if opacity >= 1.0: return hex_color
             return f"color-mix(in srgb, {hex_color}, transparent {int((1-opacity)*100)}%)"
@@ -71,12 +71,12 @@ class ThemeEngine:
         colors = {
             'primary': palette.primary,
             'secondary': palette.secondary,
-            'surface-1': mix(palette.surfaces.get('1', '#ffffff'), skin.opacity),
-            'surface-2': mix(palette.surfaces.get('2', '#f0f0f0'), skin.opacity),
-            'surface-3': mix(palette.surfaces.get('3', '#e0e0e0'), skin.opacity),
-            'background-1': mix(palette.backgrounds.get('1', '#ffffff'), skin.opacity),
-            'background-2': mix(palette.backgrounds.get('2', '#f0f0f0'), skin.opacity),
-            'background-3': mix(palette.backgrounds.get('3', '#e0e0e0'), skin.opacity),
+            'foreground-1': mix(palette.foregrounds.get('1', '#ffffff'), texture.opacity),
+            'foreground-2': mix(palette.foregrounds.get('2', '#f0f0f0'), texture.opacity),
+            'foreground-3': mix(palette.foregrounds.get('3', '#e0e0e0'), texture.opacity),
+            'background-1': mix(palette.backgrounds.get('1', '#000000'), texture.opacity),
+            'background-2': mix(palette.backgrounds.get('2', '#111111'), texture.opacity),
+            'background-3': mix(palette.backgrounds.get('3', '#222222'), texture.opacity),
         }
         
         # Add named colors from palette
@@ -89,9 +89,9 @@ class ThemeEngine:
         radii['font-main'] = typo.font_family
         radii['font-mono'] = typo.mono_family
 
-        # 8. Determine CSS Classes
-        css_classes = [skin.texture_cls]
-        if not skin.shadows:
+        # 8. Determine CSS Classes from Texture
+        css_classes = [texture.texture_cls]
+        if not texture.shadows:
             css_classes.append('no-shadows')
 
         return Theme(colors=colors, layout=radii, classes=css_classes)

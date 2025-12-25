@@ -1,10 +1,11 @@
 import importlib.metadata
-from .definitions import Palette, Skin
+from .definitions import Palette, Shape, Texture
 
 class ThemeRegistry:
     def __init__(self):
         self._palettes = {}
-        self._skins = {}
+        self._shapes = {}
+        self._textures = {}
         
     def discover_plugins(self):
         """Scans the installed python environment for plugins."""
@@ -30,31 +31,52 @@ class ThemeRegistry:
                 except Exception as e:
                     print(f"Failed to load palette {ep.name}: {e}")
 
-            # 2. Discover Skins (same logic)
+            # 2. Discover Shapes
             if hasattr(entry_points, 'select'):
-                 skins = entry_points.select(group='nice_design.skins')
+                 shapes = entry_points.select(group='nice_design.shapes')
             else:
-                 skins = entry_points.get('nice_design.skins', [])
+                 shapes = entry_points.get('nice_design.shapes', [])
 
-            for ep in skins:
+            for ep in shapes:
                 try:
-                    skin_obj = ep.load()
-                    if isinstance(skin_obj, Skin):
-                        print(f"Loaded External Skin: {skin_obj.name}")
-                        self._skins[skin_obj.name] = skin_obj
+                    shape_obj = ep.load()
+                    if isinstance(shape_obj, Shape):
+                        print(f"Loaded External Shape: {shape_obj.name}")
+                        self._shapes[shape_obj.name] = shape_obj
                 except Exception as e:
-                    print(f"Failed to load skin {ep.name}: {e}")
+                    print(f"Failed to load shape {ep.name}: {e}")
+
+            # 3. Discover Textures
+            if hasattr(entry_points, 'select'):
+                 textures = entry_points.select(group='nice_design.textures')
+            else:
+                 textures = entry_points.get('nice_design.textures', [])
+
+            for ep in textures:
+                try:
+                    texture_obj = ep.load()
+                    if isinstance(texture_obj, Texture):
+                        print(f"Loaded External Texture: {texture_obj.name}")
+                        self._textures[texture_obj.name] = texture_obj
+                except Exception as e:
+                    print(f"Failed to load texture {ep.name}: {e}")
         except Exception as e:
             print(f"Error during plugin discovery: {e}")
 
     def get_palette(self, name: str) -> Palette:
         return self._palettes.get(name)
 
-    def get_skin(self, name: str) -> Skin:
-        return self._skins.get(name)
+    def get_shape(self, name: str) -> Shape:
+        return self._shapes.get(name)
+
+    def get_texture(self, name: str) -> Texture:
+        return self._textures.get(name)
 
     def list_palettes(self) -> list[str]:
         return list(self._palettes.keys())
 
-    def list_skins(self) -> list[str]:
-        return list(self._skins.keys())
+    def list_shapes(self) -> list[str]:
+        return list(self._shapes.keys())
+
+    def list_textures(self) -> list[str]:
+        return list(self._textures.keys())

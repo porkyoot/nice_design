@@ -7,6 +7,10 @@ from .components.atoms.card import card
 from .components.atoms.select import select
 from .components.atoms.menu import menu, menu_item
 from .components.atoms.icon import icon
+from .components.atoms.palette_icon import palette_icon
+from .components.atoms.theme_icon import theme_icon
+from .components.atoms.texture_icon import texture_icon
+from .components.atoms.shape_icon import shape_icon
 from .components.molecules.theme_config import ThemeConfig
 
 def load_design_system():
