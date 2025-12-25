@@ -13,4 +13,4 @@ class icon(ui.icon):
         
         # Apply design system defaults if needed
         # We can add custom logic here if icons need specific shadows or transitions
-        self.classes('nd-icon')
+        self.classes('-nd-c-icon')

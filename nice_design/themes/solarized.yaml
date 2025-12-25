@@ -94,3 +94,13 @@ themes:
         texture_cls: texture-paper
         shadows: true
         shadow_intensity: 1.5
+      - name: glossy
+        opacity: 0.9
+        texture_cls: "-nd-t-glossy"
+        shadows: true
+        shadow_intensity: 1.5
+      - name: glass
+        opacity: 0.95
+        shadows: true
+        texture_cls: "-nd-t-glass"
+

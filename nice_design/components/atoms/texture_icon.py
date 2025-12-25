@@ -17,12 +17,12 @@ class texture_icon(ui.element):
         super().__init__('div')
         
         # Apply base styling
-        self.classes('nd-texture-icon')
+        self.classes('-nd-c-texture-icon')
         self.style(f'width: {size}; height: {size}; position: relative;')
         
         # Create the circle element
         with self:
-            circle = ui.element('div').classes('nd-texture-icon__circle')
+            circle = ui.element('div').classes('-nd-c-texture-icon__circle')
             
             # Apply texture class
             circle.classes(texture.texture_cls)
@@ -61,5 +61,5 @@ class texture_icon(ui.element):
             ''')
             
             # Add hover effect to show transition
-            circle.classes('nd-texture-icon__circle--interactive')
+            circle.classes('-nd-c-texture-icon__circle--interactive')
 

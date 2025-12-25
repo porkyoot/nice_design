@@ -15,8 +15,8 @@ class button(ui.button):
         
         # Apply design system classes
         # We use .classes() to add our custom styles
-        self.classes('nd-btn')
-        self.classes(f'nd-btn--{variant}')
+        self.classes('-nd-c-btn')
+        self.classes(f'-nd-c-btn--{variant}')
         
         # Remove Quasar defaults to prevent styling conflicts
         self.props('unelevated no-caps')
@@ -26,5 +26,5 @@ class button(ui.button):
             self.props('outline')
 
         if rotate_icon:
-            self.classes('nd-btn--rotate')
-            self.on('click', lambda: self.classes(toggle='nd-btn--rotated'))
+            self.classes('-nd-c-btn--rotate')
+            self.on('click', lambda: self.classes(toggle='-nd-c-btn--rotated'))

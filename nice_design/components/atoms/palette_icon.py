@@ -1,6 +1,6 @@
 from nicegui import ui
 from typing import Optional, Dict
-from ...core.definitions import Palette
+from nice_design.core.definitions import Palette, Semantics
 
 class palette_icon(ui.element):
     """
@@ -11,20 +11,21 @@ class palette_icon(ui.element):
     def __init__(
         self, 
         palette: Palette,
+        semantics: Semantics,
         *, 
         size: str = "24px"
     ):
         super().__init__('svg')
         
-        # Extract colors from the palette
-        background_color = palette.backgrounds[0] if palette.backgrounds else '#002b36'
-        foreground_color = palette.foregrounds[0] if palette.foregrounds else '#fdf6e3'
+        # Extract colors from the palette and semantics
+        background_color = semantics.backgrounds[0] if semantics.backgrounds else '#002b36'
+        foreground_color = semantics.foregrounds[0] if semantics.foregrounds else '#fdf6e3'
         colors = palette.colors
         
         # Set SVG attributes
         self._props['viewBox'] = '0 0 24 24'
         self._props['xmlns'] = 'http://www.w3.org/2000/svg'
-        self.classes('nd-theme-icon')
+        self.classes('-nd-c-theme-icon')
         self.style(f'width: {size}; height: {size};')
         
         # Generate the SVG content

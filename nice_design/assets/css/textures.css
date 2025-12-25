@@ -1,20 +1,20 @@
 /* Texture Definitions */
 
 /* 1. Glossy Texture */
-.texture-glossy .nd-card,
-.texture-glossy .nd-btn {
+.-nd-t-glossy .-nd-c-card,
+.-nd-t-glossy .-nd-c-btn {
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.05));
     border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* 3. Glassmorphism Texture */
-.texture-glass .nd-card {
+.-nd-t-glass .-nd-c-card {
     background: rgba(255, 255, 255, 0.05) !important;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.texture-glass .nd-btn--ghost {
+.-nd-t-glass .-nd-c-btn--ghost {
     backdrop-filter: blur(4px);
 }

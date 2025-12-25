@@ -47,14 +47,14 @@ class select(ui.select):
 
             # SLOT: The Selected Item ('selected-item')
             self.add_slot('selected-item', r'''
-                <div class="row items-center no-wrap nd-gap-sm">
+                <div class="row items-center no-wrap -nd-u-gap-2">
                     <q-icon :name="props.opt.label.icon" :color="props.opt.label.color" size="xs" />
                     <div>{{ props.opt.label.label }}</div>
                 </div>
             ''')
             
         self.props('outlined rounded standout="bg-primary text-on-primary"')
-        self.classes('nd-select')
+        self.classes('-nd-c-select')
 
 
 

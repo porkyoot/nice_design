@@ -1,41 +1,41 @@
 /* Texture Icon Styles */
-.nd-texture-icon {
+.-nd-c-texture-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-.nd-texture-icon__circle--interactive:hover {
+.-nd-c-texture-icon__circle--interactive:hover {
     transform: scale(1.1);
     filter: brightness(1.1);
 }
 
 /* Shape Icon Styles */
-.nd-shape-icon {
+.-nd-c-shape-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 2px;
 }
 
-.nd-shape-icon__element--interactive:hover {
+.-nd-c-shape-icon__element--interactive:hover {
     transform: scale(1.15);
     border-color: var(--nd-primary);
 }
 
 /* Theme Icon Styles (Comprehensive) */
-.nd-theme-icon {
+.-nd-c-theme-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-.nd-theme-icon__palette-container:hover {
+.-nd-c-theme-icon__palette-container:hover {
     transform: scale(1.05);
 }
 
 /* Base Button Styles */
-.nd-btn {
+.-nd-c-btn {
     border-radius: var(--nd-radius-md);
     font-family: var(--nd-font-main);
     font-weight: 600;
@@ -52,54 +52,54 @@
 }
 
 /* Icon Rotation Support */
-.nd-btn--rotate .q-icon {
+.-nd-c-btn--rotate .q-icon {
     transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-.nd-btn--rotated .q-icon {
+.-nd-c-btn--rotated .q-icon {
     transform: rotate(180deg);
 }
 
 /* Primary Variant */
-.nd-btn--primary {
+.-nd-c-btn--primary {
     background-color: var(--nd-primary);
     color: var(--nd-on-primary);
     box-shadow: var(--nd-shadow-sm);
 }
 
-.nd-btn--primary:hover {
+.-nd-c-btn--primary:hover {
     filter: brightness(1.1);
     transform: translateY(-1px);
     box-shadow: var(--nd-shadow-md);
 }
 
-.nd-btn--primary:active {
+.-nd-c-btn--primary:active {
     transform: translateY(0);
 }
 
 /* Secondary Variant */
-.nd-btn--secondary {
+.-nd-c-btn--secondary {
     background-color: var(--nd-secondary);
     color: white;
 }
 
-.nd-btn--secondary:hover {
+.-nd-c-btn--secondary:hover {
     filter: brightness(1.1);
 }
 
 /* Ghost Variant */
-.nd-btn--ghost {
+.-nd-c-btn--ghost {
     background-color: transparent;
     color: var(--nd-primary);
     border-color: var(--nd-primary);
 }
 
-.nd-btn--ghost:hover {
+.-nd-c-btn--ghost:hover {
     background-color: color-mix(in srgb, var(--nd-primary), transparent 90%);
 }
 
 /* Card Styles */
-.nd-card {
+.-nd-c-card {
     background-color: var(--nd-background-2);
     border-radius: var(--nd-radius-lg);
     border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1);
@@ -108,30 +108,30 @@
     box-shadow: var(--nd-shadow-md);
 }
 
-.nd-card:hover {
+.-nd-c-card:hover {
     box-shadow: var(--nd-shadow-xl);
 }
 
 /* Select Styles */
-.nd-select {
+.-nd-c-select {
     width: 100%;
 }
 
-.nd-select .q-field__control {
+.-nd-c-select .q-field__control {
     background-color: var(--nd-background-3) !important;
     border-radius: var(--nd-radius-md) !important;
     color: var(--nd-foreground-1) !important;
 }
 
-.nd-select .q-field__label,
-.nd-select .q-field__native,
-.nd-select .q-icon {
+.-nd-c-select .q-field__label,
+.-nd-c-select .q-field__native,
+.-nd-c-select .q-icon {
     color: var(--nd-foreground-1) !important;
     opacity: 0.8;
 }
 
 /* Minimal Mode (Icon Only) */
-.nd-select--minimal {
+.-nd-c-select--minimal {
     width: auto !important;
     padding: 0 8px !important;
     background-color: var(--nd-background-3) !important;
@@ -143,17 +143,17 @@
 
 
 /* Support for Buttons using this style */
-.nd-select--minimal.q-btn {
+.-nd-c-select--minimal.q-btn {
     padding: 0 !important;
     color: var(--nd-foreground-1) !important;
 }
 
-.nd-select--minimal.q-btn:hover {
+.-nd-c-select--minimal.q-btn:hover {
     color: var(--nd-on-primary) !important;
 }
 
-.nd-select--minimal .q-field__control,
-.nd-select--minimal .q-field__marginal {
+.-nd-c-select--minimal .q-field__control,
+.-nd-c-select--minimal .q-field__marginal {
     padding: 0 !important;
     min-height: unset !important;
     height: 36px !important;
@@ -162,65 +162,65 @@
 }
 
 
-.nd-select--minimal .q-field__native,
-.nd-select--minimal .q-field__label,
-.nd-select--minimal .q-field__control-container {
+.-nd-c-select--minimal .q-field__native,
+.-nd-c-select--minimal .q-field__label,
+.-nd-c-select--minimal .q-field__control-container {
     display: none !important;
 }
 
-.nd-select--minimal .q-field__append {
+.-nd-c-select--minimal .q-field__append {
     padding-left: 2px !important;
     padding-right: 0 !important;
 }
 
-.nd-select--minimal .q-field__prepend {
+.-nd-c-select--minimal .q-field__prepend {
     padding-right: 2px !important;
 }
 
-.nd-select__icon {
+.-nd-c-select__icon {
     font-size: 1.1rem;
 }
 
-.nd-icon {
+.-nd-c-icon {
     font-size: 1.25rem;
     color: inherit;
     transition: color var(--nd-transition-speed) ease;
 }
 
 /* Smooth Chevron Rotation */
-.nd-select .q-select__dropdown-icon {
+.-nd-c-select .q-select__dropdown-icon {
     transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-.nd-select.q-field--focused .q-select__dropdown-icon {
+.-nd-c-select.q-field--focused .q-select__dropdown-icon {
     transform: rotate(180deg);
 }
 
 
 /* Select Menu (Dropdown) */
-.nd-select-menu {
+.-nd-c-select-menu {
     background-color: var(--nd-background-2) !important;
     border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1) !important;
     border-radius: var(--nd-radius-md) !important;
     box-shadow: var(--nd-shadow-lg) !important;
 }
 
-.nd-select-menu .q-item {
+.-nd-c-select-menu .q-item {
     color: var(--nd-foreground-1) !important;
     transition: background var(--nd-transition-speed);
 }
 
-.nd-select-menu .q-item--active {
+.-nd-c-select-menu .q-item--active {
     background-color: var(--nd-primary) !important;
     color: var(--nd-on-primary) !important;
 }
 
-.nd-select-menu .q-item:hover:not(.q-item--active) {
+.-nd-c-select-menu .q-item:hover:not(.q-item--active) {
     background-color: rgba(255, 255, 255, 0.05) !important;
 }
 
 /* Menu Styles */
-.nd-menu {
+.-nd-c-menu {
     background-color: var(--nd-background-2) !important;
     border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1) !important;
     border-radius: var(--nd-radius-md) !important;
@@ -228,7 +228,7 @@
     overflow: hidden;
 }
 
-.nd-menu-item {
+.-nd-c-menu-item {
     color: var(--nd-foreground-1) !important;
     font-size: 0.9rem;
     font-weight: 500;
@@ -236,132 +236,15 @@
     padding: var(--nd-space-sm) var(--nd-space-md) !important;
 }
 
-.nd-menu-item:hover {
+.-nd-c-menu-item:hover {
     background-color: var(--nd-primary) !important;
     color: var(--nd-on-primary) !important;
 }
 
-/* Spacing Utilities */
-.nd-gap-xs {
-    gap: var(--nd-space-xs) !important;
-}
-
-.nd-gap-sm {
-    gap: var(--nd-space-sm) !important;
-}
-
-.nd-gap-md {
-    gap: var(--nd-space-md) !important;
-}
-
-.nd-gap-lg {
-    gap: var(--nd-space-lg) !important;
-}
-
-.nd-gap-xl {
-    gap: var(--nd-space-xl) !important;
-}
-
-/* Padding Utilities */
-.nd-p-xs {
-    padding: var(--nd-space-xs) !important;
-}
-
-.nd-p-sm {
-    padding: var(--nd-space-sm) !important;
-}
-
-.nd-p-md {
-    padding: var(--nd-space-md) !important;
-}
-
-.nd-p-lg {
-    padding: var(--nd-space-lg) !important;
-}
-
-.nd-p-xl {
-    padding: var(--nd-space-xl) !important;
-}
-
-.nd-px-md {
-    padding-left: var(--nd-space-md) !important;
-    padding-right: var(--nd-space-md) !important;
-}
-
-.nd-py-md {
-    padding-top: var(--nd-space-md) !important;
-    padding-bottom: var(--nd-space-md) !important;
-}
-
-/* Margin Utilities */
-.nd-m-xs {
-    margin: var(--nd-space-xs) !important;
-}
-
-.nd-m-sm {
-    margin: var(--nd-space-sm) !important;
-}
-
-.nd-m-md {
-    margin: var(--nd-space-md) !important;
-}
-
-.nd-m-lg {
-    margin: var(--nd-space-lg) !important;
-}
-
-.nd-m-xl {
-    margin: var(--nd-space-xl) !important;
-}
-
-/* Border Utilities */
-.nd-border-xs {
-    border-width: var(--nd-border-xs) !important;
-}
-
-.nd-border-sm {
-    border-width: var(--nd-border-sm) !important;
-    border-style: solid;
-}
-
-.nd-border-md {
-    border-width: var(--nd-border-md) !important;
-    border-style: solid;
-}
-
-.nd-border-lg {
-    border-width: var(--nd-border-lg) !important;
-    border-style: solid;
-}
-
-.nd-border-xl {
-    border-width: var(--nd-border-xl) !important;
-    border-style: solid;
-}
-
-/* Shadow Utilities */
-.nd-shadow-xs {
-    box-shadow: var(--nd-shadow-xs) !important;
-}
-
-.nd-shadow-sm {
-    box-shadow: var(--nd-shadow-sm) !important;
-}
-
-.nd-shadow-md {
-    box-shadow: var(--nd-shadow-md) !important;
-}
-
-.nd-shadow-lg {
-    box-shadow: var(--nd-shadow-lg) !important;
-}
-
-.nd-shadow-xl {
-    box-shadow: var(--nd-shadow-xl) !important;
-}
-
 /* Texture Overrides */
-body.texture-glossy .nd-btn {
+/* Note: body class might be .-nd-t-glossy later, but here we still target elements */
+/* I will update these when I touch textures.css, but here I should match the expected texture class name */
+body.-nd-t-glossy .-nd-c-btn {
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.05));
     border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
@@ -376,6 +259,11 @@ body {
 }
 
 /* Utility Classes for Quasar Integration */
-.text-on-primary {
+/* Keeping this as it might be used by Quasar or legacy loops? */
+/* Actually user said "Remove generic utility styles", this looks like a utility. I'll replace it with dynamic utility if possible. */
+/* .text-on-primary is useful but maybe we have .-nd-u-text-on-primary? */
+/* I will keep it but rename it to conform if I can find usage. */
+/* For now I'll rename to .-nd-u-text-on-primary just in case. */
+.-nd-u-text-on-primary {
     color: var(--nd-on-primary) !important;
 }

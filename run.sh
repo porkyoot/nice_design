@@ -27,11 +27,10 @@ echo "📥 Checking dependencies..."
 pip install --upgrade pip
 pip install -r requirements.txt
 pip install -e .
-pip install -e ./nd-solarized
 
 echo "✨ Starting NiceGUI with Hot Reload..."
-echo "📂 Watching: test/, nice_design/, and nd-solarized/"
+echo "📂 Watching: test/, nice_design/"
 
 # Run the application with watchfiles to restart when either the app 
 # or the library code (including CSS/Assets) changes.
-python3 -m watchfiles "python3 test/main.py" test nice_design nd-solarized
+python3 -m watchfiles "python3 test/main.py" test nice_design

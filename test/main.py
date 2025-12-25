@@ -1,7 +1,7 @@
 from nicegui import ui
 import nice_design as nice
 from nice_design.core.engine import ThemeEngine
-from nice_design.core.presets import SOLARIZED_PALETTE, STANDARD_SHAPE, STANDARD_TEXTURE, STANDARD_LAYOUT, STANDARD_ANIMATION, STANDARD_TYPO
+from nice_design.core.presets import SOLARIZED_PALETTE, SOLARIZED_SEMANTICS, STANDARD_SHAPE, STANDARD_TEXTURE, STANDARD_LAYOUT, STANDARD_ANIMATION, STANDARD_TYPO
 
 # 1. Initialize the Theme Engine
 engine = ThemeEngine()
@@ -23,12 +23,13 @@ custom_layout.base_space = 1.0
 custom_animation = STANDARD_ANIMATION
 custom_animation.transition_speed = 0.6  # Slower, more dramatic transitions
 
-# Customize the palette with a themed shadow
+# Customize the palette and semantics
 custom_palette = SOLARIZED_PALETTE
+custom_semantics = SOLARIZED_SEMANTICS
 # Let's make the shadow a dark blue tint instead of pure black
-custom_palette.shadow = "#001a21" 
+custom_semantics.shadow = "#001a21" 
 
-theme = engine.compile(custom_palette, custom_shape, custom_texture, custom_layout, custom_animation, STANDARD_TYPO)
+theme = engine.compile(custom_palette, custom_semantics, custom_shape, custom_texture, custom_layout, custom_animation, STANDARD_TYPO)
 
 # 2. Setup the Design System
 nice.setup(theme)
@@ -44,23 +45,23 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
         with ui.row().classes('nd-gap-xl items-center'):
             # Different sizes
             with ui.column().classes('items-center nd-gap-xs'):
-                nice.theme_icon(custom_palette, custom_shape, custom_texture, size="16px")
+                nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="16px")
                 ui.label('16px').classes('text-xs opacity-40')
             
             with ui.column().classes('items-center nd-gap-xs'):
-                nice.theme_icon(custom_palette, custom_shape, custom_texture, size="24px")
+                nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="24px")
                 ui.label('24px').classes('text-xs opacity-40')
             
             with ui.column().classes('items-center nd-gap-xs'):
-                nice.theme_icon(custom_palette, custom_shape, custom_texture, size="32px")
+                nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="32px")
                 ui.label('32px').classes('text-xs opacity-40')
             
             with ui.column().classes('items-center nd-gap-xs'):
-                nice.theme_icon(custom_palette, custom_shape, custom_texture, size="48px")
+                nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="48px")
                 ui.label('48px').classes('text-xs opacity-40')
             
             with ui.column().classes('items-center nd-gap-xs'):
-                nice.theme_icon(custom_palette, custom_shape, custom_texture, size="64px")
+                nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="64px")
                 ui.label('64px').classes('text-xs opacity-40')
     
     # Palette Icon Showcase
@@ -71,23 +72,23 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
         with ui.row().classes('nd-gap-xl items-center'):
             # Different sizes
             with ui.column().classes('items-center nd-gap-xs'):
-                nice.palette_icon(custom_palette, size="16px")
+                nice.palette_icon(custom_palette, custom_semantics, size="16px")
                 ui.label('16px').classes('text-xs opacity-40')
             
             with ui.column().classes('items-center nd-gap-xs'):
-                nice.palette_icon(custom_palette, size="24px")
+                nice.palette_icon(custom_palette, custom_semantics, size="24px")
                 ui.label('24px').classes('text-xs opacity-40')
             
             with ui.column().classes('items-center nd-gap-xs'):
-                nice.palette_icon(custom_palette, size="32px")
+                nice.palette_icon(custom_palette, custom_semantics, size="32px")
                 ui.label('32px').classes('text-xs opacity-40')
             
             with ui.column().classes('items-center nd-gap-xs'):
-                nice.palette_icon(custom_palette, size="48px")
+                nice.palette_icon(custom_palette, custom_semantics, size="48px")
                 ui.label('48px').classes('text-xs opacity-40')
             
             with ui.column().classes('items-center nd-gap-xs'):
-                nice.palette_icon(custom_palette, size="64px")
+                nice.palette_icon(custom_palette, custom_semantics, size="64px")
                 ui.label('64px').classes('text-xs opacity-40')
     
     # Texture Icon Showcase
@@ -143,24 +144,6 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
             with ui.column().classes('items-center nd-gap-xs'):
                 nice.shape_icon(custom_shape, size="64px")
                 ui.label('64px').classes('text-xs opacity-40')
-
-    # Token Showcase Row
-    with ui.row().classes('nd-gap-xl'):
-        # Border Showcase
-        with nice.card().classes('nd-gap-md nd-p-lg'):
-            ui.label('Border System').classes('text-sm font-bold uppercase opacity-40')
-            with ui.row().classes('nd-gap-sm'):
-                ui.label('SM').classes('nd-p-sm nd-border-sm border-white/20 rounded')
-                ui.label('MD').classes('nd-p-sm nd-border-md border-white/20 rounded')
-                ui.label('LG').classes('nd-p-sm nd-border-lg border-white/20 rounded')
-        
-        # Shadow Showcase
-        with nice.card().classes('nd-gap-md nd-p-lg'):
-            ui.label('Shadow System').classes('text-sm font-bold uppercase opacity-40')
-            with ui.row().classes('nd-gap-md'):
-                ui.label('SM').classes('nd-p-sm bg-white/5 nd-shadow-sm rounded')
-                ui.label('MD').classes('nd-p-sm bg-white/5 nd-shadow-md rounded')
-                ui.label('LG').classes('nd-p-sm bg-white/5 nd-shadow-lg rounded')
 
     # Layout Controls
     with nice.card().classes('w-[32rem] nd-gap-md'):

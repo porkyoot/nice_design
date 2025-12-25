@@ -16,12 +16,12 @@ class shape_icon(ui.element):
         super().__init__('div')
         
         # Apply base styling
-        self.classes('nd-shape-icon')
+        self.classes('-nd-c-shape-icon')
         self.style(f'width: {size}; height: {size}; position: relative;')
         
         # Create the shape element
         with self:
-            shape_elem = ui.element('div').classes('nd-shape-icon__element')
+            shape_elem = ui.element('div').classes('-nd-c-shape-icon__element')
             
             # Calculate border radius based on roundness
             # roundness = 0.0 -> sharp (no radius)
@@ -51,4 +51,4 @@ class shape_icon(ui.element):
             ''')
             
             # Add hover effect
-            shape_elem.classes('nd-shape-icon__element--interactive')
+            shape_elem.classes('-nd-c-shape-icon__element--interactive')

@@ -1,5 +1,5 @@
 from nicegui import ui
-from ...core.definitions import Palette, Shape, Texture
+from ...core.definitions import Palette, Shape, Texture, Semantics
 from .palette_icon import palette_icon
 
 class theme_icon(ui.element):
@@ -11,6 +11,7 @@ class theme_icon(ui.element):
     def __init__(
         self, 
         palette: Palette,
+        semantics: Semantics,
         shape: Shape,
         texture: Texture,
         *, 
@@ -19,7 +20,7 @@ class theme_icon(ui.element):
         super().__init__('div')
         
         # Apply base styling
-        self.classes('nd-theme-icon')
+        self.classes('-nd-c-theme-icon')
         self.style(f'width: {size}; height: {size}; position: relative; display: inline-flex; align-items: center; justify-content: center;')
         
         # Create a container with texture effects applied
@@ -70,8 +71,8 @@ class theme_icon(ui.element):
                     overflow: hidden;
                     transition: all var(--nd-transition-speed) ease;
                 ''')
-                container.classes('nd-theme-icon__palette-container')
+                container.classes('-nd-c-theme-icon__palette-container')
                 
                 with container:
                     # Reuse the palette_icon for color visualization
-                    palette_icon(palette, size=size)
+                    palette_icon(palette, semantics, size=size)

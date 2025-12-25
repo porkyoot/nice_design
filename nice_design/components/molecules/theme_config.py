@@ -43,14 +43,14 @@ class ThemeConfig(ui.row):
         )
         # Add icon via slot (new pattern)
         with self.trigger.add_slot('prepend'):
-            IconAtom('mdi-palette-outline').classes('nd-select__icon').style('color: var(--nd-magenta) !important')
+            IconAtom('mdi-palette-outline').classes('-nd-c-select__icon').style('color: var(--nd-magenta) !important')
         
         # 2. Build the Sophisticated Menu
         with self.trigger:
-            with menu().classes('nd-p-md nd-gap-md') as self.config_menu:
+            with menu().classes('nd-p-md -nd-u-gap-4') as self.config_menu:
                 
                 # Row 1: Mode Toggle and Texture Select
-                with ui.row().classes('w-full items-center justify-between nd-gap-md'):
+                with ui.row().classes('w-full items-center justify-between -nd-u-gap-4'):
                     # Mode Button (Sun/Moon)
                     self.mode_btn = button(
                         variant='ghost',
@@ -75,7 +75,7 @@ class ThemeConfig(ui.row):
                 ui.separator().classes('bg-white/10')
 
                 # Row 2: Palette Selection (Normal Select)
-                with ui.column().classes('w-full nd-gap-xs'):
+                with ui.column().classes('w-full -nd-u-gap-1'):
                     ui.label('PALETTE').classes('text-[10px] font-bold opacity-40 tracking-widest ml-1')
                     initial_palette = self.themes[0] if self.themes else None
                     palette_value = initial_palette['value'] if isinstance(initial_palette, dict) else initial_palette
@@ -88,7 +88,7 @@ class ThemeConfig(ui.row):
                     self.palette_select.classes('w-full')
 
                 # Row 3: Font Selection (Normal Select)
-                with ui.column().classes('w-full nd-gap-xs'):
+                with ui.column().classes('w-full -nd-u-gap-1'):
                     ui.label('TYPOGRAPHY').classes('text-[10px] font-bold opacity-40 tracking-widest ml-1')
                     initial_font = self.fonts[0] if self.fonts else None
                     font_value = initial_font['value'] if isinstance(initial_font, dict) else initial_font

@@ -59,7 +59,7 @@ class Texture:
     # Shadow intensity multiplier (0.0 to 1.0)
     shadow_intensity: float = 1.0
     # CSS class to inject for texture (e.g., 'texture-glossy')
-    texture_cls: str = 'texture-flat' 
+    texture_cls: str = '-nd-t-flat' 
     shadows: bool = True
 
 @dataclass
