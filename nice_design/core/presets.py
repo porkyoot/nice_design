@@ -1,11 +1,9 @@
-from .definitions import Shape, Texture, Layout, Animation, Palette, Typography
+from .definitions import Shape, Texture, Layout, Animation, Palette, Typography, Semantics
 
-# Define a standard Solarized Dark Palette
+# Define a standard Solarized Palette (Primitives)
 SOLARIZED_PALETTE = Palette(
     name="solarized-dark",
     mode="dark",
-    primary="#268bd2",
-    secondary="#2aa198",
     colors={
         'blue': '#268bd2',
         'cyan': '#2aa198',
@@ -15,16 +13,24 @@ SOLARIZED_PALETTE = Palette(
         'red': '#dc322f',
         'magenta': '#d33682',
         'purple': '#6c71c4',
-    },
-    foregrounds=[
-        '#fdf6e3',  # Base3 - emphasized content
-        '#eee8d5',  # Base2 - body content
-        '#93a1a1',  # Base1 - secondary content
-    ],
+    }
+)
+
+# Define standard Solarized Semantics (Roles)
+SOLARIZED_SEMANTICS = Semantics(
+    name="solarized-dark",
+    mode="dark",
+    primary="#268bd2",
+    secondary="#2aa198",
     backgrounds=[
         '#002b36',  # Base03 - darkest background
         '#073642',  # Base02 - dark background
         '#586e75',  # Base01 - medium (comments)
+    ],
+    foregrounds=[
+        '#fdf6e3',  # Base3 - emphasized content
+        '#eee8d5',  # Base2 - body content
+        '#93a1a1',  # Base1 - secondary content
     ],
     status={
         'success': '#859900',

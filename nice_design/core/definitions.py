@@ -10,28 +10,36 @@ class Palette:
     name: str
     mode: Literal['dark', 'light']
     
-    # 1. Main Accents
-    primary: str
-    secondary: str
-    
-    # 2. The Rainbow (Hue Order) for palette pickers
+    # The Rainbow (Hue Order) for palette pickers
     # e.g. {'blue': '#...', 'cyan': '#...'}
     colors: Dict[str, str]
+
+@dataclass
+class Semantics:
+    """
+    Functional roles mapped from the palette.
+    """
+    name: str
+    mode: Literal['dark', 'light']
     
-    # 3. Tonal Scales (Ordered by intensity)
+    # 1. Main Accents
+    primary: str = "#000000"
+    secondary: str = "#ffffff"
+    
+    # 2. Tonal Scales (Ordered by intensity)
     # Backgrounds: 0=Deepest/Base, 1=Surface, 2=Overlay, etc.
-    backgrounds: List[str]
+    backgrounds: List[str] = field(default_factory=list)
     
     # Foregrounds: 0=Strongest, 1=Normal, 2=Muted, 3=Faint
-    foregrounds: List[str]
+    foregrounds: List[str] = field(default_factory=list)
     
-    # 4. Semantic Status Colors
+    # 3. Semantic Status Colors
     # e.g. {'success': '#...', 'error': '#...', 'warning': '#...'}
-    status: Dict[str, str]
+    status: Dict[str, str] = field(default_factory=dict)
     
-    # 5. Effects
-    highlight: str  # For glass/glossy effects
-    shadow: str      # Base shadow color
+    # 4. Effects
+    highlight: str = "#ffffff"  # For glass/glossy effects
+    shadow: str = "#000000"      # Base shadow color
 
 @dataclass
 class Shape:
@@ -76,6 +84,7 @@ class Animation:
 @dataclass
 class Theme:
     palette: Palette
+    semantics: Semantics = field(default_factory=Semantics)
     texture: Texture = field(default_factory=Texture)
     shape: Shape = field(default_factory=Shape)
     layout: Layout = field(default_factory=Layout)

@@ -1,4 +1,4 @@
-from .definitions import Theme, Palette, Shape, Texture, Layout, Animation, Typography, CompiledTheme
+from .definitions import Theme, Palette, Shape, Texture, Layout, Animation, Typography, CompiledTheme, Semantics
 from .registry import ThemeRegistry
 
 class ThemeEngine:
@@ -6,7 +6,7 @@ class ThemeEngine:
         self.registry = ThemeRegistry()
         self.registry.discover_plugins()
 
-    def compile(self, palette: Palette, shape: Shape, texture: Texture, layout: Layout, animation: Animation, typo: Typography) -> CompiledTheme:
+    def compile(self, palette: Palette, semantics: Semantics, shape: Shape, texture: Texture, layout: Layout, animation: Animation, typo: Typography) -> CompiledTheme:
         # 1. Calculate Radii based on Shape's Roundness
         base_radius = 0.5 # rem
         radii = {
@@ -43,7 +43,7 @@ class ThemeEngine:
             r, g, b = tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
             return f"{r}, {g}, {b}"
 
-        shadow_rgb = hex_to_rgb_commas(palette.shadow)
+        shadow_rgb = hex_to_rgb_commas(semantics.shadow)
         radii['shadow-color'] = shadow_rgb
 
         # 5. Calculate Shadows based on Texture's Intensity
@@ -75,22 +75,22 @@ class ThemeEngine:
                 return default
 
         colors = {
-            'primary': palette.primary,
-            'secondary': palette.secondary,
-            'foreground-1': mix(get_color(palette.foregrounds, 0, '#ffffff'), texture.opacity),
-            'foreground-2': mix(get_color(palette.foregrounds, 1, '#f0f0f0'), texture.opacity),
-            'foreground-3': mix(get_color(palette.foregrounds, 2, '#e0e0e0'), texture.opacity),
-            'background-1': mix(get_color(palette.backgrounds, 0, '#000000'), texture.opacity),
-            'background-2': mix(get_color(palette.backgrounds, 1, '#111111'), texture.opacity),
-            'background-3': mix(get_color(palette.backgrounds, 2, '#222222'), texture.opacity),
-            'highlight': palette.highlight,
+            'primary': semantics.primary,
+            'secondary': semantics.secondary,
+            'foreground-1': mix(get_color(semantics.foregrounds, 0, '#ffffff'), texture.opacity),
+            'foreground-2': mix(get_color(semantics.foregrounds, 1, '#f0f0f0'), texture.opacity),
+            'foreground-3': mix(get_color(semantics.foregrounds, 2, '#e0e0e0'), texture.opacity),
+            'background-1': mix(get_color(semantics.backgrounds, 0, '#000000'), texture.opacity),
+            'background-2': mix(get_color(semantics.backgrounds, 1, '#111111'), texture.opacity),
+            'background-3': mix(get_color(semantics.backgrounds, 2, '#222222'), texture.opacity),
+            'highlight': semantics.highlight,
         }
         
         # Add named colors from palette
         for color_name, color_value in palette.colors.items():
             colors['color-' + color_name] = color_value
         
-        for s_type, s_color in palette.status.items():
+        for s_type, s_color in semantics.status.items():
             colors['status-' + s_type] = s_color
 
         radii['font-main'] = typo.font_main

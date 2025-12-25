@@ -4,9 +4,6 @@ themes:
     palettes:
       - name: solarized
         mode: dark
-        primary: "#268bd2"
-        secondary: "#cb4b16"
-      
         colors:
           blue: "#268bd2" 
           cyan: "#2aa198"
@@ -16,6 +13,24 @@ themes:
           red: "#dc322f" 
           magenta: "#d33682"
           violet: "#6c71c4"
+
+      - name: solarized
+        mode: light
+        colors:
+          blue: "#268bd2" 
+          cyan: "#2aa198"
+          green: "#859900" 
+          yellow: "#b58900"
+          orange: "#cb4b16" 
+          red: "#dc322f" 
+          magenta: "#d33682"
+          violet: "#6c71c4"
+    
+    semantics:
+      - name: solarized
+        mode: dark
+        primary: "#268bd2"
+        secondary: "#cb4b16"
         
         backgrounds:
           - "#002b36" # BASE03
@@ -37,8 +52,10 @@ themes:
         highlight: "#fdf6e3"
         shadow: "#fdf6e3"
 
-      - name: solarized #inherits because of same name palette
+      - name: solarized
         mode: light
+        primary: "#268bd2"
+        secondary: "#cb4b16"
         
         backgrounds:
           - "#fdf6e3" # BASE3
@@ -49,7 +66,15 @@ themes:
           - "#fdf6e3" # BASE3
           - "#93a1a1" # BASE1
           - "#586e75" # BASE01
-
+        
+        status:
+          success: "#859900"
+          warning: "#b58900"
+          error: "#dc322f"
+          info: "#268bd2"
+          debug: "#586e75"
+          
+        highlight: "#002b36"
         shadow: "#002b36"
   
     shapes:

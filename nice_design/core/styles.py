@@ -3,23 +3,24 @@ from .theme import Theme
 def generate_css(theme: Theme) -> str:
     p = theme.prefix
     pal = theme.palette
+    sem = theme.semantics
     
     lines = [":root {"]
 
     # --- COLORS: ACCENTS ---
     lines.append("  /* --- Accents --- */")
-    lines.append(f"  --{p}-primary: {pal.primary};")
-    lines.append(f"  --{p}-secondary: {pal.secondary};")
-    lines.append(f"  --{p}-reflection: {pal.reflection};")
-    lines.append(f"  --{p}-shadow: {pal.shadow};")
+    lines.append(f"  --{p}-primary: {sem.primary};")
+    lines.append(f"  --{p}-secondary: {sem.secondary};")
+    lines.append(f"  --{p}-highlight: {sem.highlight};")
+    lines.append(f"  --{p}-shadow: {sem.shadow};")
 
     # --- COLORS: SCALES (List -> Indexed Vars) ---
     lines.append("  /* --- Background Scale (0=Deepest) --- */")
-    for i, color in enumerate(pal.background):
+    for i, color in enumerate(sem.backgrounds):
         lines.append(f"  --{p}-bg-{i}: {color};")
         
     lines.append("  /* --- Foreground Scale (0=Strongest) --- */")
-    for i, color in enumerate(pal.foreground):
+    for i, color in enumerate(sem.foregrounds):
         lines.append(f"  --{p}-fg-{i}: {color};")
 
     # --- COLORS: PALETTE (Dict -> Named Vars) ---
@@ -29,7 +30,7 @@ def generate_css(theme: Theme) -> str:
 
     # --- COLORS: STATUS (Dict -> Named Vars) ---
     lines.append("  /* --- Semantic Status --- */")
-    for status, hex_val in pal.status.items():
+    for status, hex_val in sem.status.items():
         lines.append(f"  --{p}-status-{status}: {hex_val};")
 
     # --- SHAPE & TYPOGRAPHY ---
