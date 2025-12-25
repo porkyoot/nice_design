@@ -43,8 +43,21 @@ class theme_icon(ui.element):
                 
                 texture_container.style(f'filter: drop-shadow(var(--nd-shadow-{shadow_size}));')
             
-            # Apply shape-based border as a subtle ring around the icon
+            # Apply shape-based border and roundness
             border_width = f'{shape.base_border * 0.5}px'  # Scaled for visual balance
+            
+            # Calculate border radius based on shape.roundness
+            # roundness = 0.0 -> sharp (no radius)
+            # roundness = 1.0 -> standard (medium radius)
+            # roundness = 2.0+ -> very round (approaching circle)
+            if shape.roundness == 0:
+                border_radius = '0'
+            elif shape.roundness >= 2.0:
+                border_radius = '50%'  # Circle
+            else:
+                # Scale border radius with roundness
+                radius_value = f'{shape.roundness * 8}px'  # Base of 8px per roundness unit
+                border_radius = radius_value
             
             # The palette icon as the core visual
             with texture_container:
@@ -52,7 +65,7 @@ class theme_icon(ui.element):
                     position: relative;
                     width: 100%;
                     height: 100%;
-                    border-radius: 50%;
+                    border-radius: {border_radius};
                     border: {border_width} solid rgba(255, 255, 255, 0.15);
                     overflow: hidden;
                     transition: all var(--nd-transition-speed) ease;
