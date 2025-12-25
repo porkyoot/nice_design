@@ -1,0 +1,20 @@
+/* Texture Definitions */
+
+/* 1. Glossy Texture */
+.texture-glossy .nds-card,
+.texture-glossy .nds-btn {
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.05));
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 3. Glassmorphism Texture */
+.texture-glass .nds-card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.texture-glass .nds-btn--ghost {
+    backdrop-filter: blur(4px);
+}

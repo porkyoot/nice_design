@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nice_design"
+version = "0.1.0"
+authors = [
+  { name="Your Name", email="your.email@example.com" },
+]
+description = "A theming engine library for NiceGUI"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "nicegui",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nice_design*"]
+
+[tool.setuptools.package-data]
+nice_design = ["assets/css/*.css"]

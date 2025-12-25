@@ -1,0 +1,2 @@
+include nice_design/assets/css/*.css
+global-exclude *.py[cod]

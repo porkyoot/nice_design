@@ -1,0 +1,83 @@
+/* Base Button Styles */
+.nds-btn {
+    border-radius: var(--nds-radius-md);
+    font-family: var(--nds-font-main);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-transform: none;
+    letter-spacing: 0.025em;
+}
+
+/* Primary Variant */
+.nds-btn--primary {
+    background-color: var(--nds-primary);
+    color: var(--nds-on-primary);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.nds-btn--primary:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.nds-btn--primary:active {
+    transform: translateY(0);
+}
+
+/* Secondary Variant */
+.nds-btn--secondary {
+    background-color: var(--nds-secondary);
+    color: white;
+}
+
+.nds-btn--secondary:hover {
+    filter: brightness(1.1);
+}
+
+/* Ghost Variant */
+.nds-btn--ghost {
+    background-color: transparent;
+    color: var(--nds-primary);
+    border-color: var(--nds-primary);
+}
+
+.nds-btn--ghost:hover {
+    background-color: color-mix(in srgb, var(--nds-primary), transparent 90%);
+}
+
+/* Card Styles */
+.nds-card {
+    background-color: var(--nds-surface-2);
+    border-radius: var(--nds-radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.nds-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Texture Overrides */
+body.texture-glossy .nds-btn {
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.05));
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Global Body Styling from Theme */
+body {
+    background-color: var(--nds-surface-1);
+    color: var(--nds-on-surface, #f8f9fa);
+    font-family: var(--nds-font-main);
+    margin: 0;
+    min-height: 100vh;
+}
