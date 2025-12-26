@@ -35,8 +35,9 @@ class palette_icon(ui.element):
         # Generate the SVG content
         self._generate_icon(background_color, foreground_color, colors)
     
-    def _generate_icon(self, bg_color: str, fg_color: str, colors: Dict[str, str]):
-        """Generate the SVG elements for the theme icon."""
+    @staticmethod
+    def _generate_content(bg_color: str, fg_color: str, colors: Dict[str, str]) -> str:
+        """Generate the SVG content (paths) for the theme icon."""
         
         # Center point
         cx, cy = 12, 12
@@ -52,6 +53,7 @@ class palette_icon(ui.element):
         svg_content = []
         
         i = 0
+        import math
         # Draw the 8 colored arcs
         for color_name in colors:
             color = colors.get(color_name, '#888888')
@@ -61,7 +63,6 @@ class palette_icon(ui.element):
             end_angle = start_angle + segment_angle
             
             # Convert to radians
-            import math
             start_rad = math.radians(start_angle)
             end_rad = math.radians(end_angle)
             
@@ -111,7 +112,25 @@ class palette_icon(ui.element):
                   stroke="rgba(255,255,255,0.2)" 
                   stroke-width="0.5" />
         '''.strip())
+
+        return '\n'.join(svg_content)
+
+    @staticmethod
+    def to_html(palette: Palette, semantics: Semantics, *, size: str = "24px", circular: bool = True) -> str:
+        """Returns the full HTML (SVG) string for this component."""
+        background_color = semantics.surface_base
+        foreground_color = semantics.content_main
+        colors = palette.colors
         
-        # Set the SVG content
-        self._props['innerHTML'] = '\n'.join(svg_content)
+        content = palette_icon._generate_content(background_color, foreground_color, colors)
+        
+        style = f'width: {size}; height: {size};'
+        if circular:
+            style += ' border-radius: 50%;'
+            
+        return f'<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="-nd-c-theme-icon" style="{style}">{content}</svg>'
+
+    def _generate_icon(self, bg_color: str, fg_color: str, colors: Dict[str, str]):
+        """Generate the SVG elements for the theme icon."""
+        self._props['innerHTML'] = self._generate_content(bg_color, fg_color, colors)
 

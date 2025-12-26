@@ -1,9 +1,12 @@
 from nicegui import ui
 from typing import List, Any, Optional, Callable, Dict
 
-
 class select(ui.select):
-    def __init__(self, options: Any, icon_only: bool = False, *args, **kwargs):
+    def __init__(self, 
+                 options: Any, 
+                 icon_only: bool = False, 
+                 prepend: Optional[Callable] = None,
+                 *args, **kwargs):
         # 1. Compatibility: Consume legacy 'with_icons' argument
         kwargs.pop('with_icons', None)
 
@@ -28,16 +31,18 @@ class select(ui.select):
         is_rich_options = (
             isinstance(options, dict) and 
             options and 
-            isinstance(next(iter(options.values())), dict) and
-            'icon' in next(iter(options.values()))
+            isinstance(val_iter := next(iter(options.values()), None), dict) and
+            ('icon' in val_iter or 'html' in val_iter)
         )
+
 
         if is_rich_options:
             # SLOT: The Dropdown List ('option')
             self.add_slot('option', r'''
                 <q-item v-bind="props.itemProps">
                     <q-item-section avatar>
-                        <q-icon :name="props.opt.label.icon" :color="props.opt.label.color" />
+                        <div v-if="props.opt.label.html" v-html="props.opt.label.html"></div>
+                        <q-icon v-else :name="props.opt.label.icon" :color="props.opt.label.color" size="sm" />
                     </q-item-section>
                     <q-item-section>
                         <q-item-label>{{ props.opt.label.label }}</q-item-label>
@@ -48,7 +53,8 @@ class select(ui.select):
             # SLOT: The Selected Item ('selected-item')
             self.add_slot('selected-item', r'''
                 <div class="row items-center no-wrap -nd-u-gap-2">
-                    <q-icon :name="props.opt.label.icon" :color="props.opt.label.color" size="xs" />
+                    <div v-if="props.opt.label.html" v-html="props.opt.label.html"></div>
+                    <q-icon v-else :name="props.opt.label.icon" :color="props.opt.label.color" size="sm" />
                     <div>{{ props.opt.label.label }}</div>
                 </div>
             ''')
@@ -59,10 +65,12 @@ class select(ui.select):
         # Handle icon_only mode
         if icon_only:
             self.classes('-nd-hide-label -nd-mode-icon-only')
-
-
-
-
-
-
-
+            
+        # Handle prepended custom content (e.g. theme_icon)
+        if prepend:
+            # We can use the 'prepend' slot of q-field/q-select.
+            # NiceGUI allows adding elements to slots using 'with self.add_slot(...)':
+            # But wait, self.add_slot(name) returns a 'Slot' context manager.
+            # elements added inside are rendered in that slot.
+            with self.add_slot('prepend'):
+                prepend()

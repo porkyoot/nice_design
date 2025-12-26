@@ -78,3 +78,76 @@ class theme_icon(ui.element):
                 with container:
                     # Reuse the palette_icon for color visualization
                     palette_icon(palette, semantics, size=size, circular=False)
+    @staticmethod
+    def to_html(
+        palette: Palette,
+        semantics: Semantics,
+        shape: Shape,
+        texture: Texture,
+        *, 
+        size: str = "24px"
+    ) -> str:
+        """Returns the full HTML string for this component."""
+        
+        # Calculate styles (mirroring __init__ logic)
+        
+        # Texture styling
+        texture_style = 'width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;'
+        if texture.opacity < 1.0:
+            texture_style += f' opacity: {texture.opacity};'
+            
+        if texture.shadows and texture.shadow_intensity > 0:
+            shadow_size = 'md'
+            if texture.shadow_intensity > 1.5:
+                shadow_size = 'xl'
+            elif texture.shadow_intensity > 1.0:
+                shadow_size = 'lg'
+            elif texture.shadow_intensity < 0.5:
+                shadow_size = 'sm'
+            
+            texture_style += f' filter: drop-shadow(var(--nd-shadow-{shadow_size}));'
+            
+        # Shape styling
+        border_width = f'{shape.base_border * 0.5}px'
+        
+        if shape.roundness == 0:
+            border_radius = '0'
+        elif shape.roundness >= 2.0:
+            border_radius = '50%'
+        else:
+            radius_percent = (shape.roundness / 2.0) * 50
+            border_radius = f'{radius_percent}%'
+            
+        container_style = f'''
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: {border_radius};
+            border: {border_width} solid rgba(255, 255, 255, 0.15);
+            overflow: hidden;
+            transition: all var(--nd-transition-speed) ease;
+        '''.strip().replace('\n', ' ')
+
+        # Inner palette icon HTML
+        # palette_icon inside container creates its own sizing, so we pass size.
+        # Wait, inside theme_icon __init__, palette_icon is added to 'container'.
+        # Since 'container' fills 'texture_container' which fills 'self' (fixed size),
+        # palette_icon should fill 'container'.
+        
+        # In __init__: palette_icon(..., size=size)
+        inner_html = palette_icon.to_html(palette, semantics, size=size, circular=False)
+        
+        # Construct HTML structure
+        
+        # Inner Container (Palette Container)
+        html_palette_container = f'<div class="-nd-c-theme-icon__palette-container" style="{container_style}">{inner_html}</div>'
+        
+        # Texture Container
+        html_texture_container = f'<div class="nd-theme-icon__container" style="{texture_style}">{html_palette_container}</div>'
+        
+        # Outer Wrapper
+        outer_style = f'width: {size}; height: {size}; position: relative; display: inline-flex; align-items: center; justify-content: center;'
+        return f'<div class="-nd-c-theme-icon" style="{outer_style}">{html_texture_container}</div>'

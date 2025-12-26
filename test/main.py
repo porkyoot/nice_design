@@ -225,4 +225,76 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
                 ui.separator().classes('bg-white/10')
                 nice.menu_item('Delete System', on_click=lambda: ui.notify('Self-destruct in 3... 2... 1...'))
 
+    # Component Demo: Custom Icons
+    with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
+         ui.label('Custom Icon Support').classes('text-sm font-bold uppercase opacity-40')
+         ui.label('Using Generic Components (Theme Icon) as Icons').classes('text-xs opacity-60 text-center')
+         
+         # --- Select Button with Changing Icon ---
+         # State generic container
+         current_theme_var = {'name': 'Theme 1'}
+         
+         # Builders for different themes
+         def render_icon_1():
+             nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="24px")
+             
+         def render_icon_2():
+             # Variation: Circle shape
+             s = STANDARD_SHAPE
+             s.roundness = 2.0
+             nice.theme_icon(custom_palette, custom_semantics, s, custom_texture, size="24px")
+
+         def render_current_icon():
+             if current_theme_var['name'] == 'Theme 1':
+                 render_icon_1()
+             else:
+                 render_icon_2()
+
+         with ui.row().classes('w-full items-center justify-between'):
+             ui.label('Select Button').classes('opacity-60 font-medium')
+             btn = nice.select_button(
+                 label='Theme 1',
+                 custom_icon_builder=render_current_icon
+             ).classes('w-[180px]')
+             
+             with btn:
+                 with nice.menu().on('hide', btn.reset_rotation):
+                     nice.menu_item('Theme 1', on_click=lambda: (
+                         current_theme_var.update({'name': 'Theme 1'}), 
+                         btn.set_label('Theme 1'), 
+                         btn.refresh(), # Re-renders custom builder
+                         btn.toggle_rotation()
+                     ))
+                     nice.menu_item('Theme 2', on_click=lambda: (
+                         current_theme_var.update({'name': 'Theme 2'}), 
+                         btn.set_label('Theme 2'), 
+                         btn.refresh(), # Re-renders custom builder 
+                         btn.toggle_rotation()
+                     ))
+
+         # --- Select Input with Custom Option Icons ---
+         # Now we can inject generic component HTML directly into the options using the 'html' property.
+         
+         # Helper to generate HTML using the component's static method
+         def get_icon_html_1():
+             return nice.theme_icon.to_html(custom_palette, custom_semantics, custom_shape, custom_texture, size="24px")
+             
+         def get_icon_html_2():
+             import copy
+             s = copy.deepcopy(STANDARD_SHAPE)
+             s.roundness = 2.0 # Circle
+             return nice.theme_icon.to_html(custom_palette, custom_semantics, s, custom_texture, size="24px")
+
+         with ui.row().classes('w-full items-center justify-between'):
+             ui.label('Select Input').classes('opacity-60 font-medium')
+             
+             # Pass 'html' in options. The 'selected-item' and 'option' slots in select.py will handle rendering.
+             nice.select(
+                 options={
+                    'Theme 1': {'label': 'Theme 1', 'html': get_icon_html_1()},
+                    'Theme 2': {'label': 'Theme 2', 'html': get_icon_html_2()}
+                 },
+                 value='Theme 1'
+             ).classes('w-[180px]')
+
 ui.run(title='Nice Design Tokens', reload=False, show=False)

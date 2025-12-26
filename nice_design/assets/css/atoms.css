@@ -332,7 +332,7 @@ button.-nd-c-select-button .q-focus-helper {
 }
 
 .-nd-c-menu-item .q-icon {
-    font-size: 1.25rem;
+    font-size: 24px;
     color: var(--nd-primary);
     /* Primary accent for icons by default */
     transition: color var(--nd-transition-speed) ease;
@@ -405,9 +405,9 @@ body {
     flex-wrap: nowrap;
 }
 
-/* Match Left Icon size to Select 'xs' icon (18px) and gap (8px) */
+/* Match Left Icon size to Select 'sm' icon (24px) and gap (8px) */
 .-nd-c-select-button .q-icon.on-left {
-    font-size: 18px !important;
+    font-size: 24px !important;
     margin-right: 8px !important;
 }
 
