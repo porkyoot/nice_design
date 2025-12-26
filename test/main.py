@@ -145,6 +145,31 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
                 nice.shape_icon(custom_shape, size="64px")
                 ui.label('64px').classes('text-xs opacity-40')
 
+    # Component Demo: SelectMenu
+    with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
+         ui.label('Select Menu Component').classes('text-sm font-bold uppercase opacity-40')
+         ui.label('A new molecule combining button trigger with menu selection').classes('text-xs opacity-60 text-center')
+         
+         with ui.row().classes('w-full items-center justify-between'):
+             ui.label('Simple Options').classes('opacity-60 font-medium')
+             nice.select_menu(
+                 options=['Apple', 'Banana', 'Cherry'],
+                 value='Banana',
+                 on_change=lambda e: ui.notify(f'Selected: {e.value}')
+             ).classes('min-w-[120px]')
+         
+         with ui.row().classes('w-full items-center justify-between'):
+             ui.label('Rich Options').classes('opacity-60 font-medium')
+             nice.select_menu(
+                 options={
+                     'edit': {'label': 'Edit', 'icon': 'mdi-pencil'},
+                     'copy': {'label': 'Copy', 'icon': 'mdi-content-copy'},
+                     'delete': {'label': 'Delete', 'icon': 'mdi-delete', 'color': 'negative'}
+                 },
+                 value='edit',
+                 on_change=lambda e: ui.notify(f'Action: {e.value}')
+             ).classes('min-w-[120px]')
+
     # Layout Controls
     with nice.card().classes('w-[32rem] nd-gap-md'):
         with ui.row().classes('w-full items-center justify-between'):
@@ -172,7 +197,7 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
                 value={'label': 'Standard', 'value': 'Standard', 'icon': 'mdi-view-compact'},
                 with_icons=True
             )
-
+            
         
         with nice.button('Extra Settings', variant='ghost', icon='mdi-dots-horizontal').classes('w-full'):
             with nice.menu():
