@@ -276,4 +276,31 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
                  value='Theme 1'
              ).classes('w-[180px]')
 
+    # Component Demo: Popups & Notifications
+    with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
+         ui.label('Popups & Notifications').classes('text-sm font-bold uppercase opacity-40')
+         ui.label('Themed Dialogs, Toasts, and Tooltips').classes('text-xs opacity-60 text-center')
+
+         with ui.row().classes('w-full items-center justify-between'):
+             ui.label('Dialog').classes('opacity-60 font-medium')
+             with ui.dialog() as dialog, nice.card().classes('nd-p-lg items-center nd-gap-md'):
+                 ui.label('Themed Dialog').classes('text-2xl font-bold')
+                 ui.label('This dialog and its backdrop are styled via the theme system.')
+                 nice.button('Close', on_click=dialog.close).classes('w-full')
+             nice.button('Open Dialog', on_click=dialog.open, variant='ghost').classes('w-[180px]')
+
+         with ui.row().classes('w-full items-center justify-between'):
+             ui.label('Notifications').classes('opacity-60 font-medium')
+             with ui.row().classes('nd-gap-xs'):
+                 nice.button(icon='check', on_click=lambda: ui.notify('Success message', type='positive')).classes('nd-p-xs').tooltip('Success')
+                 nice.button(icon='error', on_click=lambda: ui.notify('Error message', type='negative')).classes('nd-p-xs').tooltip('Error')
+                 nice.button(icon='warning', on_click=lambda: ui.notify('Warning message', type='warning')).classes('nd-p-xs').tooltip('Warning')
+                 nice.button(icon='info', on_click=lambda: ui.notify('Info message', type='info')).classes('nd-p-xs').tooltip('Info')
+                 nice.button(icon='notifications', on_click=lambda: ui.notify('Standard message')).classes('nd-p-xs').tooltip('Standard')
+
+         with ui.row().classes('w-full items-center justify-between'):
+             ui.label('Tooltip Demo').classes('opacity-60 font-medium')
+             nice.button('Hover Me', variant='ghost').tooltip('This is a themed tooltip!').classes('w-[180px]')
+
+
 ui.run(title='Nice Design Tokens', reload=False, show=False)

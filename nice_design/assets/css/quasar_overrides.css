@@ -1,0 +1,144 @@
+/* Quasar Component Overrides to match Nice Design System */
+
+/* --- Dialogs & Popups --- */
+/* Target cards or generic divs inside dialogs */
+.q-dialog__inner>div,
+.q-dialog__inner>.q-card {
+    background-color: var(--nd-surface-layer) !important;
+    border-radius: var(--nd-radius-lg) !important;
+    border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
+    box-shadow: var(--nd-shadow-xl) !important;
+    color: var(--nd-content-main) !important;
+    overflow: hidden;
+}
+
+.q-dialog__backdrop {
+    background: rgba(var(--nd-shadow-color), 0.4) !important;
+    backdrop-filter: blur(2px);
+}
+
+/* --- Notifications (Toasts) --- */
+.q-notification {
+    background-color: var(--nd-surface-overlay) !important;
+    color: var(--nd-content-main) !important;
+    border-radius: var(--nd-radius-md) !important;
+    box-shadow: var(--nd-shadow-lg) !important;
+    border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 80%) !important;
+    padding: var(--nd-space-sm) var(--nd-space-md) !important;
+    min-width: 300px;
+}
+
+.q-notification__message {
+    font-family: var(--nd-font-main) !important;
+    font-weight: 500 !important;
+}
+
+.q-notification__caption {
+    color: var(--nd-content-muted) !important;
+    opacity: 0.8;
+}
+
+/* Indicator bars for notification types */
+.q-notification--positive {
+    border-left: 4px solid var(--nd-status-success) !important;
+}
+
+.q-notification--negative {
+    border-left: 4px solid var(--nd-status-error) !important;
+}
+
+.q-notification--warning {
+    border-left: 4px solid var(--nd-status-warning) !important;
+}
+
+.q-notification--info {
+    border-left: 4px solid var(--nd-status-info) !important;
+}
+
+/* Notifications (Toasts) Inner Content */
+.q-notification__content {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--nd-space-md) !important;
+    /* Increased gap */
+}
+
+/* Notification Icons */
+.q-notification__icon {
+    font-size: 24px !important;
+    margin: 0 !important;
+    min-width: 24px;
+}
+
+.q-notification--positive .q-notification__icon {
+    color: var(--nd-status-success) !important;
+}
+
+.q-notification--negative .q-notification__icon {
+    color: var(--nd-status-error) !important;
+}
+
+.q-notification--warning .q-notification__icon {
+    color: var(--nd-status-warning) !important;
+}
+
+.q-notification--info .q-notification__icon {
+    color: var(--nd-status-info) !important;
+}
+
+/* --- Tooltips --- */
+.q-tooltip {
+    background-color: var(--nd-surface-overlay) !important;
+    color: var(--nd-content-main) !important;
+    border: var(--nd-border-sm) solid var(--nd-primary) !important;
+    border-radius: var(--nd-radius-sm) !important;
+    font-size: 0.75rem !important;
+    box-shadow: var(--nd-shadow-sm) !important;
+    padding: var(--nd-space-xs) var(--nd-space-sm) !important;
+}
+
+/* --- Menu (Ensure global menu items look right if not using nice.menu_item) --- */
+.q-menu {
+    background-color: var(--nd-surface-layer) !important;
+    border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
+    border-radius: var(--nd-radius-md) !important;
+    box-shadow: var(--nd-shadow-lg) !important;
+    color: var(--nd-content-main) !important;
+}
+
+.q-menu .q-item {
+    color: var(--nd-content-main) !important;
+    font-family: var(--nd-font-main) !important;
+}
+
+.q-menu .q-item:hover {
+    background-color: color-mix(in srgb, var(--nd-primary), transparent 90%) !important;
+}
+
+/* --- NiceGUI Specific Popups --- */
+.nicegui-error-popup {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: var(--nd-space-xs) !important;
+    background-color: var(--nd-content-muted) !important;
+    color: var(--nd-surface-base) !important;
+    border-radius: var(--nd-radius-md) !important;
+    box-shadow: var(--nd-shadow-lg) !important;
+    border: var(--nd-border-sm) solid var(--nd-status-warning) !important;
+    padding: var(--nd-space-md) var(--nd-space-lg) !important;
+    padding-left: 3.5rem !important;
+    /* Larger gap for the warning icon */
+    font-family: var(--nd-font-main) !important;
+    font-weight: 600 !important;
+    z-index: 9999 !important;
+}
+
+.nicegui-error-popup span:first-child {
+    margin-top: 2px;
+    /* Subtle vertical adjustment for the first line */
+}
+
+.nicegui-error-popup span {
+    display: block;
+}

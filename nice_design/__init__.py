@@ -30,7 +30,7 @@ def load_design_system():
     """Injects the library's CSS and discovered theme assets into the NiceGUI head."""
     # 1. Core library assets
     css_path = Path(__file__).parent / 'assets' / 'css'
-    for css_file in ['global.css', 'textures.css', 'atoms.css']:
+    for css_file in ['global.css', 'textures.css', 'atoms.css', 'quasar_overrides.css']:
         full_path = css_path / css_file
         if full_path.exists():
             with open(full_path) as f:
