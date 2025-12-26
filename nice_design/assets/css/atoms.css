@@ -168,9 +168,27 @@ button.-nd-c-select-button .q-focus-helper {
 
 /* Dropdown Arrow: Foreground Color (Content Main) */
 .-nd-c-select .q-select__dropdown-icon,
-.-nd-c-select-button .q-icon.on-right {
+.-nd-c-select-button .q-icon.on-right,
+.-nd-c-select-button .q-icon:last-of-type {
     color: var(--nd-content-main) !important;
     opacity: 0.8;
+}
+
+/* Match Right Dropdown Icon size (24px) */
+.-nd-c-select-button .q-icon.on-right,
+.-nd-c-select-button .q-icon:last-of-type {
+    font-size: 24px !important;
+    margin-left: auto !important;
+    /* This pushes it to the far right */
+    transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
+    /* Smooth Rotation */
+}
+
+.-nd-state-rotated .q-icon,
+.-nd-state-rotated .q-icon.on-right,
+.-nd-state-rotated .q-icon:last-of-type {
+    color: var(--nd-on-primary) !important;
+    transform: rotate(180deg);
 }
 
 /* Minimal Mode overrides */
@@ -375,6 +393,10 @@ body {
     gap: 8px !important;
 }
 
+.-nd-hide-label .q-field__native div>div:last-child {
+    display: none !important;
+}
+
 /* Select Button Internal Structure Alignment */
 .-nd-c-select-button .q-btn__content {
     width: 100%;
@@ -389,15 +411,6 @@ body {
     margin-right: 8px !important;
 }
 
-/* Match Right Dropdown Icon size (24px) */
-.-nd-c-select-button .q-icon.on-right {
-    font-size: 24px !important;
-    margin-left: auto !important;
-    /* This pushes it to the far right */
-    transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
-    /* Smooth Rotation */
-}
-
 /* Hover state for Select Button to match Input hover border behavior */
 .-nd-c-select-button:hover {
     border-color: var(--nd-content-main) !important;
@@ -410,10 +423,8 @@ body {
     border-color: var(--nd-primary) !important;
 }
 
-.-nd-state-rotated .q-icon,
-.-nd-state-rotated .q-icon.on-right {
-    color: var(--nd-on-primary) !important;
-    transform: rotate(180deg);
+.-nd-state-rotated:hover {
+    filter: brightness(1.1);
 }
 
 .-nd-state-rotated:hover {

@@ -169,6 +169,14 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
                      nice.menu_item('Option 1', on_click=lambda: (btn_menu.set_label('Option 1'), btn_menu.toggle_rotation()))
                      nice.menu_item('Option 2', on_click=lambda: (btn_menu.set_label('Option 2'), btn_menu.toggle_rotation()))
 
+         with ui.row().classes('w-full items-center justify-between'):
+             ui.label('Icon Only').classes('opacity-60 font-medium')
+             nice.select_button(
+                 label='Hidden Label',
+                 icon='settings',
+                 icon_only=True
+             ).classes('w-[180px]')
+
     # Layout Controls
     with nice.card().classes('w-[32rem] nd-gap-md'):
         with ui.row().classes('w-full items-center justify-between'):
@@ -195,6 +203,18 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
                 ],
                 value={'label': 'Standard', 'value': 'Standard', 'icon': 'mdi-view-compact'},
                 with_icons=True
+            )
+
+        with ui.row().classes('w-full items-center justify-between'):
+            ui.label('Icon Only Select').classes('opacity-60 font-medium')
+            nice.select(
+                options=[
+                    {'label': 'Grid', 'value': 'Grid', 'icon': 'mdi-view-grid'},
+                    {'label': 'List', 'value': 'List', 'icon': 'mdi-view-list'},
+                ],
+                value={'label': 'Grid', 'value': 'Grid', 'icon': 'mdi-view-grid'},
+                with_icons=True,
+                icon_only=True
             )
             
         

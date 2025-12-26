@@ -7,15 +7,23 @@ class select_button(ui.button):
     Useful for triggering menus or other interactions while maintaining the Select visual language.
     Contains logic for toggling the chevron rotation.
     """
-    def __init__(self, label: str = '', icon: Optional[str] = None, icon_right: str = 'arrow_drop_down', **kwargs):
+    def __init__(self, label: str = '', icon: Optional[str] = None, icon_right: str = 'arrow_drop_down', icon_only: bool = False, **kwargs):
         # Default color to None to prevent 'bg-primary' class nicely
         if 'color' not in kwargs:
             kwargs['color'] = 'transparent' # Use transparent so our CSS background takes over
         
-        super().__init__(text=label, icon=icon, **kwargs)
+        self._icon_only = icon_only
+        self._original_label = label
+        
+        display_text = '' if icon_only else label
+        
+        super().__init__(text=display_text, icon=icon, **kwargs)
         
         # Apply strict styling classes
         self.classes('-nd-c-select-button')
+        
+        if icon_only:
+            self.classes('-nd-mode-icon-only')
         
         # Structure the button to allow space-between alignment
         self.props(f'unelevated no-caps align="between" icon-right="{icon_right}"')
@@ -27,7 +35,9 @@ class select_button(ui.button):
         self.on('click', self.toggle_rotation)
 
     def set_label(self, text: str):
-        self.text = text
+        self._original_label = text
+        if not self._icon_only:
+            self.text = text
         
     def set_icon(self, icon: str):
         self.icon = icon

@@ -3,7 +3,7 @@ from typing import List, Any, Optional, Callable, Dict
 
 
 class select(ui.select):
-    def __init__(self, options: Any, *args, **kwargs):
+    def __init__(self, options: Any, icon_only: bool = False, *args, **kwargs):
         # 1. Compatibility: Consume legacy 'with_icons' argument
         kwargs.pop('with_icons', None)
 
@@ -55,6 +55,10 @@ class select(ui.select):
             
         self.props('outlined rounded standout="bg-primary text-on-primary" popup-content-class="-nd-c-select-menu"')
         self.classes('-nd-c-select')
+
+        # Handle icon_only mode
+        if icon_only:
+            self.classes('-nd-hide-label -nd-mode-icon-only')
 
 
 
