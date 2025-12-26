@@ -122,7 +122,8 @@ class theme_selector(ui.element):
                             palette_icon_builder = lambda: palette_icon(self._palette, size="24px")
                             with select_button(icon_only=True, custom_icon_builder=palette_icon_builder) as btn_palette:
                                 btn_palette.classes('flex-1')
-                                with menu().classes('min-w-[240px] nd-p-md nd-gap-md'):
+                                with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
+                                    m.on('hide', btn_palette.reset_rotation)
                                     ui.label('Palette & Colors').classes('text-xs font-bold opacity-60 mb-2')
                                     
                                     # Primary Accent
@@ -165,7 +166,8 @@ class theme_selector(ui.element):
                             texture_icon_builder = lambda: texture_icon(self._texture, size="24px")
                             with select_button(icon_only=True, custom_icon_builder=texture_icon_builder) as btn_texture:
                                 btn_texture.classes('flex-1')
-                                with menu().classes('min-w-[240px] nd-p-md nd-gap-md'):
+                                with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
+                                    m.on('hide', btn_texture.reset_rotation)
                                     ui.label('Surface & Shape').classes('text-xs font-bold opacity-60 mb-2')
                                     
                                     # Texture Select
@@ -224,7 +226,8 @@ class theme_selector(ui.element):
                             # --- D. Typography Submenu ---
                             with select_button(icon='mdi-format-font', icon_only=True) as btn_typo:
                                 btn_typo.classes('flex-1')
-                                with menu().classes('min-w-[240px] nd-p-md nd-gap-md'):
+                                with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
+                                    m.on('hide', btn_typo.reset_rotation)
                                     ui.label('Typography').classes('text-xs font-bold opacity-60 mb-2')
                                     
                                     f_val = self._current_font_name if self._current_font_name in self._all_font_opts else (next(iter(self._all_font_opts.keys())) if self._all_font_opts else None)
@@ -251,7 +254,8 @@ class theme_selector(ui.element):
                             # --- E. Layout Submenu ---
                             with select_button(icon='mdi-view-quilt', icon_only=True) as btn_layout:
                                 btn_layout.classes('flex-1')
-                                with menu().classes('min-w-[240px] nd-p-md nd-gap-md'):
+                                with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
+                                    m.on('hide', btn_layout.reset_rotation)
                                     ui.label('Layout & Spacing').classes('text-xs font-bold opacity-60 mb-2')
                                     
                                     layout_opts = {name: name.title() for name in layouts}
