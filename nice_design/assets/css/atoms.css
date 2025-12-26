@@ -367,6 +367,14 @@ body {
     color: var(--nd-on-primary) !important;
 }
 
+.-nd-u-gap-1 {
+    gap: 4px !important;
+}
+
+.-nd-u-gap-2 {
+    gap: 8px !important;
+}
+
 /* Select Button Internal Structure Alignment */
 .-nd-c-select-button .q-btn__content {
     width: 100%;
