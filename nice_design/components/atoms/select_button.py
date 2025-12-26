@@ -8,6 +8,10 @@ class select_button(ui.button):
     Contains logic for toggling the chevron rotation.
     """
     def __init__(self, label: str = '', icon: Optional[str] = None, icon_right: str = 'arrow_drop_down', **kwargs):
+        # Default color to None to prevent 'bg-primary' class nicely
+        if 'color' not in kwargs:
+            kwargs['color'] = 'transparent' # Use transparent so our CSS background takes over
+        
         super().__init__(text=label, icon=icon, **kwargs)
         
         # Apply strict styling classes

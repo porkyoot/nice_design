@@ -120,9 +120,9 @@
 }
 
 /* Input Control Background & Card-style Border */
-.-nd-c-select .q-field__control,
-.-nd-c-select-button {
-    background: var(--nd-surface-layer) !important;
+.-nd-c-select.q-field--outlined .q-field__control,
+button.-nd-c-select-button {
+    background-color: var(--nd-surface-layer) !important;
     border-radius: var(--nd-radius-md) !important;
 
     /* Button Specific Setup to match Field Control */
@@ -132,13 +132,21 @@
     font-weight: 400 !important;
     font-size: 1rem !important;
     letter-spacing: 0.00937em !important;
+    box-shadow: none !important;
+    /* Ensure no shadow */
 }
 
 /* Border enforcement for outlined mode (mimicking card border) */
-.-nd-c-select .q-field__control:before,
-.-nd-c-select-button {
+.-nd-c-select.q-field--outlined .q-field__control:before,
+button.-nd-c-select-button {
     border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
     transition: border-color var(--nd-transition-speed) ease;
+}
+
+/* Suppress default button hover overlay (focus-helper) to match Input simple hover */
+button.-nd-c-select-button .q-focus-helper {
+    background: transparent !important;
+    opacity: 0 !important;
 }
 
 /* Default State Text Colors */
@@ -358,24 +366,48 @@ body {
 .-nd-u-text-on-primary {
     color: var(--nd-on-primary) !important;
 }
+
 /* Select Button Internal Structure Alignment */
 .-nd-c-select-button .q-btn__content {
     width: 100%;
-    justify-content: flex-start !important; /* Start, so Left Icon and Text are together */
+    justify-content: flex-start !important;
+    /* Start, so Left Icon and Text are together */
     flex-wrap: nowrap;
 }
 
+/* Match Left Icon size to Select 'xs' icon (18px) and gap (8px) */
+.-nd-c-select-button .q-icon.on-left {
+    font-size: 18px !important;
+    margin-right: 8px !important;
+}
+
+/* Match Right Dropdown Icon size (24px) */
 .-nd-c-select-button .q-icon.on-right {
-    margin-left: auto !important; /* This pushes it to the far right */
-    transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important; /* Smooth Rotation */
+    font-size: 24px !important;
+    margin-left: auto !important;
+    /* This pushes it to the far right */
+    transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
+    /* Smooth Rotation */
 }
 
 /* Hover state for Select Button to match Input hover border behavior */
 .-nd-c-select-button:hover {
-     border-color: var(--nd-content-main) !important;
+    border-color: var(--nd-content-main) !important;
 }
 
-/* Rotation State */
+/* Rotation State (Active/Menu Open) - Match Select Standout State */
+.-nd-state-rotated {
+    background-color: var(--nd-primary) !important;
+    color: var(--nd-on-primary) !important;
+    border-color: var(--nd-primary) !important;
+}
+
+.-nd-state-rotated .q-icon,
 .-nd-state-rotated .q-icon.on-right {
+    color: var(--nd-on-primary) !important;
     transform: rotate(180deg);
+}
+
+.-nd-state-rotated:hover {
+    filter: brightness(1.1);
 }
