@@ -75,4 +75,4 @@ class theme_icon(ui.element):
                 
                 with container:
                     # Reuse the palette_icon for color visualization
-                    palette_icon(palette, semantics, size=size)
+                    palette_icon(palette, semantics, size=size, circular=False)

@@ -13,7 +13,8 @@ class palette_icon(ui.element):
         palette: Palette,
         semantics: Semantics,
         *, 
-        size: str = "24px"
+        size: str = "24px",
+        circular: bool = True
     ):
         super().__init__('svg')
         
@@ -28,6 +29,9 @@ class palette_icon(ui.element):
         self.classes('-nd-c-theme-icon')
         self.style(f'width: {size}; height: {size};')
         
+        if circular:
+            self.style('border-radius: 50%;')
+        
         # Generate the SVG content
         self._generate_icon(background_color, foreground_color, colors)
     
@@ -41,7 +45,7 @@ class palette_icon(ui.element):
         cx, cy = 12, 12
         
         # Radii
-        outer_radius = 11
+        outer_radius = 22  # Extend beyond viewport to fill corners (clipped by container)
         inner_radius = 6  # Smaller inner radius makes arcs thicker
         center_radius = inner_radius  # Make center fill to the arcs with no gap
         
