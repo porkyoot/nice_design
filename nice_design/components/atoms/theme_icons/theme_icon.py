@@ -20,32 +20,49 @@ class theme_icon(ui.element):
         
         # Apply base styling
         self.classes('-nd-c-theme-icon')
-        self.style(f'width: {size}; height: {size}; position: relative; display: inline-flex; align-items: center; justify-content: center;')
+        
+        # Calculate shadow directly from texture intensity and apply to wrapper (like texture_icon)
+        wrapper_style = f'width: {size}; height: {size}; position: relative; display: inline-flex; align-items: center; justify-content: center;'
+        if texture.shadows_enabled and texture.shadow_intensity > 0:
+            # Get shadow color from palette
+            r, g, b = hex_to_rgb(palette.shadow)
+            # Calculate actual shadow based on intensity
+            si = texture.shadow_intensity
+            
+            # Calculate size factor for the shadow (base 24px)
+            import re
+            size_match = re.match(r'([0-9.]+)(.+)', size)
+            size_val = 24.0
+            if size_match:
+                try: size_val = float(size_match.group(1))
+                except: pass
+            sf = size_val / 24.0
+
+            # Use tight values scaled by icon size
+            if si > 1.5:
+                shadow_def = f'0 {10*sf:.1f}px {12*sf:.1f}px rgba({r}, {g}, {b}, {0.4 * si:.2f})'
+            elif si > 1.0:
+                shadow_def = f'0 {6*sf:.1f}px {8*sf:.1f}px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
+            elif si > 0.5:
+                shadow_def = f'0 {3*sf:.1f}px {4*sf:.1f}px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+            else:
+                shadow_def = f'0 {1*sf:.1f}px {2*sf:.1f}px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+            
+            wrapper_style += f' filter: drop-shadow({shadow_def});'
+        
+        self.style(wrapper_style)
         
         # Create a container with texture effects applied
         with self:
             # Apply texture-based effects to the container
+            # Make the visible disk slightly smaller (85%) to match standard icon scale
             texture_container = ui.element('div').classes('nd-theme-icon__container')
-            # Ensure container fills the parent
-            texture_container.style('width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;')
+            # Ensure container is centered and 85% of parent
+            texture_container.style('width: 85%; height: 85%; display: flex; align-items: center; justify-content: center;')
             
             # Apply texture opacity 
             if texture.opacity < 1.0:
                 texture_container.style(f'opacity: {texture.opacity};')
-            
-            # Calculate actual shadow based on intensity
-            r, g, b = hex_to_rgb(palette.shadow)
-            si = texture.shadow_intensity
-            if si > 1.5:
-                shadow_def = f'0 20px 25px -5px rgba({r}, {g}, {b}, {0.4 * si:.2f}), 0 8px 10px -6px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
-            elif si > 1.0:
-                shadow_def = f'0 10px 15px -3px rgba({r}, {g}, {b}, {0.35 * si:.2f}), 0 4px 6px -4px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
-            elif si > 0.5:
-                shadow_def = f'0 4px 6px -1px rgba({r}, {g}, {b}, {0.3 * si:.2f}), 0 2px 4px -2px rgba({r}, {g}, {b}, {0.25 * si:.2f})'
-            else:
-                shadow_def = f'0 1px 3px 0 rgba({r}, {g}, {b}, {0.3 * si:.2f}), 0 1px 2px -1px rgba({r}, {g}, {b}, {0.25 * si:.2f})'
-            
-            texture_container.style(f'filter: drop-shadow({shadow_def});')
             
             # Apply shape-based border and roundness (from Texture category)
             border_width_px = f"{max(1.0, float(texture.border_width) * 0.5)}px"  # Scaled for visual balance
@@ -77,7 +94,8 @@ class theme_icon(ui.element):
                 
                 with container:
                     # Reuse the palette_icon for color visualization
-                    palette_icon(palette, size=size, circular=False)
+                    # Set to 100% so it fills the texture_container and reaches the corners
+                    palette_icon(palette, size="100%", circular=False)
 
                     # Apply highlight density if applicable - moved here to be inside clipped container
                     if texture.highlight_intensity > 0:
@@ -99,24 +117,38 @@ class theme_icon(ui.element):
     ) -> str:
         """Returns the full HTML string for this component."""
         
-        # Texture styling
-        texture_style = 'width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;'
-        if texture.opacity < 1.0:
-            texture_style += f' opacity: {texture.opacity};'
-            
+        # Wrapper styles with shadow (match texture_icon behavior)
+        wrapper_style = f'width: {size}; height: {size}; position: relative; display: inline-flex; align-items: center; justify-content: center;'
+        
+        # Calculate shadow directly from texture intensity and apply to wrapper
         if texture.shadows_enabled and texture.shadow_intensity > 0:
             r, g, b = hex_to_rgb(palette.shadow)
             si = texture.shadow_intensity
+
+            # Calculate size factor for the shadow (base 24px)
+            import re
+            size_match = re.match(r'([0-9.]+)(.+)', size)
+            size_val = 24.0
+            if size_match:
+                try: size_val = float(size_match.group(1))
+                except: pass
+            sf = size_val / 24.0
+
+            # Use tight values scaled by icon size
             if si > 1.5:
-                shadow_def = f'0 20px 25px -5px rgba({r}, {g}, {b}, {0.4 * si:.2f}), 0 8px 10px -6px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
+                shadow_def = f'0 {10*sf:.1f}px {12*sf:.1f}px rgba({r}, {g}, {b}, {0.4 * si:.2f})'
             elif si > 1.0:
-                shadow_def = f'0 10px 15px -3px rgba({r}, {g}, {b}, {0.35 * si:.2f}), 0 4px 6px -4px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+                shadow_def = f'0 {6*sf:.1f}px {8*sf:.1f}px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
             elif si > 0.5:
-                shadow_def = f'0 4px 6px -1px rgba({r}, {g}, {b}, {0.3 * si:.2f}), 0 2px 4px -2px rgba({r}, {g}, {b}, {0.25 * si:.2f})'
+                shadow_def = f'0 {3*sf:.1f}px {4*sf:.1f}px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
             else:
-                shadow_def = f'0 1px 3px 0 rgba({r}, {g}, {b}, {0.3 * si:.2f}), 0 1px 2px -1px rgba({r}, {g}, {b}, {0.25 * si:.2f})'
-            
-            texture_style += f' filter: drop-shadow({shadow_def});'
+                shadow_def = f'0 {1*sf:.1f}px {2*sf:.1f}px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+            wrapper_style += f' filter: drop-shadow({shadow_def});'
+        
+        # Texture styling - scaled down to 85% and centered
+        texture_style = 'width: 85%; height: 85%; display: flex; align-items: center; justify-content: center;'
+        if texture.opacity < 1.0:
+            texture_style += f' opacity: {texture.opacity};'
             
         # Shape styling (from Texture)
         border_width_px = f"{max(1.0, float(texture.border_width) * 0.5)}px"
@@ -142,8 +174,8 @@ class theme_icon(ui.element):
             transition: all var(--nd-transition-speed) ease;
         '''.strip().replace('\n', ' ')
 
-        # Inner palette icon HTML
-        inner_html = palette_icon.to_html(palette, size=size, circular=False)
+        # Inner palette icon HTML (set to 100% to fill corners)
+        inner_html = palette_icon.to_html(palette, size="100%", circular=False)
         
         # Gloss effect HTML if highlight_intensity is high
         gloss_html = ""
@@ -156,6 +188,5 @@ class theme_icon(ui.element):
         # Texture Container
         html_texture_container = f'<div class="nd-theme-icon__container" style="{texture_style}">{html_palette_container}</div>'
         
-        # Outer Wrapper
-        outer_style = f'width: {size}; height: {size}; position: relative; display: inline-flex; align-items: center; justify-content: center;'
-        return f'<div class="-nd-c-theme-icon" style="{outer_style}">{html_texture_container}</div>'
+        # Outer Wrapper (wrapper_style already includes shadow)
+        return f'<div class="-nd-c-theme-icon" style="{wrapper_style}">{html_texture_container}</div>'

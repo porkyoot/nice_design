@@ -48,19 +48,19 @@ class ThemeEngine:
         tokens['shadow-color'] = f"{r}, {g}, {b}"
 
         # 5. Calculate Shadows based on Texture's Intensity
-        # Generate complete shadow values (not using CSS variables inside rgba)
+        # Generate complete shadow values using the shadow-color variable for dynamism
         si = texture.shadow_intensity
         if not texture.shadows_enabled:
             si = 0
             
-        # Generate complete shadow definitions with actual rgba values
-        # Increased base multipliers for better visibility (especially on dark themes)
+        # Generate complete shadow definitions using var(--nd-shadow-color)
+        # Geometrically scaling shadows with intensity (si) for visible depth
         tokens.update({
-            'shadow-xs': f"0 1px 2px 0 rgba({r}, {g}, {b}, {0.4 * si:.2f})",
-            'shadow-sm': f"0 1px 3px 0 rgba({r}, {g}, {b}, {0.5 * si:.2f}), 0 1px 2px -1px rgba({r}, {g}, {b}, {0.4 * si:.2f})",
-            'shadow-md': f"0 4px 6px -1px rgba({r}, {g}, {b}, {0.5 * si:.2f}), 0 2px 4px -2px rgba({r}, {g}, {b}, {0.45 * si:.2f})",
-            'shadow-lg': f"0 10px 15px -3px rgba({r}, {g}, {b}, {0.6 * si:.2f}), 0 4px 6px -4px rgba({r}, {g}, {b}, {0.5 * si:.2f})",
-            'shadow-xl': f"0 20px 25px -5px rgba({r}, {g}, {b}, {0.7 * si:.2f}), 0 8px 10px -6px rgba({r}, {g}, {b}, {0.6 * si:.2f})",
+            'shadow-xs': f"0 {1*si:.1f}px {2*si:.1f}px 0 rgba(var(--nd-shadow-color), {0.4 * si:.2f})",
+            'shadow-sm': f"0 {1*si:.1f}px {3*si:.1f}px 0 rgba(var(--nd-shadow-color), {0.5 * si:.2f}), 0 {1*si:.1f}px {2*si:.1f}px -1px rgba(var(--nd-shadow-color), {0.4 * si:.2f})",
+            'shadow-md': f"0 {4*si:.1f}px {6*si:.1f}px -1px rgba(var(--nd-shadow-color), {0.5 * si:.2f}), 0 {2*si:.1f}px {4*si:.1f}px -2px rgba(var(--nd-shadow-color), {0.45 * si:.2f})",
+            'shadow-lg': f"0 {10*si:.1f}px {15*si:.1f}px -3px rgba(var(--nd-shadow-color), {0.6 * si:.2f}), 0 {4*si:.1f}px {6*si:.1f}px -4px rgba(var(--nd-shadow-color), {0.5 * si:.2f})",
+            'shadow-xl': f"0 {20*si:.1f}px {25*si:.1f}px -5px rgba(var(--nd-shadow-color), {0.7 * si:.2f}), 0 {8*si:.1f}px {10*si:.1f}px -6px rgba(var(--nd-shadow-color), {0.6 * si:.2f})",
         })
 
         # 6. Add Transition Speed from Layout

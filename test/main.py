@@ -22,9 +22,8 @@ custom_layout.base_space = 1.0
 custom_layout.transition_speed = 0.6  # Slower, more dramatic transitions
 
 # Customize the palette
-custom_palette = SOLARIZED_PALETTE
-# Let's make the shadow a dark blue tint instead of pure black
-custom_palette.shadow = "#001a21" 
+custom_palette = copy.deepcopy(SOLARIZED_PALETTE)
+# (Shadow is handled by the theme engine now)
 
 # Compile 4 pillar theme
 theme = engine.compile(custom_palette, custom_texture, STANDARD_TYPO, custom_layout)

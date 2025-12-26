@@ -54,7 +54,7 @@ SOLARIZED_PALETTE = Palette(
     
     # Effects
     highlight="#fdf6e3",      # Base3
-    shadow="#002b36"          # Base03
+    shadow="#fdf6e3"          # Base3 (Using bright color for visible 'shadow' / glow on dark backgrounds)
 )
 
 # Re-assigning Status colors correctly (fixing the '#green' slip above)

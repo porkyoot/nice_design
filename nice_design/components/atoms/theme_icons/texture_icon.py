@@ -29,20 +29,25 @@ class texture_icon(ui.element):
             r, g, b = hex_to_rgb(palette.shadow)
             # Calculate actual shadow based on intensity
             si = texture.shadow_intensity
-            # Use a single shadow for drop-shadow filter (it doesn't support multiple shadows)
-            # Choose the primary (larger) shadow based on intensity
+            
+            # Calculate size factor for the shadow (base 24px)
+            import re
+            size_match = re.match(r'([0-9.]+)(.+)', size)
+            size_val = 24.0
+            if size_match:
+                try: size_val = float(size_match.group(1))
+                except: pass
+            sf = size_val / 24.0
+
+            # Use tight values scaled by icon size
             if si > 1.5:
-                # Extra large shadow - use the primary shadow only
-                shadow_def = f'0 20px 25px rgba({r}, {g}, {b}, {0.4 * si:.2f})'
+                shadow_def = f'0 {10*sf:.1f}px {12*sf:.1f}px rgba({r}, {g}, {b}, {0.4 * si:.2f})'
             elif si > 1.0:
-                # Large shadow
-                shadow_def = f'0 10px 15px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
+                shadow_def = f'0 {6*sf:.1f}px {8*sf:.1f}px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
             elif si > 0.5:
-                # Medium shadow
-                shadow_def = f'0 4px 6px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+                shadow_def = f'0 {3*sf:.1f}px {4*sf:.1f}px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
             else:
-                # Small shadow
-                shadow_def = f'0 1px 3px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+                shadow_def = f'0 {1*sf:.1f}px {2*sf:.1f}px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
             
             wrapper_style += f' filter: drop-shadow({shadow_def});'
         
@@ -115,15 +120,25 @@ class texture_icon(ui.element):
         if texture.shadows_enabled and texture.shadow_intensity > 0:
             r, g, b = hex_to_rgb(palette.shadow)
             si = texture.shadow_intensity
-            # Use a single shadow for drop-shadow filter
+
+            # Calculate size factor for the shadow (base 24px)
+            import re
+            size_match = re.match(r'([0-9.]+)(.+)', size)
+            size_val = 24.0
+            if size_match:
+                try: size_val = float(size_match.group(1))
+                except: pass
+            sf = size_val / 24.0
+
+            # Use tight values scaled by icon size
             if si > 1.5:
-                shadow_def = f'0 20px 25px rgba({r}, {g}, {b}, {0.4 * si:.2f})'
+                shadow_def = f'0 {10*sf:.1f}px {12*sf:.1f}px rgba({r}, {g}, {b}, {0.4 * si:.2f})'
             elif si > 1.0:
-                shadow_def = f'0 10px 15px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
+                shadow_def = f'0 {6*sf:.1f}px {8*sf:.1f}px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
             elif si > 0.5:
-                shadow_def = f'0 4px 6px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+                shadow_def = f'0 {3*sf:.1f}px {4*sf:.1f}px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
             else:
-                shadow_def = f'0 1px 3px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+                shadow_def = f'0 {1*sf:.1f}px {2*sf:.1f}px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
             wrapper_style += f' filter: drop-shadow({shadow_def});'
         
         # Circle styles

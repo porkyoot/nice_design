@@ -41,7 +41,7 @@
   on_info: "#fdf6e3"         # Base3
   
   highlight: "#fdf6e3"       # Base 3
-  shadow: "#fdf6e3"          # Base 03 (Using deepest solarized for shadow)
+  shadow: "#fdf6e3"          # Base 3 (Using lightest solarized for shadow for a neon effect)
 
 - name: solarized
   mode: light
