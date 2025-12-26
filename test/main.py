@@ -149,22 +149,6 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
     with nice.card().classes('w-[32rem] nd-gap-md'):
         with ui.row().classes('w-full items-center justify-between'):
             ui.label('Configuration').classes('text-xs uppercase tracking-widest opacity-40 font-bold ml-1')
-            nice.ThemeConfig(
-                themes=[
-                    {'label': 'Solarized Dark', 'value': 'Solarized Dark', 'icon': 'mdi-palette'},
-                    {'label': 'Nordic Night', 'value': 'Nordic Night', 'icon': 'mdi-snowflake'},
-                    {'label': 'Cyberpunk', 'value': 'Cyberpunk', 'icon': 'mdi-flash'}
-                ],
-                fonts=[
-                    {'label': 'Inter', 'value': 'Inter', 'icon': 'mdi-alphabetical-variant'},
-                    {'label': 'JetBrains Mono', 'value': 'JetBrains Mono', 'icon': 'mdi-code-braces'},
-                    {'label': 'Poppins', 'value': 'Poppins', 'icon': 'mdi-format-text-variant'}
-                ],
-                on_theme_change=lambda t: ui.notify(f"Theme: {t}"),
-                on_mode_toggle=lambda dark: ui.notify(f"Dark Mode: {dark}"),
-                on_texture_change=lambda tex: ui.notify(f"Texture: {tex}"),
-                on_font_change=lambda font: ui.notify(f"Font: {font}")
-            )
         
         nice.select(
             options=[

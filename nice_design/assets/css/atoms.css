@@ -114,24 +114,45 @@
 }
 
 /* Select Styles */
+/* Select Styles */
 .-nd-c-select {
     width: 100%;
 }
 
+/* Input Control Background & Card-style Border */
 .-nd-c-select .q-field__control {
     background-color: var(--nd-surface-layer) !important;
     border-radius: var(--nd-radius-md) !important;
-    color: var(--nd-content-main) !important;
 }
 
+/* Border enforcement for outlined mode (mimicking card border) */
+.-nd-c-select .q-field__control:before {
+    border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
+    transition: border-color var(--nd-transition-speed) ease;
+}
+
+/* Default State Text Colors */
 .-nd-c-select .q-field__label,
-.-nd-c-select .q-field__native,
+.-nd-c-select .q-field__native {
+    color: var(--nd-content-main) !important;
+    opacity: 1 !important;
+}
+
+/* Icons: Primary Accent by Default */
 .-nd-c-select .q-icon {
+    color: var(--nd-primary);
+    /* No !important to allow prop overrides */
+    opacity: 1;
+    transition: color var(--nd-transition-speed) ease;
+}
+
+/* Dropdown Arrow: Foreground Color (Content Main) */
+.-nd-c-select .q-select__dropdown-icon {
     color: var(--nd-content-main) !important;
     opacity: 0.8;
 }
 
-/* Minimal Mode (Icon Only) */
+/* Minimal Mode overrides */
 .-nd-c-select--minimal {
     width: auto !important;
     padding: 0 8px !important;
@@ -142,8 +163,6 @@
     transition: all var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-
-/* Support for Buttons using this style */
 .-nd-c-select--minimal.q-btn {
     padding: 0 !important;
     color: var(--nd-content-main) !important;
@@ -161,7 +180,6 @@
     display: flex !important;
     align-items: center !important;
 }
-
 
 .-nd-c-select--minimal .q-field__native,
 .-nd-c-select--minimal .q-field__label,
@@ -188,6 +206,22 @@
     transition: color var(--nd-transition-speed) ease;
 }
 
+/* Active/Focused State Styling */
+/* Standout/Focused State - Active Background Accent */
+/* We need to ensure text and icons contrast with the primary background */
+.-nd-c-select.q-field--highlighted .q-field__control .q-field__native,
+.-nd-c-select.q-field--highlighted .q-field__control .q-field__label,
+.-nd-c-select.q-field--highlighted .q-field__control .q-icon,
+.-nd-c-select.q-field--highlighted .q-field__control .q-select__dropdown-icon {
+    color: var(--nd-on-primary) !important;
+    opacity: 1;
+}
+
+/* Ensure border matches or is hidden/merged in standout */
+.-nd-c-select.q-field--highlighted .q-field__control:before {
+    border-color: var(--nd-primary) !important;
+}
+
 /* Smooth Chevron Rotation */
 .-nd-c-select .q-select__dropdown-icon {
     transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -200,10 +234,13 @@
 
 /* Select Menu (Dropdown) */
 .-nd-c-select-menu {
-    background-color: var(--nd-surface-overlay) !important;
+    background-color: var(--nd-surface-base) !important;
     border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
     border-radius: var(--nd-radius-md) !important;
     box-shadow: var(--nd-shadow-lg) !important;
+    color: var(--nd-content-main) !important;
+    padding: 0 !important;
+    /* Remove default padding from menu container if any */
 }
 
 .-nd-c-select-menu .q-item {
@@ -211,22 +248,36 @@
     transition: background var(--nd-transition-speed);
 }
 
+/* Default icon color in menu options */
+.-nd-c-select-menu .q-item .q-icon {
+    color: var(--nd-primary);
+}
+
 .-nd-c-select-menu .q-item--active {
+    /* "Deeper" background: Using primary, but maybe a bit darker/richer if possible? 
+       Sticking to primary as it matches "accent color" request and provides depth relative to surface. */
     background-color: var(--nd-primary) !important;
     color: var(--nd-on-primary) !important;
 }
 
+/* Active item icons should contrast */
+.-nd-c-select-menu .q-item--active .q-icon {
+    color: var(--nd-on-primary) !important;
+}
+
 .-nd-c-select-menu .q-item:hover:not(.q-item--active) {
-    background-color: color-mix(in srgb, var(--nd-highlight), transparent 95%) !important;
+    /* Hover state: surface_layer as requested */
+    background-color: var(--nd-surface-layer) !important;
 }
 
 /* Menu Styles */
 .-nd-c-menu {
-    background-color: var(--nd-surface-overlay) !important;
+    background-color: var(--nd-surface-base) !important;
     border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
     border-radius: var(--nd-radius-md) !important;
     box-shadow: var(--nd-shadow-lg) !important;
     overflow: hidden;
+    padding: 0 !important;
 }
 
 .-nd-c-menu-item {
@@ -235,10 +286,41 @@
     font-weight: 500;
     transition: all var(--nd-transition-speed) ease;
     padding: var(--nd-space-sm) var(--nd-space-md) !important;
+    display: flex !important;
+    /* Ensure flex for icon alignment if needed */
+    align-items: center;
+    gap: var(--nd-space-sm);
+}
+
+.-nd-c-menu-item .q-icon {
+    font-size: 1.25rem;
+    color: var(--nd-primary);
+    /* Primary accent for icons by default */
+    transition: color var(--nd-transition-speed) ease;
 }
 
 .-nd-c-menu-item:hover {
+    /* Hover state: surface_layer as requested */
+    background-color: var(--nd-surface-layer) !important;
+    color: var(--nd-content-main) !important;
+}
+
+/* Ensure icons on hover don't change unless actively selected (if menu supported selection state) */
+/* Or if we want hover to be primary highlight like select: NO, user asked for 'active' to be accent. */
+/* But menu items are usually actions, so hover IS the active interaction. */
+/* Let's follow the standard button/interactive feel or the Select Option feel. */
+/* Select Option Hover: background mix. Select Option Active: Primary bg. */
+/* Menu Items (actions) - usually just hover. Let's stick to the Select Option Hover style for consistency. */
+
+/* If active/selected state is needed for menu items (like checkable menu items) */
+.-nd-c-menu-item.q-item--active,
+.-nd-c-menu-item:active {
     background-color: var(--nd-primary) !important;
+    color: var(--nd-on-primary) !important;
+}
+
+.-nd-c-menu-item.q-item--active .q-icon,
+.-nd-c-menu-item:active .q-icon {
     color: var(--nd-on-primary) !important;
 }
 

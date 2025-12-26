@@ -27,6 +27,8 @@ class theme_icon(ui.element):
         with self:
             # Apply texture-based effects to the container
             texture_container = ui.element('div').classes('nd-theme-icon__container')
+            # Ensure container fills the parent
+            texture_container.style('width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;')
             
             # Apply texture opacity 
             if texture.opacity < 1.0:
@@ -47,18 +49,15 @@ class theme_icon(ui.element):
             # Apply shape-based border and roundness
             border_width = f'{shape.base_border * 0.5}px'  # Scaled for visual balance
             
-            # Calculate border radius based on shape.roundness
-            # roundness = 0.0 -> sharp (no radius)
-            # roundness = 1.0 -> standard (medium radius)
-            # roundness = 2.0+ -> very round (approaching circle)
+            # Calculate border radius based on shape.roundness (percentage based for scalability)
             if shape.roundness == 0:
                 border_radius = '0'
             elif shape.roundness >= 2.0:
                 border_radius = '50%'  # Circle
             else:
-                # Scale border radius with roundness
-                radius_value = f'{shape.roundness * 8}px'  # Base of 8px per roundness unit
-                border_radius = radius_value
+                # Scale between 0% and 50% based on roundness relative to 2.0
+                radius_percent = (shape.roundness / 2.0) * 50
+                border_radius = f'{radius_percent}%'
             
             # The palette icon as the core visual
             with texture_container:
@@ -66,6 +65,9 @@ class theme_icon(ui.element):
                     position: relative;
                     width: 100%;
                     height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     border-radius: {border_radius};
                     border: {border_width} solid rgba(255, 255, 255, 0.15);
                     overflow: hidden;

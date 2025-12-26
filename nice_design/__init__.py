@@ -11,7 +11,6 @@ from .components.atoms.palette_icon import palette_icon
 from .components.atoms.theme_icon import theme_icon
 from .components.atoms.texture_icon import texture_icon
 from .components.atoms.shape_icon import shape_icon
-from .components.molecules.theme_config import ThemeConfig
 
 def load_design_system():
     """Injects the library's CSS into the NiceGUI head."""

@@ -44,7 +44,7 @@ class shape_icon(ui.element):
             shape_elem.style(f'''
                 width: 100%;
                 height: 100%;
-                border: {border_width} solid var(--nd-foreground-1);
+                border: {border_width} solid var(--nd-content-main);
                 border-radius: {border_radius};
                 background: transparent;
                 transition: all var(--nd-transition-speed) ease;

@@ -53,7 +53,7 @@ class select(ui.select):
                 </div>
             ''')
             
-        self.props('outlined rounded standout="bg-primary text-on-primary"')
+        self.props('outlined rounded standout="bg-primary text-on-primary" popup-content-class="-nd-c-select-menu"')
         self.classes('-nd-c-select')
 
 
