@@ -10,17 +10,25 @@ PID_FILE=".nicegui.pid"
 # Function to cleanup on exit
 cleanup() {
     echo ""
-    echo "� Shutting down..."
+    echo "🛑 Shutting down..."
+    # Kill the watchfiles process and its children
     if [ -f "$PID_FILE" ]; then
         PID=$(cat "$PID_FILE")
         if ps -p "$PID" > /dev/null 2>&1; then
-            kill "$PID" 2>/dev/null || true
-            wait "$PID" 2>/dev/null || true
+            # Kill process group
+            PGRP=$(ps -o pgid= -p "$PID" | tr -d ' ')
+            if [ ! -z "$PGRP" ]; then
+                kill -TERM -"$PGRP" 2>/dev/null || true
+                sleep 0.5
+                kill -KILL -"$PGRP" 2>/dev/null || true
+            else
+                kill "$PID" 2>/dev/null || true
+            fi
         fi
         rm -f "$PID_FILE"
     fi
     # Final port cleanup
-    fuser -k $PORT/tcp 2>/dev/null || true
+    fuser -k -9 $PORT/tcp 2>/dev/null || true
     echo "✨ Cleanup complete"
     exit 0
 }
@@ -54,15 +62,17 @@ pip install -e . -q
 # Kill any processes using the port
 echo "🔍 Checking for processes on port $PORT..."
 fuser -k $PORT/tcp 2>/dev/null || true
-kill `lsof -t -i :$PORT` 2>/dev/null || true
+sleep 0.2
+lsof -t -i :$PORT | xargs kill -9 2>/dev/null || true
 
 # Wait for port to be released (max 5 seconds)
-for i in {1..10}; do
+for i in {1..20}; do
     if ! lsof -i :$PORT > /dev/null 2>&1; then
         break
     fi
-    echo "⏳ Waiting for port $PORT to be released... ($i/10)"
-    sleep 0.5
+    echo "⏳ Waiting for port $PORT to be released... ($i/20)"
+    fuser -k -9 $PORT/tcp 2>/dev/null || true
+    sleep 0.25
 done
 
 
@@ -80,7 +90,8 @@ echo "📂 Watching: test/, nice_design/"
 
 # Run the application with watchfiles to restart when either the app 
 # or the library code (including CSS/Assets) changes.
-python3 -m watchfiles "python3 test/main.py" test nice_design &
+# We add a small sleep before the start to ensure the port is fully released by the OS.
+python3 -m watchfiles "sh -c 'sleep 0.1 && python3 test/main.py'" test nice_design &
 
 # Save the PID
 echo $! > "$PID_FILE"
