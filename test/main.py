@@ -37,6 +37,10 @@ nice.setup(theme)
 # 3. Build the UI
 with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
     
+    # New Molecule: Theme Selector
+    nice.theme_selector(on_change=lambda e: ui.notify(f"Theme Changed: {e}"))
+
+    
     # Theme Icon Showcase (Comprehensive)
     with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
         ui.label('Theme Icon').classes('text-sm font-bold uppercase opacity-40')
@@ -176,6 +180,55 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
                  icon='settings',
                  icon_only=True
              ).classes('w-[180px]')
+
+    # Component Demo: Sliders
+    with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
+         ui.label('Slider Variants').classes('text-sm font-bold uppercase opacity-40')
+         ui.label('Standard and Dual-Value Sliders').classes('text-xs opacity-60 text-center')
+
+         # Standard Slider
+         with ui.column().classes('w-full gap-2'):
+             ui.label('Standard Slider').classes('text-xs opacity-60')
+             nice.slider(min=0, max=100, value=50).props('label-always color="primary"')
+             
+         ui.separator().classes('my-2 opacity-10')
+
+         # Dual Slider Explanation
+         ui.label('Dual Slider (Centered)').classes('text-xs opacity-60')
+         ui.label('Moves from center (0) to left or right.').classes('text-[10px] opacity-40')
+
+         # Dual Slider (Shadow / Highlight)
+         with ui.column().classes('w-full gap-2'):
+             ui.row().classes('w-full justify-between text-xs opacity-60 font-bold').style('margin-bottom: -10px').add_slot('default', r'''
+                <span class="text-blue-400">Shadow</span>
+                <span class="text-amber-400">Highlight</span>
+             ''')
+             
+             nice.dual_slider(min=-100, max=100, step=1, value=0, color_left='blue-4', color_right='amber-4')
+             
+         # Dual Slider (Positive / Negative)
+         with ui.column().classes('w-full gap-2'):
+             ui.row().classes('w-full justify-between text-xs opacity-60 font-bold').style('margin-bottom: -10px').add_slot('default', r'''
+                <span class="text-red-400">Loss</span>
+                <span class="text-green-400">Gain</span>
+             ''')
+             nice.dual_slider(min=-1.0, max=1.0, step=0.1, value=0.5, color_left='red-4', color_right='green-4')
+
+         ui.separator().classes('my-2 opacity-10')
+         
+         # Split Slider
+         ui.label('Split Slider (Independent Handles)').classes('text-xs opacity-60')
+         ui.label('Two handles, inverted left axis.').classes('text-[10px] opacity-40')
+         
+         nice.split_slider(
+             limit=100,
+             value_left=30,
+             value_right=60, 
+             color_left='purple-4', 
+             color_right='cyan-4',
+             on_change=lambda e: ui.notify(f"Left: {e['left']}, Right: {e['right']}")
+         )
+
 
     # Layout Controls
     with nice.card().classes('w-[32rem] nd-gap-md'):
