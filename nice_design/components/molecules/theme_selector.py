@@ -120,10 +120,10 @@ class theme_selector(ui.element):
                             
                             # --- B. Palette Submenu ---
                             palette_icon_builder = lambda: palette_icon(self._palette, size="24px")
-                            with select_button(icon_only=True, custom_icon_builder=palette_icon_builder) as btn_palette:
-                                btn_palette.classes('flex-1')
+                            with select_button(icon_only=True, custom_icon_builder=palette_icon_builder) as self.btn_palette:
+                                self.btn_palette.classes('flex-1')
                                 with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
-                                    m.on('hide', btn_palette.reset_rotation)
+                                    m.on('hide', self.btn_palette.reset_rotation)
                                     ui.label('Palette & Colors').classes('text-xs font-bold opacity-60 mb-2')
                                     
                                     # Primary Accent
@@ -164,10 +164,10 @@ class theme_selector(ui.element):
                             
                             # --- C. Texture Submenu ---
                             texture_icon_builder = lambda: texture_icon(self._texture, size="24px")
-                            with select_button(icon_only=True, custom_icon_builder=texture_icon_builder) as btn_texture:
-                                btn_texture.classes('flex-1')
+                            with select_button(icon_only=True, custom_icon_builder=texture_icon_builder) as self.btn_texture:
+                                self.btn_texture.classes('flex-1')
                                 with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
-                                    m.on('hide', btn_texture.reset_rotation)
+                                    m.on('hide', self.btn_texture.reset_rotation)
                                     ui.label('Surface & Shape').classes('text-xs font-bold opacity-60 mb-2')
                                     
                                     # Texture Select
@@ -382,6 +382,11 @@ class theme_selector(ui.element):
         with self._preview_container:
             self._render_large_preview()
             
+        if hasattr(self, 'btn_palette'):
+            self.btn_palette.refresh()
+        if hasattr(self, 'btn_texture'):
+            self.btn_texture.refresh()
+
         if self._on_change:
             self._on_change({
                 'palette': self._palette,

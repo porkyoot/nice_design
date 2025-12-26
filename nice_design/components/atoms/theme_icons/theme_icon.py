@@ -77,7 +77,7 @@ class theme_icon(ui.element):
                     palette_icon(palette, size=size, circular=False)
 
                     # Apply highlight density if applicable - moved here to be inside clipped container
-                    if texture.highlight_intensity > 1.2:
+                    if texture.highlight_intensity > 0:
                         # Add a subtle gloss effect
                         ui.element('div').style(f'''
                             position: absolute;
@@ -141,7 +141,7 @@ class theme_icon(ui.element):
         
         # Gloss effect HTML if highlight_intensity is high
         gloss_html = ""
-        if texture.highlight_intensity > 1.2:
+        if texture.highlight_intensity > 0:
              gloss_html = f'<div style="position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,{0.1 * texture.highlight_intensity}), transparent); pointer-events: none; z-index: 10;"></div>'
 
         # Inner Container (Palette Container)

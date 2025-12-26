@@ -53,9 +53,21 @@ class texture_icon(ui.element):
                 circle.style(f'box-shadow: var(--nd-shadow-{shadow_size}) !important;')
             
             # Apply border and transitions
-            circle.style('''
-                border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1);
-                border-radius: 50%;
+            # Apply shape-based border and roundness
+            border_width_px = f"{max(1.0, float(texture.border_width) * 0.5)}px"
+            
+            if texture.roundness == 0:
+                border_radius = '0'
+            elif texture.roundness >= 2.0:
+                border_radius = '50%'
+            else:
+                radius_percent = (texture.roundness / 2.0) * 50
+                border_radius = f'{radius_percent}%'
+
+            circle.style(f'''
+                position: relative;
+                border: {border_width_px} solid rgba(255, 255, 255, 0.1);
+                border-radius: {border_radius};
                 width: 100%;
                 height: 100%;
                 overflow: hidden;
@@ -64,7 +76,7 @@ class texture_icon(ui.element):
             
             with circle:
                  # Apply highlight density if applicable
-                if texture.highlight_intensity > 1.2:
+                if texture.highlight_intensity > 0:
                     # Add a subtle gloss effect
                     ui.element('div').style(f'''
                         position: absolute;
@@ -104,15 +116,26 @@ class texture_icon(ui.element):
                 shadow_size = 'sm'
             circle_style += f' box-shadow: var(--nd-shadow-{shadow_size}) !important;'
             
+        # Shape styling
+        border_width_px = f"{max(1.0, float(texture.border_width) * 0.5)}px"
+        
+        if texture.roundness == 0:
+            border_radius = '0'
+        elif texture.roundness >= 2.0:
+            border_radius = '50%'
+        else:
+            radius_percent = (texture.roundness / 2.0) * 50
+            border_radius = f'{radius_percent}%'
+
         # Border and general
-        circle_style += ' border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1); border-radius: 50%; width: 100%; height: 100%; overflow: hidden; transition: all var(--nd-transition-speed) ease;'
+        circle_style += f' position: relative; border: {border_width_px} solid rgba(255, 255, 255, 0.1); border-radius: {border_radius}; width: 100%; height: 100%; overflow: hidden; transition: all var(--nd-transition-speed) ease;'
         
         # Clean up
         circle_style = circle_style.replace('\n', ' ').strip()
         
         # Gloss effect HTML if highlight_intensity is high
         gloss_html = ""
-        if texture.highlight_intensity > 1.2:
+        if texture.highlight_intensity > 0:
              gloss_html = f'<div style="position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,{0.1 * texture.highlight_intensity}), transparent); pointer-events: none; z-index: 10;"></div>'
 
         # The circle div
