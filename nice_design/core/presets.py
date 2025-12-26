@@ -86,6 +86,7 @@ STANDARD_ANIMATION = Animation(
 # Define a standard Typography
 STANDARD_TYPO = Typography(
     font_main="Inter, Roboto, sans-serif",
+    font_secondary="Roboto, sans-serif",
     font_mono="Fira Code, monospace",
     scale_ratio=1.25
 )

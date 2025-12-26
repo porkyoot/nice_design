@@ -90,6 +90,7 @@ class Layout:
 class Typography:
     name: str = "default"
     font_main: str = "sans-serif"
+    font_secondary: str = "sans-serif"
     font_mono: str = "monospace"
     scale_ratio: float = 1.25 # Ratio between h1, h2, etc.
 

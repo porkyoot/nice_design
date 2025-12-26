@@ -34,11 +34,26 @@ theme = engine.compile(custom_palette, custom_semantics, custom_shape, custom_te
 # 2. Setup the Design System
 nice.setup(theme)
 
+# Handle Theme Change
+def handle_theme_change(e):
+    # Compile a new theme from the changed components
+    new_theme = engine.compile(
+        palette=e['palette'],
+        semantics=e['semantics'],
+        shape=e['shape'],
+        texture=e['texture'],
+        layout=e['layout'],
+        animation=STANDARD_ANIMATION,
+        typo=e['typography']
+    )
+    # Apply it globally
+    nice.apply_theme(new_theme)
+
 # 3. Build the UI
 with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
     
     # New Molecule: Theme Selector
-    nice.theme_selector(on_change=lambda e: ui.notify(f"Theme Changed: {e}"))
+    nice.theme_selector(on_change=handle_theme_change)
 
     
     # Theme Icon Showcase (Comprehensive)

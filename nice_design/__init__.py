@@ -65,7 +65,38 @@ def apply_theme(theme: CompiledTheme):
         else:
             css_vars.append(f"--nd-radius-{name}: {value};")
     
-    style_content = ":root {\n  " + "\n  ".join(css_vars) + "\n}"
+    style_content = ":root {\n  " + "\n  ".join(css_vars) + "\n}\n\n"
+    
+    # Generate Utility Classes
+    utils = []
+    scales = ['xs', 'sm', 'md', 'lg', 'xl']
+    
+    # 1. Spacing Utilities (Padding, Margin, Gap)
+    for s in scales + ['0']:
+        val = f"var(--nd-space-{s})" if s != '0' else "0px"
+        utils.append(f".nd-p-{s} {{ padding: {val} !important; }}")
+        utils.append(f".nd-pt-{s} {{ padding-top: {val} !important; }}")
+        utils.append(f".nd-pb-{s} {{ padding-bottom: {val} !important; }}")
+        utils.append(f".nd-pl-{s} {{ padding-left: {val} !important; }}")
+        utils.append(f".nd-pr-{s} {{ padding-right: {val} !important; }}")
+        utils.append(f".nd-px-{s} {{ padding-left: {val} !important; padding-right: {val} !important; }}")
+        utils.append(f".nd-py-{s} {{ padding-top: {val} !important; padding-bottom: {val} !important; }}")
+        utils.append(f".nd-m-{s} {{ margin: {val} !important; }}")
+        utils.append(f".nd-mx-{s} {{ margin-left: {val} !important; margin-right: {val} !important; }}")
+        utils.append(f".nd-my-{s} {{ margin-top: {val} !important; margin-bottom: {val} !important; }}")
+        utils.append(f".nd-gap-{s} {{ gap: {val} !important; }}")
+
+    # 2. Radius Utilities
+    for s in ['sm', 'md', 'lg', 'full', 'none']:
+        val = f"var(--nd-radius-{s})" if s != 'none' else "0px"
+        utils.append(f".nd-rounded-{s} {{ border-radius: {val} !important; }}")
+
+    # 3. Border Utilities
+    for s in ['sm', 'md', 'lg', 'xl', 'none']:
+        val = f"var(--nd-border-{s})" if s != 'none' else "0px"
+        utils.append(f".nd-border-{s} {{ border-width: {val} !important; border-style: solid; }}")
+        
+    style_content += "\n".join(utils)
     ui.add_head_html(f"<style>{style_content}</style>")
     
     # Apply Global Classes to Body using ui.query

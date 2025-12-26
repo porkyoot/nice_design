@@ -13,8 +13,6 @@ from nice_design.core.presets import (
     SOLARIZED_PALETTE, 
     SOLARIZED_SEMANTICS, 
     STANDARD_SHAPE, 
-    STANDARD_SHAPE, 
-    STANDARD_TEXTURE,
     STANDARD_TEXTURE,
     STANDARD_LAYOUT,
     STANDARD_TYPO,
@@ -97,7 +95,12 @@ class theme_selector(ui.element):
         self._shape = copy.deepcopy(STANDARD_SHAPE)
         self._texture = copy.deepcopy(TEXTURE_OPTIONS['Flat'])
         self._layout = copy.deepcopy(STANDARD_LAYOUT)
+        self._shape = copy.deepcopy(STANDARD_SHAPE)
+        self._texture = copy.deepcopy(TEXTURE_OPTIONS['Flat'])
+        self._layout = copy.deepcopy(STANDARD_LAYOUT)
         self._typography = copy.deepcopy(STANDARD_TYPO)
+        
+        self._current_font_secondary_name = 'Inter' # Initial state
         
         # Initialize semantics from current palette
         self._semantics = copy.deepcopy(PALETTE_OPTIONS[self._current_palette_name]['semantics'])
@@ -165,120 +168,147 @@ class theme_selector(ui.element):
                         
                     # 2. Controls Section (Scrollable with NiceGUI)
                     # Use a safer height and move padding inside to ensure bottom elements aren't clipped
-                    with ui.scroll_area().classes('w-full h-[50vh]'):
-                        with ui.column().classes('w-full p-4 gap-4'):
-                            # 1. Primary Accent
-                            ui.label('Primary Accent').classes('text-xs opacity-60 font-bold mb-1')
-                            palette_slider(
-                                colors=list(self.current_palette.colors.values()),
-                                value=self._semantics.primary,
-                                on_change=self._update_primary_accent
-                            )
-
-                            # 2. Secondary Accent
-                            ui.label('Secondary Accent').classes('text-xs opacity-60 font-bold mb-1')
-                            palette_slider(
-                                colors=list(self.current_palette.colors.values()),
-                                value=self._semantics.secondary,
-                                on_change=self._update_secondary_accent
-                            )
-
-                            ui.separator().classes('opacity-10 my-1')
-
-                            # 3. Palette
-                        palette_opts = {}
-                        for name, data in PALETTE_OPTIONS.items():
-                            html = palette_icon.to_html(data['palette'], data['semantics'], size="20px")
-                            palette_opts[name] = {'label': name, 'html': html}
+                    
+                    # 2. Controls Section (Submenus)
+                    # We remove the scroll area here because we are using nested menus/buttons
+                    with ui.column().classes('w-full nd-p-md nd-gap-md'):
+                        ui.label('Theme Configuration').classes('text-[10px] font-bold opacity-40 uppercase tracking-widest mb-2')
+                        
+                        # Row of Submenu Buttons
+                        with ui.row().classes('w-full nd-gap-sm justify-between'):
                             
-                        select(
-                            options=palette_opts,
-                            value=self._current_palette_name,
-                            label='Palette',
-                            with_icons=True,
-                            on_change=lambda e: self._update_palette(e.value)
-                        ).classes('w-full')
-                        
-                        # 2. Texture
-                        texture_opts = {}
-                        for name, tex in TEXTURE_OPTIONS.items():
-                            html = texture_icon.to_html(tex, size="20px")
-                            texture_opts[name] = {'label': name, 'html': html}
+                            # --- A. Palette Submenu Button ---
+                            with select_button(icon_only=True, custom_icon_builder=lambda: palette_icon(self.current_palette, self.current_semantics, size="24px")) as btn_palette:
+                                btn_palette.classes('flex-1') # Equal width
+                                with menu().classes('min-w-[240px] nd-p-md nd-gap-md'):
+                                    ui.label('Palette & Colors').classes('text-xs font-bold opacity-60 mb-2')
+                                    
+                                    # 1. Primary Accent
+                                    ui.label('Primary Accent').classes('text-xs opacity-60 font-bold mb-1')
+                                    palette_slider(
+                                        colors=list(self.current_palette.colors.values()),
+                                        value=self._semantics.primary,
+                                        on_change=self._update_primary_accent
+                                    )
 
-                        select(
-                            options=texture_opts,
-                            value=self._current_texture_name,
-                            label='Texture',
-                            with_icons=True,
-                            on_change=lambda e: self._update_texture(e.value)
-                        ).classes('w-full')
-                        
-                        ui.separator().classes('opacity-10 my-1')
+                                    # 2. Secondary Accent
+                                    ui.label('Secondary Accent').classes('text-xs opacity-60 font-bold mb-1')
+                                    palette_slider(
+                                        colors=list(self.current_palette.colors.values()),
+                                        value=self._semantics.secondary,
+                                        on_change=self._update_secondary_accent
+                                    )
 
-                        # 3. Shadow / Highlight (Opacity)
-                        with ui.column().classes('w-full gap-2'):
-                            ui.row().classes('w-full justify-between text-xs opacity-60 font-bold').style('margin-bottom: -10px').add_slot('default', r'''
-                               <span class="text-blue-400">Shadow</span>
-                               <span class="text-teal-400">Opacity</span>
-                            ''')
+                                    ui.separator().classes('opacity-10 my-1')
+
+                                    # 3. Palette Select
+                                    palette_opts = {}
+                                    for name, data in PALETTE_OPTIONS.items():
+                                        html = palette_icon.to_html(data['palette'], data['semantics'], size="20px")
+                                        palette_opts[name] = {'label': name, 'html': html}
+                                        
+                                    select(
+                                        options=palette_opts,
+                                        value=self._current_palette_name,
+                                        label='Palette Preset',
+                                        with_icons=True,
+                                        on_change=lambda e: self._update_palette(e.value)
+                                    ).classes('w-full')
                             
-                            split_slider(
-                                limit=100,
-                                value_left=self._texture.shadow_intensity * 50, 
-                                value_right=self._texture.opacity * 100, 
-                                color_left='blue-4',
-                                color_right='teal-4',
-                                on_change=self._update_shadow_opacity
-                            )
+                            # --- B. Appearance Submenu Button (Texture/Shape) ---
+                            with select_button(icon_only=True, custom_icon_builder=lambda: texture_icon(self._texture, size="24px")) as btn_texture:
+                                btn_texture.classes('flex-1')
+                                with menu().classes('min-w-[240px] nd-p-md nd-gap-md'):
+                                    ui.label('Surface & Shape').classes('text-xs font-bold opacity-60 mb-2')
+                                    
+                                    # 1. Texture Select
+                                    texture_opts = {}
+                                    for name, tex in TEXTURE_OPTIONS.items():
+                                        html = texture_icon.to_html(tex, size="20px")
+                                        texture_opts[name] = {'label': name, 'html': html}
 
-                        ui.separator().classes('opacity-10 my-1')
-                        
-                        # 4. Border
-                        with ui.column().classes('w-full gap-1'):
-                            with ui.row().classes('w-full justify-between'):
-                                ui.label('Border').classes('text-xs opacity-60')
-                                self._border_label = ui.label(f'{self._shape.base_border}px').classes('text-xs font-bold')
-                                
-                            ui.slider(min=0, max=4, step=1, value=self._shape.base_border,
-                                      on_change=self._update_border).props('markers snap color="primary"')
+                                    select(
+                                        options=texture_opts,
+                                        value=self._current_texture_name,
+                                        label='Texture',
+                                        with_icons=True,
+                                        on_change=lambda e: self._update_texture(e.value)
+                                    ).classes('w-full')
+                                    
+                                    # 2. Shadow / Opacity
+                                    with ui.column().classes('w-full nd-gap-sm mt-2'):
+                                        ui.row().classes('w-full justify-between text-xs opacity-60 font-bold').style('margin-bottom: -10px').add_slot('default', r'''
+                                           <span class="text-blue-400">Shadow</span>
+                                           <span class="text-teal-400">Opacity</span>
+                                        ''')
+                                        split_slider(
+                                            limit=100,
+                                            value_left=self._texture.shadow_intensity * 50, 
+                                            value_right=self._texture.opacity * 100, 
+                                            color_left='blue-4',
+                                            color_right='teal-4',
+                                            on_change=self._update_shadow_opacity
+                                        )
 
-                        # 5. Roundness
-                        with ui.column().classes('w-full gap-1'):
-                            with ui.row().classes('w-full justify-between'):
-                                ui.label('Roundness').classes('text-xs opacity-60')
-                                self._roundness_label = ui.label(f'{self._shape.roundness:.1f}').classes('text-xs font-bold')
-                                
-                            ui.slider(min=0, max=2.5, step=0.1, value=self._shape.roundness, 
-                                      on_change=self._update_roundness).props('label-always color="primary"')
-                                      
-                        ui.separator().classes('opacity-10 my-1')
+                                    ui.separator().classes('opacity-10 my-1')
+                                    
+                                    # 3. Border
+                                    with ui.column().classes('w-full nd-gap-xs'):
+                                        with ui.row().classes('w-full justify-between'):
+                                            ui.label('Border').classes('text-xs opacity-60')
+                                            self._border_label = ui.label(f'{self._shape.base_border}px').classes('text-xs font-bold')
+                                            
+                                        ui.slider(min=0, max=4, step=1, value=self._shape.base_border,
+                                                  on_change=self._update_border).props('markers snap color="primary"')
 
-                        # 6. Font
-                        font_opts = {}
-                        for name, family in FONT_OPTIONS.items():
-                           # Using the new 'font' property supported by our custom select
-                           font_opts[name] = {'label': name, 'value': name, 'font': family}
+                                    # 4. Roundness
+                                    with ui.column().classes('w-full nd-gap-xs'):
+                                        with ui.row().classes('w-full justify-between'):
+                                            ui.label('Roundness').classes('text-xs opacity-60')
+                                            self._roundness_label = ui.label(f'{self._shape.roundness:.1f}').classes('text-xs font-bold')
+                                            
+                                        ui.slider(min=0, max=2.5, step=0.1, value=self._shape.roundness, 
+                                                  on_change=self._update_roundness).props('label-always color="primary"')
 
-                        select(
-                            options=font_opts,
-                            value=self._current_font_name,
-                            label='Font Family',
-                            on_change=lambda e: self._update_font(e.value)
-                        ).classes('w-full')
+                            # --- C. Typography Submenu Button ---
+                            with select_button(icon='mdi-format-font', icon_only=True) as btn_typo:
+                                btn_typo.classes('flex-1')
+                                with menu().classes('min-w-[240px] nd-p-md nd-gap-md'):
+                                    ui.label('Typography').classes('text-xs font-bold opacity-60 mb-2')
+                                    
+                                    font_opts = {}
+                                    for name, family in FONT_OPTIONS.items():
+                                       font_opts[name] = {'label': name, 'value': name, 'font': family}
 
-                        # 7. Text Size (Scale Ratio)
-                        with ui.column().classes('w-full gap-1'):
-                            with ui.row().classes('w-full justify-between'):
-                                ui.label('Text Scale').classes('text-xs opacity-60')
-                                self._scale_label = ui.label(f'{self._typography.scale_ratio:.2f}').classes('text-xs font-bold')
-                                
-                            slider(min=1.0, max=1.6, step=0.05, value=self._typography.scale_ratio,
-                                      on_change=self._update_text_scale).props('label-always color="primary"')
+                                    # 1. Primary Font
+                                    select(
+                                        options=font_opts,
+                                        value=self._current_font_name,
+                                        label='Primary Font',
+                                        on_change=lambda e: self._update_font(e.value)
+                                    ).classes('w-full')
 
-                        ui.separator().classes('opacity-10 my-1')
-                        
-                        # 8. Spacing
-                        with ui.column().classes('w-full gap-1'):
+                                    # 2. Secondary Font
+                                    select(
+                                        options=font_opts,
+                                        value=self._current_font_secondary_name,
+                                        label='Secondary Font',
+                                        on_change=lambda e: self._update_font_secondary(e.value)
+                                    ).classes('w-full')
+                                    
+                                    ui.separator().classes('opacity-10 my-1')
+
+                                    # 3. Text Scale
+                                    with ui.column().classes('w-full nd-gap-xs'):
+                                        with ui.row().classes('w-full justify-between'):
+                                            ui.label('Text Scale').classes('text-xs opacity-60')
+                                            self._scale_label = ui.label(f'{self._typography.scale_ratio:.2f}').classes('text-xs font-bold')
+                                            
+                                        slider(min=1.0, max=1.6, step=0.05, value=self._typography.scale_ratio,
+                                                  on_change=self._update_text_scale).props('label-always color="primary"')
+
+                        # Spacing (Outside Submenus)
+                        with ui.column().classes('w-full nd-gap-xs mt-2'):
                             with ui.row().classes('w-full justify-between'):
                                 ui.label('Spacing').classes('text-xs opacity-60')
                                 self._spacing_label = ui.label(f'{self._layout.base_space:.1f}x').classes('text-xs font-bold')
@@ -334,6 +364,12 @@ class theme_selector(ui.element):
         if value:
             self._current_font_name = value
             self._typography.font_main = FONT_OPTIONS[value]
+            self._refresh_components()
+
+    def _update_font_secondary(self, value):
+        if value:
+            self._current_font_secondary_name = value
+            self._typography.font_secondary = FONT_OPTIONS[value]
             self._refresh_components()
 
     def _update_text_scale(self, e):
