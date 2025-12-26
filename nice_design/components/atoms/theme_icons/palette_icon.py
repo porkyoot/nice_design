@@ -1,6 +1,6 @@
 from nicegui import ui
 from typing import Optional, Dict
-from nice_design.core.definitions import Palette, Semantics
+from nice_design.core.definitions import Palette
 
 class palette_icon(ui.element):
     """
@@ -11,16 +11,15 @@ class palette_icon(ui.element):
     def __init__(
         self, 
         palette: Palette,
-        semantics: Semantics,
         *, 
         size: str = "24px",
         circular: bool = True
     ):
         super().__init__('svg')
         
-        # Extract colors from the palette and semantics
-        background_color = semantics.surface_base
-        foreground_color = semantics.content_main
+        # Extract colors from the palette (which now includes semantics)
+        background_color = palette.surface_base
+        foreground_color = palette.content_main
         colors = palette.colors
         
         # Set SVG attributes
@@ -94,7 +93,7 @@ class palette_icon(ui.element):
             <path d="M {cx},{cy - center_radius} 
                      A {center_radius},{center_radius} 0 0 0 {cx},{cy + center_radius} 
                      L {cx},{cy} Z" 
-                  fill="{bg_color}" />
+                   fill="{bg_color}" />
         '''.strip())
         
         # Draw center foreground half-disk (right side)
@@ -102,7 +101,7 @@ class palette_icon(ui.element):
             <path d="M {cx},{cy - center_radius} 
                      A {center_radius},{center_radius} 0 0 1 {cx},{cy + center_radius} 
                      L {cx},{cy} Z" 
-                  fill="{fg_color}" />
+                   fill="{fg_color}" />
         '''.strip())
         
         # Add a subtle center line
@@ -112,14 +111,14 @@ class palette_icon(ui.element):
                   stroke="rgba(255,255,255,0.2)" 
                   stroke-width="0.5" />
         '''.strip())
-
+ 
         return '\n'.join(svg_content)
-
+ 
     @staticmethod
-    def to_html(palette: Palette, semantics: Semantics, *, size: str = "24px", circular: bool = True) -> str:
+    def to_html(palette: Palette, *, size: str = "24px", circular: bool = True) -> str:
         """Returns the full HTML (SVG) string for this component."""
-        background_color = semantics.surface_base
-        foreground_color = semantics.content_main
+        background_color = palette.surface_base
+        foreground_color = palette.content_main
         colors = palette.colors
         
         content = palette_icon._generate_content(background_color, foreground_color, colors)
@@ -129,8 +128,7 @@ class palette_icon(ui.element):
             style += ' border-radius: 50%;'
             
         return f'<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="-nd-c-theme-icon" style="{style}">{content}</svg>'
-
+ 
     def _generate_icon(self, bg_color: str, fg_color: str, colors: Dict[str, str]):
         """Generate the SVG elements for the theme icon."""
         self._props['innerHTML'] = self._generate_content(bg_color, fg_color, colors)
-

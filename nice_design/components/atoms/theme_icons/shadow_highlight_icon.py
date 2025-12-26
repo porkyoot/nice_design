@@ -4,7 +4,8 @@ from ....core.definitions import Texture
 class shadow_highlight_icon(ui.element):
     """
     A custom icon that displays the shadow and highlight strength on a circle base.
-    Visualizes the depth/elevation of the theme.
+    Visualizes the depth/elevation/glossiness of the texture.
+    (Category: Texture)
     """
     def __init__(
         self, 
@@ -24,7 +25,7 @@ class shadow_highlight_icon(ui.element):
             
             # Determine shadow size based on intensity
             shadow_style = 'none'
-            if texture.shadows and texture.shadow_intensity > 0:
+            if texture.shadows_enabled and texture.shadow_intensity > 0:
                 shadow_size = 'md'
                 if texture.shadow_intensity > 1.5:
                     shadow_size = 'xl'
@@ -35,10 +36,9 @@ class shadow_highlight_icon(ui.element):
                 
                 shadow_style = f'var(--nd-shadow-{shadow_size})'
 
-            # Calculate a simulated highlight opacity based on shadow intensity
-            # Stronger shadows usually imply stronger light source -> stronger highlight
-            highlight_opacity = 0.1 + (texture.shadow_intensity * 0.2)
-            if not texture.shadows:
+            # Use the new highlight_intensity property
+            highlight_opacity = 0.05 + (texture.highlight_intensity * 0.2)
+            if not texture.shadows_enabled and texture.highlight_intensity == 0:
                 highlight_opacity = 0.0
                 
             # Inner highlight (inset shadow) simulation
@@ -58,7 +58,7 @@ class shadow_highlight_icon(ui.element):
         """Returns the full HTML string for this component."""
         
         shadow_style = 'none'
-        if texture.shadows and texture.shadow_intensity > 0:
+        if texture.shadows_enabled and texture.shadow_intensity > 0:
             shadow_size = 'md'
             if texture.shadow_intensity > 1.5:
                 shadow_size = 'xl'
@@ -69,8 +69,8 @@ class shadow_highlight_icon(ui.element):
             
             shadow_style = f'var(--nd-shadow-{shadow_size})'
             
-        highlight_opacity = 0.1 + (texture.shadow_intensity * 0.2)
-        if not texture.shadows:
+        highlight_opacity = 0.05 + (texture.highlight_intensity * 0.2)
+        if not texture.shadows_enabled and texture.highlight_intensity == 0:
             highlight_opacity = 0.0
             
         highlight_style = f'inset 1px 1px 2px rgba(255, 255, 255, {highlight_opacity})'

@@ -23,6 +23,7 @@ class select_button(ui.button):
         self._custom_icon_builder = custom_icon_builder
         
         self._custom_label_element = None
+        self._icon_container = None
         
         # If using a custom builder, we suppress the default label to render it manually
         # alongside the icon for proper grouping and behavior with align="between".
@@ -52,18 +53,22 @@ class select_button(ui.button):
         if self._custom_icon_builder:
             with self:
                 # Group Icon and Label so they stay together on the left.
-                # Since the button has align="between", this wrapper will be pushed to the start,
-                # and the icon-right (chevron) will be pushed to the end.
                 with ui.element('div').classes('row no-wrap items-center'):
                     # Icon Container
-                    # 'on-left' adds standard margin-right for separation from text
-                    container = ui.element('div').classes('on-left flex flex-center order-first')
-                    with container:
+                    self._icon_container = ui.element('div').classes('on-left flex flex-center order-first')
+                    with self._icon_container:
                          self._custom_icon_builder()
                     
                     # Manual Label
                     if not icon_only:
                         self._custom_label_element = ui.label(label)
+
+    def refresh(self):
+        """Re-renders the custom icon content if a builder is present."""
+        if self._custom_icon_builder and self._icon_container:
+            self._icon_container.clear()
+            with self._icon_container:
+                self._custom_icon_builder()
 
     def set_label(self, text: str):
         self._original_label = text
@@ -75,7 +80,7 @@ class select_button(ui.button):
         else:
             self.text = text
         
-    def set_icon(self, icon: str):
+    def set_icon(self, icon: Optional[str]):
         if not self._custom_icon_builder:
             self.icon = icon
 

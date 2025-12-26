@@ -1,18 +1,16 @@
 from nicegui import ui
-from ....core.definitions import Palette, Shape, Texture, Semantics
+from ....core.definitions import Palette, Texture, Typography, Layout
 from .palette_icon import palette_icon
 
 class theme_icon(ui.element):
     """
     A comprehensive icon that displays a visual representation of a complete theme.
-    Combines palette (colors), shape (geometry), and texture (visual effects) by
-    composing the other icon components together.
+    Combines palette, texture, typography, and layout by composing visuals.
+    (Note: Typography and Layout are represented subtly or through spacing).
     """
     def __init__(
         self, 
         palette: Palette,
-        semantics: Semantics,
-        shape: Shape,
         texture: Texture,
         *, 
         size: str = "24px"
@@ -35,7 +33,7 @@ class theme_icon(ui.element):
                 texture_container.style(f'opacity: {texture.opacity};')
             
             # Apply shadows based on texture
-            if texture.shadows and texture.shadow_intensity > 0:
+            if texture.shadows_enabled and texture.shadow_intensity > 0:
                 shadow_size = 'md'
                 if texture.shadow_intensity > 1.5:
                     shadow_size = 'xl'
@@ -46,17 +44,27 @@ class theme_icon(ui.element):
                 
                 texture_container.style(f'filter: drop-shadow(var(--nd-shadow-{shadow_size}));')
             
-            # Apply shape-based border and roundness
-            border_width = f'{shape.base_border * 0.5}px'  # Scaled for visual balance
+            # Apply highlight density if applicable
+            if texture.highlight_intensity > 1.2:
+                # Add a subtle gloss effect
+                ui.element('div').style(f'''
+                    position: absolute;
+                    top: 0; left: 0; width: 100%; height: 50%;
+                    background: linear-gradient(to bottom, rgba(255,255,255,{0.1 * texture.highlight_intensity}), transparent);
+                    pointer-events: none;
+                    z-index: 10;
+                ''')
+
+            # Apply shape-based border and roundness (from Texture category)
+            border_width_px = f"{max(1.0, float(texture.border_width) * 0.5)}px"  # Scaled for visual balance
             
-            # Calculate border radius based on shape.roundness (percentage based for scalability)
-            if shape.roundness == 0:
+            # Calculate border radius based on texture.roundness
+            if texture.roundness == 0:
                 border_radius = '0'
-            elif shape.roundness >= 2.0:
+            elif texture.roundness >= 2.0:
                 border_radius = '50%'  # Circle
             else:
-                # Scale between 0% and 50% based on roundness relative to 2.0
-                radius_percent = (shape.roundness / 2.0) * 50
+                radius_percent = (texture.roundness / 2.0) * 50
                 border_radius = f'{radius_percent}%'
             
             # The palette icon as the core visual
@@ -69,7 +77,7 @@ class theme_icon(ui.element):
                     align-items: center;
                     justify-content: center;
                     border-radius: {border_radius};
-                    border: {border_width} solid rgba(255, 255, 255, 0.15);
+                    border: {border_width_px} solid rgba(255, 255, 255, 0.15);
                     overflow: hidden;
                     transition: all var(--nd-transition-speed) ease;
                 ''')
@@ -77,26 +85,23 @@ class theme_icon(ui.element):
                 
                 with container:
                     # Reuse the palette_icon for color visualization
-                    palette_icon(palette, semantics, size=size, circular=False)
+                    palette_icon(palette, size=size, circular=False)
+
     @staticmethod
     def to_html(
         palette: Palette,
-        semantics: Semantics,
-        shape: Shape,
         texture: Texture,
         *, 
         size: str = "24px"
     ) -> str:
         """Returns the full HTML string for this component."""
         
-        # Calculate styles (mirroring __init__ logic)
-        
         # Texture styling
         texture_style = 'width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;'
         if texture.opacity < 1.0:
             texture_style += f' opacity: {texture.opacity};'
             
-        if texture.shadows and texture.shadow_intensity > 0:
+        if texture.shadows_enabled and texture.shadow_intensity > 0:
             shadow_size = 'md'
             if texture.shadow_intensity > 1.5:
                 shadow_size = 'xl'
@@ -107,15 +112,15 @@ class theme_icon(ui.element):
             
             texture_style += f' filter: drop-shadow(var(--nd-shadow-{shadow_size}));'
             
-        # Shape styling
-        border_width = f'{shape.base_border * 0.5}px'
+        # Shape styling (from Texture)
+        border_width_px = f"{max(1.0, float(texture.border_width) * 0.5)}px"
         
-        if shape.roundness == 0:
+        if texture.roundness == 0:
             border_radius = '0'
-        elif shape.roundness >= 2.0:
+        elif texture.roundness >= 2.0:
             border_radius = '50%'
         else:
-            radius_percent = (shape.roundness / 2.0) * 50
+            radius_percent = (texture.roundness / 2.0) * 50
             border_radius = f'{radius_percent}%'
             
         container_style = f'''
@@ -126,24 +131,21 @@ class theme_icon(ui.element):
             align-items: center;
             justify-content: center;
             border-radius: {border_radius};
-            border: {border_width} solid rgba(255, 255, 255, 0.15);
+            border: {border_width_px} solid rgba(255, 255, 255, 0.15);
             overflow: hidden;
             transition: all var(--nd-transition-speed) ease;
         '''.strip().replace('\n', ' ')
 
         # Inner palette icon HTML
-        # palette_icon inside container creates its own sizing, so we pass size.
-        # Wait, inside theme_icon __init__, palette_icon is added to 'container'.
-        # Since 'container' fills 'texture_container' which fills 'self' (fixed size),
-        # palette_icon should fill 'container'.
+        inner_html = palette_icon.to_html(palette, size=size, circular=False)
         
-        # In __init__: palette_icon(..., size=size)
-        inner_html = palette_icon.to_html(palette, semantics, size=size, circular=False)
-        
-        # Construct HTML structure
-        
+        # Gloss effect HTML if highlight_intensity is high
+        gloss_html = ""
+        if texture.highlight_intensity > 1.2:
+             gloss_html = f'<div style="position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,{0.1 * texture.highlight_intensity}), transparent); pointer-events: none; z-index: 10;"></div>'
+
         # Inner Container (Palette Container)
-        html_palette_container = f'<div class="-nd-c-theme-icon__palette-container" style="{container_style}">{inner_html}</div>'
+        html_palette_container = f'<div class="-nd-c-theme-icon__palette-container" style="{container_style}">{gloss_html}{inner_html}</div>'
         
         # Texture Container
         html_texture_container = f'<div class="nd-theme-icon__container" style="{texture_style}">{html_palette_container}</div>'

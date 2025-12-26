@@ -1,0 +1,89 @@
+- name: solarized
+  mode: dark
+  colors:
+    base03: "#002b36"
+    base02: "#073642"
+    base01: "#586e75"
+    base00: "#657b83"
+    base0: "#839496"
+    base1: "#93a1a1"
+    base2: "#eee8d5"
+    base3: "#fdf6e3"
+    yellow: "#b58900"
+    orange: "#cb4b16"
+    red: "#dc322f"
+    magenta: "#d33682"
+    violet: "#6c71c4"
+    blue: "#268bd2"
+    cyan: "#2aa198"
+    green: "#859900"
+  
+  primary: "#268bd2"       # Blue
+  on_primary: "#fdf6e3"    # Base3
+  secondary: "#cb4b16"     # Orange
+  on_secondary: "#fdf6e3"  # Base3
+  
+  surface_base: "#002b36"    # Base03
+  surface_layer: "#073642"   # Base02
+  surface_overlay: "#586e75" # Base01
+
+  content_main: "#93a1a1"    # Base1
+  content_muted: "#839496"   # Base0
+  content_subtle: "#657b83"  # Base00
+
+  success: "#859900"         # Green
+  on_success: "#002b36"      # Base03
+  warning: "#b58900"         # Yellow
+  on_warning: "#002b36"      # Base03
+  error: "#dc322f"           # Red
+  on_error: "#fdf6e3"        # Base3
+  info: "#268bd2"            # Blue
+  on_info: "#fdf6e3"         # Base3
+  
+  highlight: "#fdf6e3"       # Base 3
+  shadow: "#002b36"          # Base 03 (Using deepest solarized for shadow)
+
+- name: solarized
+  mode: light
+  colors:
+    base03: "#002b36"
+    base02: "#073642"
+    base01: "#586e75"
+    base00: "#657b83"
+    base0: "#839496"
+    base1: "#93a1a1"
+    base2: "#eee8d5"
+    base3: "#fdf6e3"
+    yellow: "#b58900"
+    orange: "#cb4b16"
+    red: "#dc322f"
+    magenta: "#d33682"
+    violet: "#6c71c4"
+    blue: "#268bd2"
+    cyan: "#2aa198"
+    green: "#859900"
+  
+  primary: "#268bd2"       # Blue
+  on_primary: "#fdf6e3"    # Base3
+  secondary: "#cb4b16"     # Orange
+  on_secondary: "#fdf6e3"  # Base3
+  
+  surface_base: "#fdf6e3"    # Base3
+  surface_layer: "#eee8d5"   # Base2
+  surface_overlay: "#93a1a1" # Base1
+
+  content_main: "#586e75"    # Base01
+  content_muted: "#657b83"   # Base00
+  content_subtle: "#839496"  # Base0
+
+  success: "#859900"         # Green
+  on_success: "#fdf6e3"      # Base3
+  warning: "#b58900"         # Yellow
+  on_warning: "#fdf6e3"      # Base3
+  error: "#dc322f"           # Red
+  on_error: "#fdf6e3"        # Base3
+  info: "#268bd2"            # Blue
+  on_info: "#fdf6e3"         # Base3
+  
+  highlight: "#ffffff"       # Keeping pure highlight as it's often used for gloss, but could be Base3
+  shadow: "#073642"          # Base02 (Using dark solarized for shadow)

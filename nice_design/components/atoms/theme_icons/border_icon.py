@@ -1,14 +1,15 @@
 from nicegui import ui
-from ....core.definitions import Shape
+from ....core.definitions import Texture
 
 class border_icon(ui.element):
     """
     A custom icon that displays the border style on a circle base.
     Ignores the shape's roundness and specifically visualizes the border thickness and style.
+    (Category: Texture)
     """
     def __init__(
         self, 
-        shape: Shape,
+        texture: Texture,
         *, 
         size: str = "24px"
     ):
@@ -22,10 +23,8 @@ class border_icon(ui.element):
         with self:
             circle = ui.element('div')
             
-            # Apply border width (use base_border to determine thickness)
-            # Scaling it slightly for visibility at small sizes if necessary, 
-            # but usually 1:1 is best for representation.
-            border_width = f'{shape.base_border}px'
+            # Apply border width
+            border_width = f'{texture.border_width}px'
             
             circle.style(f'''
                 width: 100%;
@@ -38,9 +37,9 @@ class border_icon(ui.element):
             ''')
     
     @staticmethod
-    def to_html(shape: Shape, *, size: str = "24px") -> str:
+    def to_html(texture: Texture, *, size: str = "24px") -> str:
         """Returns the full HTML string for this component."""
-        border_width = f'{shape.base_border}px'
+        border_width = f'{texture.border_width}px'
         
         style = f'''
             width: {size}; 

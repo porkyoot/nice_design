@@ -1,50 +1,45 @@
+from typing import Dict, Any, Optional
 from nicegui import ui
 import nice_design as nice
+import copy
 from nice_design.core.engine import ThemeEngine
-from nice_design.core.presets import SOLARIZED_PALETTE, SOLARIZED_SEMANTICS, STANDARD_SHAPE, STANDARD_TEXTURE, STANDARD_LAYOUT, STANDARD_ANIMATION, STANDARD_TYPO
+from nice_design.core.presets import SOLARIZED_PALETTE, STANDARD_TEXTURE, STANDARD_LAYOUT, STANDARD_TYPO
 
 # 1. Initialize the Theme Engine
 engine = ThemeEngine()
 
-# Create custom shape and texture to demonstrate the new systems
-custom_shape = STANDARD_SHAPE
-custom_shape.roundness = 1.2
-custom_shape.base_border = 1     # 1px base
-
+# Create custom texture (includes shape) to demonstrate the new systems
 custom_texture = STANDARD_TEXTURE
+custom_texture.roundness = 1.2
+custom_texture.border_width = 1     
 custom_texture.texture_cls = 'texture-glossy'
 custom_texture.shadow_intensity = 1.2 # Stronger shadows
+custom_texture.highlight_intensity = 1.1 # Subtle highlight
 
-# Create custom layout (user-adjustable via slider)
+# Create custom layout (includes animation)
 custom_layout = STANDARD_LAYOUT
 custom_layout.base_space = 1.0
+custom_layout.transition_speed = 0.6  # Slower, more dramatic transitions
 
-# Create custom animation (user-adjustable via slider)
-custom_animation = STANDARD_ANIMATION
-custom_animation.transition_speed = 0.6  # Slower, more dramatic transitions
-
-# Customize the palette and semantics
+# Customize the palette
 custom_palette = SOLARIZED_PALETTE
-custom_semantics = SOLARIZED_SEMANTICS
 # Let's make the shadow a dark blue tint instead of pure black
-custom_semantics.shadow = "#001a21" 
+custom_palette.shadow = "#001a21" 
 
-theme = engine.compile(custom_palette, custom_semantics, custom_shape, custom_texture, custom_layout, custom_animation, STANDARD_TYPO)
+# Compile 4 pillar theme
+theme = engine.compile(custom_palette, custom_texture, STANDARD_TYPO, custom_layout)
 
 # 2. Setup the Design System
 nice.setup(theme)
 
 # Handle Theme Change
-def handle_theme_change(e):
-    # Compile a new theme from the changed components
+def handle_theme_change(e: Dict[str, Any]):
+    # Compile a new theme from the 4 categorical pillars
     new_theme = engine.compile(
         palette=e['palette'],
-        semantics=e['semantics'],
-        shape=e['shape'],
         texture=e['texture'],
-        layout=e['layout'],
-        animation=STANDARD_ANIMATION,
-        typo=e['typography']
+        typo=e['typography'],
+        layout=e['layout']
     )
     # Apply it globally
     nice.apply_theme(new_theme)
@@ -52,117 +47,54 @@ def handle_theme_change(e):
 # 3. Build the UI
 with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
     
-    # New Molecule: Theme Selector
+    # New Molecule: Theme Selector (Powered by 4 categories)
     nice.theme_selector(on_change=handle_theme_change)
 
     
     # Theme Icon Showcase (Comprehensive)
     with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
         ui.label('Theme Icon').classes('text-sm font-bold uppercase opacity-40')
-        ui.label('Complete visual representation combining palette, shape, and texture').classes('text-xs opacity-60 text-center')
+        ui.label('Complete visual representation combining the 4 pillars').classes('text-xs opacity-60 text-center')
         
         with ui.row().classes('nd-gap-xl items-center'):
-            # Different sizes
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="16px")
-                ui.label('16px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="24px")
-                ui.label('24px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="32px")
-                ui.label('32px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="48px")
-                ui.label('48px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="64px")
-                ui.label('64px').classes('text-xs opacity-40')
+            # different sizes
+            for s in ["16px", "24px", "32px", "48px", "64px"]:
+                with ui.column().classes('items-center nd-gap-xs'):
+                    nice.theme_icon(custom_palette, custom_texture, size=s)
+                    ui.label(s).classes('text-xs opacity-40')
     
     # Palette Icon Showcase
     with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
         ui.label('Palette Icon').classes('text-sm font-bold uppercase opacity-40')
-        ui.label('Visual representation of the current theme\'s color palette').classes('text-xs opacity-60 text-center')
+        ui.label('Visual representation of the Palette pillar').classes('text-xs opacity-60 text-center')
         
         with ui.row().classes('nd-gap-xl items-center'):
-            # Different sizes
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.palette_icon(custom_palette, custom_semantics, size="16px")
-                ui.label('16px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.palette_icon(custom_palette, custom_semantics, size="24px")
-                ui.label('24px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.palette_icon(custom_palette, custom_semantics, size="32px")
-                ui.label('32px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.palette_icon(custom_palette, custom_semantics, size="48px")
-                ui.label('48px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.palette_icon(custom_palette, custom_semantics, size="64px")
-                ui.label('64px').classes('text-xs opacity-40')
+            for s in ["16px", "24px", "32px", "48px", "64px"]:
+                with ui.column().classes('items-center nd-gap-xs'):
+                    nice.palette_icon(custom_palette, size=s)
+                    ui.label(s).classes('text-xs opacity-40')
     
     # Texture Icon Showcase
     with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
         ui.label('Texture Icon').classes('text-sm font-bold uppercase opacity-40')
-        ui.label('Visual representation of the texture\'s surface properties').classes('text-xs opacity-60 text-center')
+        ui.label('Visual representation of the Texture pillar').classes('text-xs opacity-60 text-center')
         
         with ui.row().classes('nd-gap-xl items-center'):
-            # Different sizes
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.texture_icon(custom_texture, size="16px")
-                ui.label('16px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.texture_icon(custom_texture, size="24px")
-                ui.label('24px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.texture_icon(custom_texture, size="32px")
-                ui.label('32px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.texture_icon(custom_texture, size="48px")
-                ui.label('48px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.texture_icon(custom_texture, size="64px")
-                ui.label('64px').classes('text-xs opacity-40')
+            for s in ["16px", "24px", "32px", "48px", "64px"]:
+                with ui.column().classes('items-center nd-gap-xs'):
+                    nice.texture_icon(custom_texture, size=s)
+                    ui.label(s).classes('text-xs opacity-40')
     
     # Shape Icon Showcase
     with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
         ui.label('Shape Icon').classes('text-sm font-bold uppercase opacity-40')
-        ui.label('Visual representation of the shape\'s geometric properties').classes('text-xs opacity-60 text-center')
+        ui.label('Geometric properties (now part of Texture pillar)').classes('text-xs opacity-60 text-center')
         
         with ui.row().classes('nd-gap-xl items-center'):
-            # Different sizes
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.shape_icon(custom_shape, size="16px")
-                ui.label('16px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.shape_icon(custom_shape, size="24px")
-                ui.label('24px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.shape_icon(custom_shape, size="32px")
-                ui.label('32px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.shape_icon(custom_shape, size="48px")
-                ui.label('48px').classes('text-xs opacity-40')
-            
-            with ui.column().classes('items-center nd-gap-xs'):
-                nice.shape_icon(custom_shape, size="64px")
-                ui.label('64px').classes('text-xs opacity-40')
+             for s in ["16px", "24px", "32px", "48px", "64px"]:
+                with ui.column().classes('items-center nd-gap-xs'):
+                    nice.shape_icon(custom_texture, size=s)
+                    ui.label(s).classes('text-xs opacity-40')
 
     # Component Demo: SelectButton
     with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
@@ -206,9 +138,6 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
              ui.label('Standard Slider').classes('text-xs opacity-60')
              nice.slider(min=0, max=100, value=50).props('label-always color="primary"')
              
-         ui.separator().classes('my-2 opacity-10')
-
-
          ui.separator().classes('my-2 opacity-10')
          
          # Split Slider
@@ -279,24 +208,15 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
          ui.label('Using Generic Components (Theme Icon) as Icons').classes('text-xs opacity-60 text-center')
          
          # --- Select Button with Changing Icon ---
-         # State generic container
          current_theme_var = {'name': 'Theme 1'}
          
-         # Builders for different themes
-         def render_icon_1():
-             nice.theme_icon(custom_palette, custom_semantics, custom_shape, custom_texture, size="24px")
-             
-         def render_icon_2():
-             # Variation: Circle shape
-             s = STANDARD_SHAPE
-             s.roundness = 2.0
-             nice.theme_icon(custom_palette, custom_semantics, s, custom_texture, size="24px")
-
          def render_current_icon():
              if current_theme_var['name'] == 'Theme 1':
-                 render_icon_1()
+                 nice.theme_icon(custom_palette, custom_texture, size="24px")
              else:
-                 render_icon_2()
+                 t = copy.deepcopy(custom_texture)
+                 t.roundness = 2.0
+                 nice.theme_icon(custom_palette, t, size="24px")
 
          with ui.row().classes('w-full items-center justify-between'):
              ui.label('Select Button').classes('opacity-60 font-medium')
@@ -310,53 +230,35 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
                      nice.menu_item('Theme 1', on_click=lambda: (
                          current_theme_var.update({'name': 'Theme 1'}), 
                          btn.set_label('Theme 1'), 
-                         btn.refresh(), # Re-renders custom builder
+                         btn.refresh(), 
                          btn.toggle_rotation()
                      ))
                      nice.menu_item('Theme 2', on_click=lambda: (
                          current_theme_var.update({'name': 'Theme 2'}), 
                          btn.set_label('Theme 2'), 
-                         btn.refresh(), # Re-renders custom builder 
+                         btn.refresh(), 
                          btn.toggle_rotation()
                      ))
 
          # --- Select Input with Custom Option Icons ---
-         # Now we can inject generic component HTML directly into the options using the 'html' property.
-         
-         # Helper to generate HTML using the component's static method
          def get_icon_html_1():
-             return nice.theme_icon.to_html(custom_palette, custom_semantics, custom_shape, custom_texture, size="24px")
+             return nice.theme_icon.to_html(custom_palette, custom_texture, size="24px")
              
          def get_icon_html_2():
              import copy
-             s = copy.deepcopy(STANDARD_SHAPE)
-             s.roundness = 2.0 # Circle
-             return nice.theme_icon.to_html(custom_palette, custom_semantics, s, custom_texture, size="24px")
+             t = copy.deepcopy(custom_texture)
+             t.roundness = 2.0 # Circle
+             return nice.theme_icon.to_html(custom_palette, t, size="24px")
 
          with ui.row().classes('w-full items-center justify-between'):
              ui.label('Select Input').classes('opacity-60 font-medium')
              
-             # Pass 'html' in options. The 'selected-item' and 'option' slots in select.py will handle rendering.
              nice.select(
                  options={
                     'Theme 1': {'label': 'Theme 1', 'html': get_icon_html_1()},
                     'Theme 2': {'label': 'Theme 2', 'html': get_icon_html_2()}
                  },
                  value='Theme 1'
-             ).classes('w-[180px]')
-
-         # --- Select Input with Font Preview ---
-         with ui.row().classes('w-full items-center justify-between'):
-             ui.label('Font Select').classes('opacity-60 font-medium')
-             nice.select(
-                 options={
-                     'Inter': {'label': 'Inter', 'value': 'Inter', 'font': 'Inter'},
-                     'Roboto': {'label': 'Roboto', 'value': 'Roboto', 'font': 'Roboto'},
-                     'Monospace': {'label': 'Monospace', 'value': 'Monospace', 'font': 'monospace'},
-                     'Serif': {'label': 'Serif', 'value': 'Serif', 'font': 'serif'},
-                     'Cursive': {'label': 'Cursive', 'value': 'Cursive', 'font': 'cursive'},
-                 },
-                 value='Inter'
              ).classes('w-[180px]')
 
 ui.run(title='Nice Design Tokens', reload=False, show=False)

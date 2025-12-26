@@ -7,6 +7,7 @@ class texture_icon(ui.element):
     A custom HTML/CSS icon that displays a visual representation of a texture.
     Features a circle styled like a card showing the texture's visual properties
     (opacity, shadows, glossy/flat effects).
+    (Category: Texture)
     """
     def __init__(
         self, 
@@ -37,10 +38,10 @@ class texture_icon(ui.element):
                 ''')
             else:
                 # Solid background
-                circle.style('background: var(--nd-background-2);')
+                circle.style('background: var(--nd-surface-layer);')
             
             # Apply shadows based on intensity
-            if texture.shadows and texture.shadow_intensity > 0:
+            if texture.shadows_enabled and texture.shadow_intensity > 0:
                 shadow_size = 'md'
                 if texture.shadow_intensity > 1.5:
                     shadow_size = 'xl'
@@ -60,7 +61,7 @@ class texture_icon(ui.element):
                 transition: all var(--nd-transition-speed) ease;
             ''')
             
-            # Add hover effect to show transition
+            # Add hover effect
             circle.classes('-nd-c-texture-icon__circle--interactive')
 
     @staticmethod
@@ -77,10 +78,10 @@ class texture_icon(ui.element):
         if texture.opacity < 1.0:
             circle_style += f'background: rgba(128, 128, 128, {texture.opacity}); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);'
         else:
-             circle_style += 'background: var(--nd-background-2);'
+             circle_style += 'background: var(--nd-surface-layer);'
              
         # Shadows
-        if texture.shadows and texture.shadow_intensity > 0:
+        if texture.shadows_enabled and texture.shadow_intensity > 0:
             shadow_size = 'md'
             if texture.shadow_intensity > 1.5:
                 shadow_size = 'xl'
@@ -100,5 +101,3 @@ class texture_icon(ui.element):
         circle_html = f'<div class="-nd-c-texture-icon__circle {texture.texture_cls}" style="{circle_style}"></div>'
         
         return f'<div class="-nd-c-texture-icon" style="{wrapper_style}">{circle_html}</div>'
-
-

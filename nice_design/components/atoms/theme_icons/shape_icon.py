@@ -1,15 +1,16 @@
 from nicegui import ui
 from typing import Optional
-from ....core.definitions import Shape
+from ....core.definitions import Texture
 
 class shape_icon(ui.element):
     """
     A custom HTML/CSS icon that displays a visual representation of a shape.
     Features a geometric element showing roundness and border width properties.
+    (Category: Texture)
     """
     def __init__(
         self, 
-        shape: Shape,
+        texture: Texture,
         *, 
         size: str = "24px"
     ):
@@ -24,21 +25,17 @@ class shape_icon(ui.element):
             shape_elem = ui.element('div').classes('-nd-c-shape-icon__element')
             
             # Calculate border radius based on roundness
-            # roundness = 0.0 -> sharp (no radius)
-            # roundness = 1.0 -> standard (medium radius)
-            # roundness = 2.0+ -> very round (approaching circle)
-            
-            if shape.roundness == 0:
+            if texture.roundness == 0:
                 border_radius = '0'
-            elif shape.roundness >= 2.0:
+            elif texture.roundness >= 2.0:
                 border_radius = '50%'  # Circle
             else:
                 # Scale between 0% and 50%
-                radius_percent = (shape.roundness / 2.0) * 50
+                radius_percent = (texture.roundness / 2.0) * 50
                 border_radius = f'{radius_percent}%'
             
-            # Apply border width (use base_border to determine thickness)
-            border_width = f'{shape.base_border}px'
+            # Apply border width
+            border_width = f'{texture.border_width}px'
             
             # Style the element
             shape_elem.style(f'''

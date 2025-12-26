@@ -1,0 +1,6 @@
+theme:
+  name: nice-solarized
+  palette: solarized
+  texture: frosted
+  font: standard
+  layout: rounded-standard
