@@ -136,9 +136,9 @@ class theme_selector(ui.element):
                                     with ui.row().classes('w-full justify-center mb-4'):
                                         multi_button(
                                             options=[
-                                                {'icon': 'mdi-white-balance-sunny', 'value': 'light', 'color': '#ff9800'}, # Orange
-                                                {'icon': 'mdi-brightness-auto', 'value': 'auto', 'color': '#9e9e9e'},     # Grey
-                                                {'icon': 'mdi-moon-waning-crescent', 'value': 'dark', 'color': '#2196f3'}  # Blue
+                                                {'icon': 'mdi-white-balance-sunny', 'value': 'light', 'color': 'var(--nd-color-orange)'},
+                                                {'icon': 'mdi-brightness-auto', 'value': 'auto', 'color': 'var(--nd-content-subtle)'},
+                                                {'icon': 'mdi-moon-waning-crescent', 'value': 'dark', 'color': 'var(--nd-color-blue)'}
                                             ],
                                             value=self._current_mode,
                                             on_change=self._update_theme_mode
@@ -146,7 +146,7 @@ class theme_selector(ui.element):
                                     
                                     # Primary Accent
                                     ui.label('Primary Accent').classes('text-xs opacity-60 font-bold mb-1')
-                                    palette_slider(
+                                    self._primary_accent_slider = palette_slider(
                                         colors=list(self._palette.colors.values()) or ["#002b36", "#fdf6e3"],
                                         value=self._palette.primary,
                                         on_change=self._update_primary_accent
@@ -154,7 +154,7 @@ class theme_selector(ui.element):
 
                                     # Secondary Accent
                                     ui.label('Secondary Accent').classes('text-xs opacity-60 font-bold mb-1')
-                                    palette_slider(
+                                    self._secondary_accent_slider = palette_slider(
                                         colors=list(self._palette.colors.values()) or ["#002b36", "#fdf6e3"],
                                         value=self._palette.secondary,
                                         on_change=self._update_secondary_accent
@@ -220,8 +220,8 @@ class theme_selector(ui.element):
                                             step=0.1,
                                             value_left=self._texture.shadow_intensity, 
                                             value_right=self._texture.highlight_intensity, 
-                                            color_left=self._palette.surface_overlay,
-                                            color_right=self._palette.content_subtle,
+                                            color_left='var(--nd-primary)',
+                                            color_right='var(--nd-secondary)',
                                             on_change=self._update_intensities
                                         )
 
@@ -233,8 +233,8 @@ class theme_selector(ui.element):
                                             ui.label('Border').classes('text-xs opacity-60')
                                             self._border_label = ui.label(f'{self._texture.border_width}px').classes('text-xs font-bold')
                                             
-                                        self._border_slider = ui.slider(min=0, max=4, step=1, value=self._texture.border_width,
-                                                  on_change=self._update_border).props('markers snap color="primary" label :label-value="modelValue + \'px\'"')
+                                        self._border_slider = slider(min=0, max=4, step=1, value=self._texture.border_width,
+                                                  on_change=self._update_border).props('markers snap label :label-value="modelValue + \'px\'"')
 
                                     # Roundness (Geometric)
                                     with ui.column().classes('w-full nd-gap-xs'):
@@ -242,8 +242,8 @@ class theme_selector(ui.element):
                                             ui.label('Roundness').classes('text-xs opacity-60')
                                             self._roundness_label = ui.label(f'{self._texture.roundness:.1f}').classes('text-xs font-bold')
                                             
-                                        self._roundness_slider = ui.slider(min=0, max=2.5, step=0.1, value=self._texture.roundness, 
-                                                  on_change=self._update_roundness).props('label color="primary" :label-value="modelValue.toFixed(1)"')
+                                        self._roundness_slider = slider(min=0, max=2.5, step=0.1, value=self._texture.roundness, 
+                                                  on_change=self._update_roundness).props('label :label-value="modelValue.toFixed(1)"')
 
                             # --- D. Typography Submenu ---
                             with select_button(icon='mdi-format-font', icon_only=True) as btn_typo:
@@ -280,7 +280,7 @@ class theme_selector(ui.element):
                                             self._scale_label = ui.label(f'{self._typography.scale_ratio:.2f}').classes('text-xs font-bold')
                                             
                                         self._scale_slider = slider(min=1.0, max=1.6, step=0.05, value=self._typography.scale_ratio,
-                                                  on_change=self._update_text_scale).props('label color="primary" :label-value="modelValue.toFixed(2)"')
+                                                  on_change=self._update_text_scale).props('label :label-value="modelValue.toFixed(2)"')
 
                                     # Title Capitalization
                                     with ui.column().classes('w-full nd-gap-xs mt-2'):
@@ -291,8 +291,8 @@ class theme_selector(ui.element):
                                             curr_tf_int = tf_val_map.get(self._typography.title_transform, 1)
                                             self._tf_label = ui.label(tf_map_rev.get(curr_tf_int)).classes('text-xs font-bold')
                                             
-                                        self._tf_slider = ui.slider(min=0, max=3, step=1, value=curr_tf_int,
-                                                  on_change=self._update_capitalization).props('markers snap color="primary" label :label-value="[\'lower\', \'none\', \'title\', \'ALL\'][modelValue]"')
+                                        self._tf_slider = slider(min=0, max=3, step=1, value=curr_tf_int,
+                                                  on_change=self._update_capitalization).props('markers snap label :label-value="[\'lower\', \'none\', \'title\', \'ALL\'][modelValue]"')
 
                             # --- E. Layout Submenu ---
                             with select_button(icon='mdi-view-quilt', icon_only=True) as btn_layout:
@@ -318,7 +318,7 @@ class theme_selector(ui.element):
                                             self._spacing_label = ui.label(f'{self._layout.base_space:.1f}x').classes('text-xs font-bold')
                                             
                                         self._spacing_slider = slider(min=0.5, max=2.0, step=0.1, value=self._layout.base_space,
-                                                  on_change=self._update_spacing).props('label color="primary" :label-value="modelValue.toFixed(1) + \'x\'"')
+                                                  on_change=self._update_spacing).props('label :label-value="modelValue.toFixed(1) + \'x\'"')
 
     def _update_theme_bundle(self, bundle_name):
         """Applies a named 'Theme' bundle (combination of 4 pillars)."""
@@ -338,9 +338,14 @@ class theme_selector(ui.element):
 
     def _update_palette(self, value):
         if value:
-            p = nice.registry.get_palette(value)
+            self._current_palette_name = value
+            # Respect current effective mode
+            effective_mode = self._current_mode
+            if effective_mode == 'auto':
+                effective_mode = 'dark' # Default for auto in selector for now
+            
+            p = nice.registry.get_palette(value, mode=effective_mode)
             if p:
-                self._current_palette_name = value
                 self._palette = copy.deepcopy(p)
                 self._refresh_components()
             
@@ -365,15 +370,15 @@ class theme_selector(ui.element):
         # Try to find the matching palette in the registry for the target mode
         p = nice.registry.get_palette(self._current_palette_name, mode=effective_mode)
         if p:
-             # Store customized accents before swapping
-             old_primary = self._palette.primary
-             old_secondary = self._palette.secondary
+             # Store current active accents to preserve them across mode swaps
+             active_primary = self._palette.primary
+             active_secondary = self._palette.secondary
              
              self._palette = copy.deepcopy(p)
              
-             # Restore customized accents
-             self._palette.primary = old_primary
-             self._palette.secondary = old_secondary
+             # Re-apply active accents
+             self._palette.primary = active_primary
+             self._palette.secondary = active_secondary
              
         self._refresh_components()
         
@@ -475,7 +480,13 @@ class theme_selector(ui.element):
             self._shadow_label.text = f'{self._texture.shadow_intensity:.1f}'
             self._highlight_label.text = f'{self._texture.highlight_intensity:.1f}'
             # Update colors (from current palette)
-            self._effect_slider.set_colors(self._palette.surface_overlay, self._palette.content_subtle)
+            self._effect_slider.set_colors('var(--nd-primary)', 'var(--nd-secondary)')
+
+        if hasattr(self, '_primary_accent_slider'):
+            self._primary_accent_slider.set_colors(list(self._palette.colors.values()), value=self._palette.primary)
+        
+        if hasattr(self, '_secondary_accent_slider'):
+            self._secondary_accent_slider.set_colors(list(self._palette.colors.values()), value=self._palette.secondary)
 
         if hasattr(self, '_border_slider'):
             self._border_slider.value = self._texture.border_width

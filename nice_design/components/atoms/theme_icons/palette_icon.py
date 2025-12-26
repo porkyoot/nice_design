@@ -55,7 +55,13 @@ class palette_icon(ui.element):
         import math
         # Draw the 8 colored arcs
         for color_name in colors:
-            color = colors.get(color_name, '#888888')
+            try:
+                color = colors.get(color_name, '#888888')
+            except AttributeError:
+                # Debugging: colors might not be a dict
+                # We don't have the palette name here easily, but we can see the type
+                print(f"CRITICAL ERROR in palette_icon: colors is {type(colors)} not dict. Value: {repr(colors)}")
+                color = '#888888'
             
             # Calculate start and end angles (in degrees, starting from top)
             start_angle = i * segment_angle - 90  # -90 to start from top

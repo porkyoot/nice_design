@@ -33,8 +33,8 @@ class select(ui.select):
             self._setup_rich_slots()
             self.props(r':option-label="(opt) => opt.label && opt.label.label ? opt.label.label : (opt.label || opt)"')
             
-        # Apply styling
-        self.props('outlined rounded standout="bg-primary text-on-primary" popup-content-class="-nd-c-select-menu"')
+        # Apply styling (standout enables highlighted state, CSS handles colors)
+        self.props('outlined rounded standout popup-content-class="-nd-c-select-menu"')
         self.classes('-nd-c-select')
         
         # Setup search/filter

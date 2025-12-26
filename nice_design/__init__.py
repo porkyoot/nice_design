@@ -114,6 +114,16 @@ def apply_theme(theme: CompiledTheme, initial: bool = False):
             for (const [key, value] of Object.entries(vars)) {{
                 root.style.setProperty(key, value);
             }}
+            
+            // Sync Quasar brand colors with our theme
+            const primaryColor = getComputedStyle(root).getPropertyValue('--nd-primary').trim();
+            const secondaryColor = getComputedStyle(root).getPropertyValue('--nd-secondary').trim();
+            if (primaryColor) {{
+                root.style.setProperty('--q-primary', primaryColor);
+            }}
+            if (secondaryColor) {{
+                root.style.setProperty('--q-secondary', secondaryColor);
+            }}
         ''')
         
         # Update body classes for texture

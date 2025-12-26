@@ -15,8 +15,9 @@ class multi_button(ui.element):
         on_change: Optional[Callable] = None
     ):
         super().__init__('div')
-        # Cohesive container with items-stretch for full-height buttons
-        self.classes('flex items-stretch nd-rounded-md overflow-hidden border border-white/10 nd-gap-0 w-fit h-9')
+        # Cohesive container
+        self.classes('flex items-stretch nd-rounded-md overflow-hidden nd-border-sm nd-gap-0 w-fit h-9')
+        self.style('border-color: color-mix(in srgb, var(--nd-content-main), transparent 80%) !important;')
         self._value = value
         self.on_change = on_change
         self._btn_data: Dict[Any, Dict] = {}
@@ -71,7 +72,9 @@ class multi_button(ui.element):
                 b.props('unelevated')
                 b.props(remove='flat outline')
                 b.classes('-nd-c-btn--primary').classes(remove='-nd-c-btn--ghost')
-                b.style(f'color: white !important; background-color: {bg_color} !important; opacity: 1 !important')
+                
+                # Use a high-contrast theme color for text on the accent background
+                b.style(f'color: var(--nd-surface-base) !important; background-color: {bg_color} !important; opacity: 1 !important')
             else:
                 # Inactive: Flat/Ghost, transparent background
                 b.props('flat')

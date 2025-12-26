@@ -1,26 +1,14 @@
 - name: flat_ui
   mode: light
   colors:
-    turquoise: "#1ABC9C"
-    greensea: "#16A085"
-    emerald: "#2ECC71"
-    nephritis: "#27AE60"
-    peterriver: "#3498DB"
-    belizehole: "#2980B9"
-    amethyst: "#9B59B6"
-    wisteria: "#8E44AD"
-    wetasphalt: "#34495E"
-    midnightblue: "#2C3E50"
-    sunflower: "#F1C40F"
-    orange: "#F39C12"
-    carrot: "#E67E22"
-    pumpkin: "#D35400"
-    alizarin: "#E74C3C"
-    pomegranate: "#C0392B"
-    clouds: "#ECF0F1"
-    silver: "#BDC3C7"
-    concrete: "#95A5A6"
-    asbestos: "#7F8C8D"
+    yellow: "#F1C40F"    # Sun Flower
+    orange: "#F39C12"    # Orange
+    red: "#E74C3C"       # Alizarin
+    magenta: "#C0392B"   # Pomegranate
+    violet: "#9B59B6"    # Amethyst
+    blue: "#3498DB"      # Peter River
+    cyan: "#1ABC9C"      # Turquoise
+    green: "#2ECC71"     # Emerald
 
   primary: "#3498DB"       # Peter River
   on_primary: "#ECF0F1"    # Clouds
@@ -28,8 +16,8 @@
   on_secondary: "#2C3E50"  # Midnight Blue
 
   surface_base: "#ECF0F1"    # Clouds
-  surface_layer: "#BDC3C7"   # Silver
-  surface_overlay: "#95A5A6" # Concrete
+  surface_layer: "#FFFFFF"   # White
+  surface_overlay: "#BDC3C7" # Silver
 
   content_main: "#2C3E50"    # Midnight Blue
   content_muted: "#34495E"   # Wet Asphalt
@@ -50,26 +38,14 @@
 - name: flat_ui
   mode: dark
   colors:
-    turquoise: "#1ABC9C"
-    greensea: "#16A085"
-    emerald: "#2ECC71"
-    nephritis: "#27AE60"
-    peterriver: "#3498DB"
-    belizehole: "#2980B9"
-    amethyst: "#9B59B6"
-    wisteria: "#8E44AD"
-    wetasphalt: "#34495E"
-    midnightblue: "#2C3E50"
-    sunflower: "#F1C40F"
-    orange: "#F39C12"
-    carrot: "#E67E22"
-    pumpkin: "#D35400"
-    alizarin: "#E74C3C"
-    pomegranate: "#C0392B"
-    clouds: "#ECF0F1"
-    silver: "#BDC3C7"
-    concrete: "#95A5A6"
-    asbestos: "#7F8C8D"
+    yellow: "#F1C40F"    # Sun Flower
+    orange: "#E67E22"    # Carrot
+    red: "#E74C3C"       # Alizarin
+    magenta: "#C0392B"   # Pomegranate
+    violet: "#8E44AD"    # Wisteria
+    blue: "#2980B9"      # Belize Hole
+    cyan: "#16A085"      # Green Sea
+    green: "#27AE60"     # Nephritis
 
   primary: "#2980B9"       # Belize Hole
   on_primary: "#ECF0F1"    # Clouds

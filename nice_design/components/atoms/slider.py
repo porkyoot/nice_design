@@ -7,6 +7,7 @@ class slider(ui.slider):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Quasar 'primary' is now globally mapped to var(--nd-primary) in CSS
         self.props('color="primary" label')
         self.classes('w-full')
 
@@ -52,8 +53,8 @@ class split_slider(ui.element):
                 # 'reverse' prop makes 0 be at the right side.
                 self.slider_left.props(f'reverse label track-size="4px" thumb-size="16px" :label-value="modelValue.toFixed(1)"')
                 
-                # Apply color (handle hex)
-                if color_left.startswith('#'):
+                # Apply color (handle hex or var)
+                if color_left.startswith('#') or color_left.startswith('var('):
                     self.slider_left.props(f':active-color="\'{color_left}\'" :thumb-color="\'{color_left}\'" :track-color="\'{color_left}\'"')
                 else:
                     self.slider_left.props(f'color="{color_left}"')
@@ -69,8 +70,8 @@ class split_slider(ui.element):
                 self.slider_right = ui.slider(min=0, max=limit, step=step, value=value_right, on_change=self._handle_change_right)
                 self.slider_right.props(f'label track-size="4px" thumb-size="16px" :label-value="modelValue.toFixed(1)"')
                 
-                # Apply color (handle hex)
-                if color_right.startswith('#'):
+                # Apply color (handle hex or var)
+                if color_right.startswith('#') or color_right.startswith('var('):
                     self.slider_right.props(f':active-color="\'{color_right}\'" :thumb-color="\'{color_right}\'" :track-color="\'{color_right}\'"')
                 else:
                     self.slider_right.props(f'color="{color_right}"')
@@ -98,7 +99,7 @@ class split_slider(ui.element):
             # Clear old color props
             # Quasar props are additive in NiceGUI unless we are careful, 
             # but setting color="new" or :active-color="new" usually overrides.
-            if c.startswith('#'):
+            if c.startswith('#') or c.startswith('var('):
                 s.props(f':active-color="\'{c}\'" :thumb-color="\'{c}\'" :track-color="\'{c}\'"')
             else:
                 s.props(f'color="{c}"')
@@ -135,6 +136,8 @@ class palette_slider(ui.element):
         self._render_items()
 
     def _render_items(self):
+        self.clear()
+        self._items = {}
         with self:
             for color in self._colors:
                 # We use specific flex styles for animation
@@ -164,14 +167,28 @@ class palette_slider(ui.element):
         if value == self._value:
             return
         if value not in self._items:
-            # If for some reason the value is not in our keys (e.g. hex case difference), try to find it or ignore
-            # Simple check:
+            # If the value is not in our keys, try to find it or ignore
             if value not in self._colors:
                 return
             
         self._value = value
-        
-        # Update styles efficiently
+        self._update_selection_visuals()
+                
+        if self._on_change:
+            self._on_change(value)
+
+    def set_colors(self, colors: list, value: Optional[str] = None):
+        """Updates the available colors and optionally the current value."""
+        self._colors = colors
+        if value:
+            self._value = value
+        elif self._value not in colors:
+            self._value = colors[0] if colors else None
+            
+        self._render_items()
+
+    def _update_selection_visuals(self):
+        """Updates the transition and selection indicators without full re-render."""
         for color, item in self._items.items():
             item.clear() # Remove any indicators
             
@@ -182,7 +199,4 @@ class palette_slider(ui.element):
             else:
                 # Contract
                 item.style(f'background-color: {color}; flex: 1;')
-                
-        if self._on_change:
-            self._on_change(value)
 
