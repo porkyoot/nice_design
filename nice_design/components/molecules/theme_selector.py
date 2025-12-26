@@ -8,6 +8,7 @@ from nice_design.components.atoms.select import select
 from nice_design.components.atoms.theme_icons.theme_icon import theme_icon
 from nice_design.components.atoms.theme_icons.palette_icon import palette_icon
 from nice_design.components.atoms.theme_icons.texture_icon import texture_icon
+from nice_design.core.fonts import FontManager
 
 from nice_design.core.presets import (
     SOLARIZED_PALETTE, 
@@ -44,6 +45,9 @@ class theme_selector(ui.element):
         self._texture = copy.deepcopy(nice.registry.get_texture('standard') or STANDARD_TEXTURE)
         self._typography = copy.deepcopy(nice.registry.get_typography('Inter') or STANDARD_TYPO)
         self._layout = copy.deepcopy(nice.registry.get_layout('standard') or STANDARD_LAYOUT)
+        
+        # 3. Dynamic Font Data
+        self._all_font_opts = FontManager.get_font_options(nice.registry.list_typographies())
         
         self._render()
 
@@ -124,7 +128,7 @@ class theme_selector(ui.element):
                                     # Primary Accent
                                     ui.label('Primary Accent').classes('text-xs opacity-60 font-bold mb-1')
                                     palette_slider(
-                                        colors=list(self._palette.colors.values()) or ["#000000", "#ffffff"],
+                                        colors=list(self._palette.colors.values()) or ["#002b36", "#fdf6e3"],
                                         value=self._palette.primary,
                                         on_change=self._update_primary_accent
                                     )
@@ -132,7 +136,7 @@ class theme_selector(ui.element):
                                     # Secondary Accent
                                     ui.label('Secondary Accent').classes('text-xs opacity-60 font-bold mb-1')
                                     palette_slider(
-                                        colors=list(self._palette.colors.values()) or ["#000000", "#ffffff"],
+                                        colors=list(self._palette.colors.values()) or ["#002b36", "#fdf6e3"],
                                         value=self._palette.secondary,
                                         on_change=self._update_secondary_accent
                                     )
@@ -223,19 +227,14 @@ class theme_selector(ui.element):
                                 with menu().classes('min-w-[240px] nd-p-md nd-gap-md'):
                                     ui.label('Typography').classes('text-xs font-bold opacity-60 mb-2')
                                     
-                                    font_opts = {}
-                                    for name in fonts:
-                                       typo = nice.registry.get_typography(name)
-                                       if typo:
-                                           font_opts[name] = {'label': name, 'value': name, 'font': typo.font_main}
-
-                                    f_val = self._current_font_name if self._current_font_name in font_opts else (next(iter(font_opts.keys())) if font_opts else None)
+                                    f_val = self._current_font_name if self._current_font_name in self._all_font_opts else (next(iter(self._all_font_opts.keys())) if self._all_font_opts else None)
 
                                     self._font_select = select(
-                                        options=font_opts,
+                                        options=self._all_font_opts,
                                         value=f_val,
                                         label='Primary Font',
-                                        on_change=lambda e: self._update_font(e.value)
+                                        on_change=lambda e: self._update_font(e.value),
+                                        on_filter=self._filter_fonts
                                     ).classes('w-full')
 
                                     ui.separator().classes('opacity-10 my-1')
@@ -347,10 +346,24 @@ class theme_selector(ui.element):
     def _update_font(self, value):
         if value:
             self._current_font_name = value
+            # 1. Load font if it's a Google Font
+            FontManager.load_font(value)
+            
+            # 2. Update Typography object
             typo = nice.registry.get_typography(value)
             if typo:
                 self._typography.font_main = typo.font_main
-                self._refresh_components()
+            else:
+                # Fallback for Google Fonts or others not in registry
+                self._typography.font_main = f"'{value}', sans-serif"
+            
+            self._refresh_components()
+
+    def _filter_fonts(self, val: str):
+        """Filters the font options based on search input."""
+        if not val:
+            return self._all_font_opts
+        return {k: v for k, v in self._all_font_opts.items() if val in k.lower()}
 
     def _update_text_scale(self, e):
         self._typography.scale_ratio = e.value

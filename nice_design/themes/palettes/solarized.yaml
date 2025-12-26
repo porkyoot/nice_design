@@ -85,5 +85,5 @@
   info: "#268bd2"            # Blue
   on_info: "#fdf6e3"         # Base3
   
-  highlight: "#ffffff"       # Keeping pure highlight as it's often used for gloss, but could be Base3
+  highlight: "#fdf6e3"       # Base3
   shadow: "#073642"          # Base02 (Using dark solarized for shadow)
