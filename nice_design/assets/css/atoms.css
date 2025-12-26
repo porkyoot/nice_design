@@ -120,26 +120,38 @@
 }
 
 /* Input Control Background & Card-style Border */
-.-nd-c-select .q-field__control {
-    background-color: var(--nd-surface-layer) !important;
+.-nd-c-select .q-field__control,
+.-nd-c-select-button {
+    background: var(--nd-surface-layer) !important;
     border-radius: var(--nd-radius-md) !important;
+
+    /* Button Specific Setup to match Field Control */
+    min-height: 56px;
+    padding: 0 12px !important;
+    text-transform: none !important;
+    font-weight: 400 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.00937em !important;
 }
 
 /* Border enforcement for outlined mode (mimicking card border) */
-.-nd-c-select .q-field__control:before {
+.-nd-c-select .q-field__control:before,
+.-nd-c-select-button {
     border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
     transition: border-color var(--nd-transition-speed) ease;
 }
 
 /* Default State Text Colors */
 .-nd-c-select .q-field__label,
-.-nd-c-select .q-field__native {
+.-nd-c-select .q-field__native,
+.-nd-c-select-button {
     color: var(--nd-content-main) !important;
     opacity: 1 !important;
 }
 
 /* Icons: Primary Accent by Default */
-.-nd-c-select .q-icon {
+.-nd-c-select .q-icon,
+.-nd-c-select-button .q-icon {
     color: var(--nd-primary);
     /* No !important to allow prop overrides */
     opacity: 1;
@@ -147,7 +159,8 @@
 }
 
 /* Dropdown Arrow: Foreground Color (Content Main) */
-.-nd-c-select .q-select__dropdown-icon {
+.-nd-c-select .q-select__dropdown-icon,
+.-nd-c-select-button .q-icon.on-right {
     color: var(--nd-content-main) !important;
     opacity: 0.8;
 }
@@ -344,4 +357,25 @@ body {
 /* Utility Classes for Quasar Integration */
 .-nd-u-text-on-primary {
     color: var(--nd-on-primary) !important;
+}
+/* Select Button Internal Structure Alignment */
+.-nd-c-select-button .q-btn__content {
+    width: 100%;
+    justify-content: flex-start !important; /* Start, so Left Icon and Text are together */
+    flex-wrap: nowrap;
+}
+
+.-nd-c-select-button .q-icon.on-right {
+    margin-left: auto !important; /* This pushes it to the far right */
+    transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important; /* Smooth Rotation */
+}
+
+/* Hover state for Select Button to match Input hover border behavior */
+.-nd-c-select-button:hover {
+     border-color: var(--nd-content-main) !important;
+}
+
+/* Rotation State */
+.-nd-state-rotated .q-icon.on-right {
+    transform: rotate(180deg);
 }

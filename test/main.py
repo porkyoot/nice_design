@@ -145,30 +145,29 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
                 nice.shape_icon(custom_shape, size="64px")
                 ui.label('64px').classes('text-xs opacity-40')
 
-    # Component Demo: SelectMenu
+    # Component Demo: SelectButton
     with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
-         ui.label('Select Menu Component').classes('text-sm font-bold uppercase opacity-40')
-         ui.label('A new molecule combining button trigger with menu selection').classes('text-xs opacity-60 text-center')
+         ui.label('Select Button Component').classes('text-sm font-bold uppercase opacity-40')
+         ui.label('A button atom styled exactly like a Select input').classes('text-xs opacity-60 text-center')
          
          with ui.row().classes('w-full items-center justify-between'):
-             ui.label('Simple Options').classes('opacity-60 font-medium')
-             nice.select_menu(
-                 options=['Apple', 'Banana', 'Cherry'],
-                 value='Banana',
-                 on_change=lambda e: ui.notify(f'Selected: {e.value}')
-             ).classes('min-w-[120px]')
-         
+             ui.label('Default State').classes('opacity-60 font-medium')
+             nice.select_button(
+                 label='Select Option',
+                 on_click=lambda: ui.notify('Clicked Select Button')
+             ).classes('w-[180px]')
+
          with ui.row().classes('w-full items-center justify-between'):
-             ui.label('Rich Options').classes('opacity-60 font-medium')
-             nice.select_menu(
-                 options={
-                     'edit': {'label': 'Edit', 'icon': 'mdi-pencil'},
-                     'copy': {'label': 'Copy', 'icon': 'mdi-content-copy'},
-                     'delete': {'label': 'Delete', 'icon': 'mdi-delete', 'color': 'negative'}
-                 },
-                 value='edit',
-                 on_change=lambda e: ui.notify(f'Action: {e.value}')
-             ).classes('min-w-[120px]')
+             ui.label('With Menu').classes('opacity-60 font-medium')
+             btn_menu = nice.select_button(
+                 label='Open Menu',
+                 icon='menu',
+             ).classes('w-[180px]')
+             
+             with btn_menu:
+                 with nice.menu().on('hide', btn_menu.reset_rotation):
+                     nice.menu_item('Option 1', on_click=lambda: (btn_menu.set_label('Option 1'), btn_menu.toggle_rotation()))
+                     nice.menu_item('Option 2', on_click=lambda: (btn_menu.set_label('Option 2'), btn_menu.toggle_rotation()))
 
     # Layout Controls
     with nice.card().classes('w-[32rem] nd-gap-md'):
