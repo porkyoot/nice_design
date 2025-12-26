@@ -33,7 +33,7 @@ class split_slider(ui.element):
                  color_right: str = 'secondary',
                  on_change: Optional[Callable[[Dict[str, float]], None]] = None):
         super().__init__('div')
-        self.classes('relative-position w-full flex items-center justify-center my-2 gap-0 row no-wrap')
+        self.classes('relative-position w-full flex items-center justify-center my-1 gap-0 row no-wrap')
         # self.style('height: 40px;') 
 
         self._limit = limit
@@ -46,7 +46,7 @@ class split_slider(ui.element):
         
         with self:
             # --- Left Side Container ---
-            with ui.row().classes('col flex items-center justify-end relative-position px-0').style('height: 48px;'):
+            with ui.row().classes('col flex items-center justify-end relative-position px-0').style('height: 32px;'):
                 # Left Slider (Reverse Mode)
                 self.slider_left = ui.slider(min=0, max=limit, step=step, value=value_left, on_change=self._handle_change_left)
                 # 'reverse' prop makes 0 be at the right side.
@@ -64,7 +64,7 @@ class split_slider(ui.element):
             ui.element('div').classes('bg-grey-4').style('width: 2px; height: 12px; z-index: 10;')
 
             # --- Right Side Container ---
-            with ui.row().classes('col flex items-center justify-start relative-position px-0').style('height: 48px;'):
+            with ui.row().classes('col flex items-center justify-start relative-position px-0').style('height: 32px;'):
                 # Right Slider (Normal Mode)
                 self.slider_right = ui.slider(min=0, max=limit, step=step, value=value_right, on_change=self._handle_change_right)
                 self.slider_right.props(f'label track-size="4px" thumb-size="16px" :label-value="modelValue.toFixed(1)"')

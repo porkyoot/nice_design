@@ -79,10 +79,10 @@ class theme_selector(ui.element):
                 size="48px"
             )
              with ui.column().classes('nd-gap-0'):
-                 name = self._current_theme_bundle_name or "Title"
+                 name = self._current_theme_bundle_name or "Theme configuration"
                  l = ui.label(name.replace('-', ' ').title()).classes('text-lg font-bold')
                  l.tag = 'h3'
-                 ui.label('Here is some text !').classes('text-[10px] opacity-40 uppercase tracking-widest font-bold')
+                 ui.label('Preview your theme here.').classes('text-[10px] opacity-40 uppercase tracking-widest font-bold')
 
     def _render(self):
         self.clear()
@@ -112,7 +112,6 @@ class theme_selector(ui.element):
                         
                     # 2. Controls Section
                     with ui.column().classes('w-full nd-p-md nd-gap-md'):
-                        ui.label('Theme Configuration').classes('text-[10px] font-bold opacity-40 uppercase tracking-widest mb-2')
                         
                         # A. Theme Bundles (Combination Dropdown)
                         if themes:
@@ -132,7 +131,6 @@ class theme_selector(ui.element):
                                 self.btn_palette.classes('flex-1')
                                 with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
                                     m.on('hide', self.btn_palette.reset_rotation)
-                                    ui.label('Palette & Mode').classes('text-xs font-bold opacity-60 mb-2')
                                     
                                     # Theme Mode Multi-Button
                                     with ui.row().classes('w-full justify-center mb-4'):
@@ -188,7 +186,6 @@ class theme_selector(ui.element):
                                 self.btn_texture.classes('flex-1')
                                 with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
                                     m.on('hide', self.btn_texture.reset_rotation)
-                                    ui.label('Surface & Shape').classes('text-xs font-bold opacity-60 mb-2')
                                     
                                     # Texture Select
                                     texture_opts = {}
@@ -210,7 +207,7 @@ class theme_selector(ui.element):
                                     
                                     # Shadow / Highlight (Effect Intensities)
                                     with ui.column().classes('w-full nd-gap-xs mt-2'):
-                                        with ui.row().classes('w-full justify-between'):
+                                        with ui.row().classes('w-full justify-between').style('margin-bottom: -10px'):
                                             with ui.column().classes('nd-gap-0'):
                                                 ui.label('Shadow').classes('text-xs opacity-60')
                                                 self._shadow_label = ui.label(f'{self._texture.shadow_intensity:.1f}').classes('text-xs font-bold')
@@ -253,7 +250,6 @@ class theme_selector(ui.element):
                                 btn_typo.classes('flex-1')
                                 with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
                                     m.on('hide', btn_typo.reset_rotation)
-                                    ui.label('Typography').classes('text-xs font-bold opacity-60 mb-2')
                                     
                                     f_main_val = self._current_font_main_name if self._current_font_main_name in self._all_font_opts else (next(iter(self._all_font_opts.keys())) if self._all_font_opts else None)
 
@@ -303,7 +299,6 @@ class theme_selector(ui.element):
                                 btn_layout.classes('flex-1')
                                 with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
                                     m.on('hide', btn_layout.reset_rotation)
-                                    ui.label('Layout & Spacing').classes('text-xs font-bold opacity-60 mb-2')
                                     
                                     layout_opts = {name: name.title() for name in layouts}
                                     l_val = self._current_layout_name if self._current_layout_name in layout_opts else (next(iter(layout_opts.keys())) if layout_opts else None)
