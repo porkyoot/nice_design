@@ -68,11 +68,16 @@ class FontManager:
     @staticmethod
     def get_font_options(local_fonts: List[str]):
         """Returns a combined list of local and google fonts for the select component."""
+        # Import here to avoid circular dependency
+        import nice_design as nice
+        
         opts = {}
         
         # Local Fonts (Priority)
         for f in local_fonts:
-            opts[f] = {'label': f, 'value': f, 'font': f, 'icon': 'mdi-folder-outline', 'color': 'primary'}
+            typo = nice.registry.get_typography(f)
+            font_family = typo.font_main if typo else f
+            opts[f] = {'label': f, 'value': f, 'font': font_family, 'icon': 'mdi-folder-outline', 'color': 'primary'}
             
         # Google Fonts
         for f in ALL_GOOGLE_FONTS:
@@ -80,3 +85,4 @@ class FontManager:
                 opts[f] = {'label': f, 'value': f, 'font': f, 'icon': 'mdi-google', 'color': 'accent'}
                 
         return opts
+

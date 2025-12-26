@@ -82,7 +82,7 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
         with ui.row().classes('nd-gap-xl items-center'):
             for s in ["16px", "24px", "32px", "48px", "64px"]:
                 with ui.column().classes('items-center nd-gap-xs'):
-                    nice.texture_icon(custom_texture, size=s)
+                    nice.texture_icon(custom_texture, custom_palette, size=s)
                     ui.label(s).classes('text-xs opacity-40')
     
     # Shape Icon Showcase

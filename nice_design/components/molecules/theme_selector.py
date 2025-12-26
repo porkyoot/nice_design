@@ -163,7 +163,7 @@ class theme_selector(ui.element):
                                     ).classes('w-full')
                             
                             # --- C. Texture Submenu ---
-                            texture_icon_builder = lambda: texture_icon(self._texture, size="24px")
+                            texture_icon_builder = lambda: texture_icon(self._texture, self._palette, size="24px")
                             with select_button(icon_only=True, custom_icon_builder=texture_icon_builder) as self.btn_texture:
                                 self.btn_texture.classes('flex-1')
                                 with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
@@ -175,7 +175,7 @@ class theme_selector(ui.element):
                                     for name in textures:
                                         tex = nice.registry.get_texture(name)
                                         if tex:
-                                            html = texture_icon.to_html(tex, size="20px")
+                                            html = texture_icon.to_html(tex, self._palette, size="20px")
                                             texture_opts[name] = {'label': name.title(), 'html': html}
 
                                     t_val = self._current_texture_name if self._current_texture_name in texture_opts else (next(iter(texture_opts.keys())) if texture_opts else None)

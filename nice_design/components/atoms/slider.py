@@ -107,8 +107,8 @@ class palette_slider(ui.element):
                  on_change: Optional[Callable[[str], None]] = None):
         super().__init__('div')
         # Container styling
-        self.classes('relative w-full rounded-full overflow-hidden flex row no-wrap shadow-sm cursor-pointer')
-        self.style(f'height: {height};')
+        self.classes('relative w-full rounded-full overflow-hidden flex row no-wrap cursor-pointer')
+        self.style(f'height: {height}; box-shadow: var(--nd-shadow-sm);')
         
         # Validations
         if not colors:
@@ -145,7 +145,7 @@ class palette_slider(ui.element):
     def _inject_indicator(self, container):
         with container:
             # A subtle dot to indicate active state clearly
-             ui.element('div').classes('absolute-center w-1.5 h-1.5 rounded-full bg-white/90 shadow-sm ring-1 ring-black/10')
+             ui.element('div').classes('absolute-center w-1.5 h-1.5 rounded-full bg-white/90 ring-1 ring-black/10').style('box-shadow: var(--nd-shadow-sm);')
 
     def set_value(self, value: str):
         if value == self._value:

@@ -51,11 +51,14 @@ class select_button(ui.button):
         
         # Insert Custom Icon if provided
         if self._custom_icon_builder:
+            # Allow overflow for shadows
+            self.style('overflow: visible')
+            
             with self:
                 # Group Icon and Label so they stay together on the left.
-                with ui.element('div').classes('row no-wrap items-center'):
+                with ui.element('div').classes('row no-wrap items-center').style('overflow: visible'):
                     # Icon Container
-                    self._icon_container = ui.element('div').classes('on-left flex flex-center order-first')
+                    self._icon_container = ui.element('div').classes('on-left flex flex-center order-first').style('overflow: visible')
                     with self._icon_container:
                          self._custom_icon_builder()
                     

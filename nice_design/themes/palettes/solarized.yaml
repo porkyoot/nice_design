@@ -27,9 +27,9 @@
   surface_layer: "#073642"   # Base02
   surface_overlay: "#586e75" # Base01
 
-  content_main: "#93a1a1"    # Base1
-  content_muted: "#839496"   # Base0
-  content_subtle: "#657b83"  # Base00
+  content_main: "#fdf6e3"    # Base3
+  content_muted: "#eee8d5"   # Base2
+  content_subtle: "#93a1a1"  # Base1
 
   success: "#859900"         # Green
   on_success: "#002b36"      # Base03
@@ -41,7 +41,7 @@
   on_info: "#fdf6e3"         # Base3
   
   highlight: "#fdf6e3"       # Base 3
-  shadow: "#002b36"          # Base 03 (Using deepest solarized for shadow)
+  shadow: "#fdf6e3"          # Base 03 (Using deepest solarized for shadow)
 
 - name: solarized
   mode: light

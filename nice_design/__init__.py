@@ -53,82 +53,157 @@ def load_design_system():
         ui.add_head_html(f"<style>{texture_css}</style>")
         
     # Inject Font CSS from themes/fonts/
-    # The registry now expects fonts to be served at /nd_themes/fonts/
-    registry._font_css = [] # Clear and rebuild if needed
-    for font_name in registry.list_typographies():
-        # This is a bit of a hacky way to get the filename, 
-        # but the registry could store it. 
-        # Let's assume the registry has a way to get the font face CSS.
-        pass
-    
+    # The registry discovers fonts and generates @font-face CSS during discover_plugins()
     font_css = registry.get_font_css()
     if font_css:
         ui.add_head_html(f"<style>{font_css}</style>")
 
-def apply_theme(theme: CompiledTheme):
-    """Applies the compiled theme to the UI via CSS variables."""
-    css_vars = []
+def apply_theme(theme: CompiledTheme, initial: bool = False):
+    """Applies the compiled theme to the UI via CSS variables.
     
-    # Apply Colors
+    Args:
+        theme: The compiled theme to apply
+        initial: If True, uses static CSS injection (for initial setup before event loop starts).
+                 If False, uses JavaScript to update CSS variables dynamically.
+    """
+    # Build CSS variables
+    css_vars = {}
+    
+    # Apply Colors first (including those from palette.colors)
     for name, value in theme.colors.items():
-        css_vars.append(f"--nd-{name}: {value};")
+        css_vars[f'--nd-{name}'] = value
     
-    # Apply Layout (Radii, Fonts, Spacing, Borders, Shadows, Transition)
+    # Apply Layout variables in proper order
+    # First, set shadow-color (needed by other shadow variables)
+    if 'shadow-color' in theme.layout:
+        css_vars[f'--nd-shadow-color'] = theme.layout['shadow-color']
+    
+    # Then process all other layout variables
     for name, value in theme.layout.items():
-        if name.startswith('font-'):
-            css_vars.append(f"--nd-{name}: {value};")
+        if name == 'shadow-color':
+            continue  # Already processed above
+        elif name.startswith('font-'):
+            css_vars[f'--nd-{name}'] = value
         elif name.startswith('space-'):
-            css_vars.append(f"--nd-{name}: {value};")
+            css_vars[f'--nd-{name}'] = value
         elif name.startswith('border-'):
-            css_vars.append(f"--nd-{name}: {value};")
+            css_vars[f'--nd-{name}'] = value
         elif name.startswith('shadow-'):
-            css_vars.append(f"--nd-{name}: {value};")
+            css_vars[f'--nd-{name}'] = value
         elif name == 'transition-speed':
-            css_vars.append(f"--nd-transition-speed: {value};")
+            css_vars[f'--nd-transition-speed'] = value
         else:
-            css_vars.append(f"--nd-radius-{name}: {value};")
+            css_vars[f'--nd-radius-{name}'] = value
     
-    style_content = ":root {\n  " + "\n  ".join(css_vars) + "\n}\n\n"
-    
-    # Generate Utility Classes
-    utils = []
-    scales = ['xs', 'sm', 'md', 'lg', 'xl']
-    
-    # 1. Spacing Utilities
-    for s in scales + ['0']:
-        val = f"var(--nd-space-{s})" if s != '0' else "0px"
-        utils.append(f".nd-p-{s} {{ padding: {val} !important; }}")
-        utils.append(f".nd-pt-{s} {{ padding-top: {val} !important; }}")
-        utils.append(f".nd-pb-{s} {{ padding-bottom: {val} !important; }}")
-        utils.append(f".nd-pl-{s} {{ padding-left: {val} !important; }}")
-        utils.append(f".nd-pr-{s} {{ padding-right: {val} !important; }}")
-        utils.append(f".nd-px-{s} {{ padding-left: {val} !important; padding-right: {val} !important; }}")
-        utils.append(f".nd-py-{s} {{ padding-top: {val} !important; padding-bottom: {val} !important; }}")
-        utils.append(f".nd-m-{s} {{ margin: {val} !important; }}")
-        utils.append(f".nd-mx-{s} {{ margin-left: {val} !important; margin-right: {val} !important; }}")
-        utils.append(f".nd-my-{s} {{ margin-top: {val} !important; margin-bottom: {val} !important; }}")
-        utils.append(f".nd-gap-{s} {{ gap: {val} !important; }}")
-
-    # 2. Radius Utilities
-    for s in ['sm', 'md', 'lg', 'full', 'none']:
-        val = f"var(--nd-radius-{s})" if s != 'none' else "0px"
-        utils.append(f".nd-rounded-{s} {{ border-radius: {val} !important; }}")
-
-    # 3. Border Utilities
-    for s in ['sm', 'md', 'lg', 'xl', 'none']:
-        val = f"var(--nd-border-{s})" if s != 'none' else "0px"
-        utils.append(f".nd-border-{s} {{ border-width: {val} !important; border-style: solid; }}")
+    if initial:
+        # Initial setup: Use static CSS injection
+        css_vars_str = "\n  ".join([f"{k}: {v};" for k, v in css_vars.items()])
+        ui.add_head_html(f"<style>:root {{\n  {css_vars_str}\n}}</style>")
         
-    style_content += "\n".join(utils)
-    ui.add_head_html(f"<style>{style_content}</style>")
-    
-    if theme.classes:
-        ui.query('body').classes(' '.join(theme.classes))
+        # Apply body classes
+        if theme.classes:
+            ui.query('body').classes(' '.join(theme.classes))
+    else:
+        # Dynamic update: Use JavaScript to update CSS variables
+        import json
+        vars_json = json.dumps(css_vars)
+        ui.run_javascript(f'''
+            const root = document.documentElement;
+            const vars = {vars_json};
+            for (const [key, value] of Object.entries(vars)) {{
+                root.style.setProperty(key, value);
+            }}
+        ''')
+        
+        # Update body classes for texture
+        if theme.classes:
+            # Remove previous texture classes and add new ones
+            ui.run_javascript(f'''
+                const body = document.body;
+                // Remove previous texture classes (anything starting with -nd-t- or texture-)
+                body.classList.forEach(cls => {{
+                    if (cls.startsWith('-nd-t-') || cls.startsWith('texture-') || cls === 'no-shadows') {{
+                        body.classList.remove(cls);
+                    }}
+                }});
+                // Add new classes
+                {json.dumps(theme.classes)}.forEach(cls => body.classList.add(cls));
+            ''')
 
 def setup(theme: Optional[CompiledTheme] = None):
     """
     Convenience function to load the system and optionally apply a theme.
     """
-    load_design_system()
+    # IMPORTANT: Inject theme CSS variables FIRST, before loading component CSS
+    # This ensures variables are available when atoms.css (which references them) is parsed
     if theme:
-        apply_theme(theme)
+        # Build and inject CSS variables
+        css_vars = {}
+        
+        # Apply Colors first
+        for name, value in theme.colors.items():
+            css_vars[f'--nd-{name}'] = value
+        
+        # Apply Layout variables in proper order
+        # First, set shadow-color (needed by other shadow variables)
+        if 'shadow-color' in theme.layout:
+            css_vars[f'--nd-shadow-color'] = theme.layout['shadow-color']
+        
+        # Then process all other layout variables
+        for name, value in theme.layout.items():
+            if name == 'shadow-color':
+                continue  # Already processed above
+            elif name.startswith('font-'):
+                css_vars[f'--nd-{name}'] = value
+            elif name.startswith('space-'):
+                css_vars[f'--nd-{name}'] = value
+            elif name.startswith('border-'):
+                css_vars[f'--nd-{name}'] = value
+            elif name.startswith('shadow-'):
+                css_vars[f'--nd-{name}'] = value
+            elif name == 'transition-speed':
+                css_vars[f'--nd-transition-speed'] = value
+            else:
+                css_vars[f'--nd-radius-{name}'] = value
+        
+        # Inject CSS variables BEFORE loading design system CSS
+        css_vars_str = "\n  ".join([f"{k}: {v};" for k, v in css_vars.items()])
+        ui.add_head_html(f"<style>:root {{\n  {css_vars_str}\n}}</style>")
+        
+        # Generate utility classes
+        utils = []
+        scales = ['xs', 'sm', 'md', 'lg', 'xl']
+        
+        # 1. Spacing Utilities
+        for s in scales + ['0']:
+            val = f"var(--nd-space-{s})" if s != '0' else "0px"
+            utils.append(f".nd-p-{s} {{ padding: {val} !important; }}")
+            utils.append(f".nd-pt-{s} {{ padding-top: {val} !important; }}")
+            utils.append(f".nd-pb-{s} {{ padding-bottom: {val} !important; }}")
+            utils.append(f".nd-pl-{s} {{ padding-left: {val} !important; }}")
+            utils.append(f".nd-pr-{s} {{ padding-right: {val} !important; }}")
+            utils.append(f".nd-px-{s} {{ padding-left: {val} !important; padding-right: {val} !important; }}")
+            utils.append(f".nd-py-{s} {{ padding-top: {val} !important; padding-bottom: {val} !important; }}")
+            utils.append(f".nd-m-{s} {{ margin: {val} !important; }}")
+            utils.append(f".nd-mx-{s} {{ margin-left: {val} !important; margin-right: {val} !important; }}")
+            utils.append(f".nd-my-{s} {{ margin-top: {val} !important; margin-bottom: {val} !important; }}")
+            utils.append(f".nd-gap-{s} {{ gap: {val} !important; }}")
+
+        # 2. Radius Utilities
+        for s in ['sm', 'md', 'lg', 'full', 'none']:
+            val = f"var(--nd-radius-{s})" if s != 'none' else "0px"
+            utils.append(f".nd-rounded-{s} {{ border-radius: {val} !important; }}")
+
+        # 3. Border Utilities
+        for s in ['sm', 'md', 'lg', 'xl', 'none']:
+            val = f"var(--nd-border-{s})" if s != 'none' else "0px"
+            utils.append(f".nd-border-{s} {{ border-width: {val} !important; border-style: solid; }}")
+        
+        ui.add_head_html(f"<style>{chr(10).join(utils)}</style>")
+    
+    # NOW load the design system (which loads atoms.css that references these variables)
+    load_design_system()
+    
+    # Apply body classes for texture if theme was provided
+    if theme and theme.classes:
+        ui.query('body').classes(' '.join(theme.classes))

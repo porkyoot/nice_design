@@ -1,6 +1,7 @@
 from nicegui import ui
 from typing import Optional
-from ....core.definitions import Texture
+from ....core.definitions import Texture, Palette
+from ....core.utils import hex_to_rgb
 
 class texture_icon(ui.element):
     """
@@ -12,6 +13,7 @@ class texture_icon(ui.element):
     def __init__(
         self, 
         texture: Texture,
+        palette: Palette,
         *, 
         size: str = "24px"
     ):
@@ -19,7 +21,32 @@ class texture_icon(ui.element):
         
         # Apply base styling
         self.classes('-nd-c-texture-icon')
-        self.style(f'width: {size}; height: {size}; position: relative;')
+        
+        # Calculate shadow directly from texture intensity
+        wrapper_style = f'width: {size}; height: {size}; position: relative;'
+        if texture.shadows_enabled and texture.shadow_intensity > 0:
+            # Get shadow color from palette
+            r, g, b = hex_to_rgb(palette.shadow)
+            # Calculate actual shadow based on intensity
+            si = texture.shadow_intensity
+            # Use a single shadow for drop-shadow filter (it doesn't support multiple shadows)
+            # Choose the primary (larger) shadow based on intensity
+            if si > 1.5:
+                # Extra large shadow - use the primary shadow only
+                shadow_def = f'0 20px 25px rgba({r}, {g}, {b}, {0.4 * si:.2f})'
+            elif si > 1.0:
+                # Large shadow
+                shadow_def = f'0 10px 15px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
+            elif si > 0.5:
+                # Medium shadow
+                shadow_def = f'0 4px 6px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+            else:
+                # Small shadow
+                shadow_def = f'0 1px 3px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+            
+            wrapper_style += f' filter: drop-shadow({shadow_def});'
+        
+        self.style(wrapper_style)
         
         # Create the circle element
         with self:
@@ -39,18 +66,6 @@ class texture_icon(ui.element):
             else:
                 # Solid background
                 circle.style('background: var(--nd-surface-layer);')
-            
-            # Apply shadows based on intensity
-            if texture.shadows_enabled and texture.shadow_intensity > 0:
-                shadow_size = 'md'
-                if texture.shadow_intensity > 1.5:
-                    shadow_size = 'xl'
-                elif texture.shadow_intensity > 1.0:
-                    shadow_size = 'lg'
-                elif texture.shadow_intensity < 0.5:
-                    shadow_size = 'sm'
-                
-                circle.style(f'box-shadow: var(--nd-shadow-{shadow_size}) !important;')
             
             # Apply border and transitions
             # Apply shape-based border and roundness
@@ -90,11 +105,26 @@ class texture_icon(ui.element):
             circle.classes('-nd-c-texture-icon__circle--interactive')
 
     @staticmethod
-    def to_html(texture: Texture, *, size: str = "24px") -> str:
+    def to_html(texture: Texture, palette: Palette, *, size: str = "24px") -> str:
         """Returns the full HTML string for this component."""
         
-        # Wrapper styles
+        # Wrapper styles with shadow
         wrapper_style = f'width: {size}; height: {size}; position: relative; display: inline-block;'
+        
+        # Calculate shadow directly from texture intensity  
+        if texture.shadows_enabled and texture.shadow_intensity > 0:
+            r, g, b = hex_to_rgb(palette.shadow)
+            si = texture.shadow_intensity
+            # Use a single shadow for drop-shadow filter
+            if si > 1.5:
+                shadow_def = f'0 20px 25px rgba({r}, {g}, {b}, {0.4 * si:.2f})'
+            elif si > 1.0:
+                shadow_def = f'0 10px 15px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
+            elif si > 0.5:
+                shadow_def = f'0 4px 6px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+            else:
+                shadow_def = f'0 1px 3px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+            wrapper_style += f' filter: drop-shadow({shadow_def});'
         
         # Circle styles
         circle_style = ''
@@ -105,17 +135,7 @@ class texture_icon(ui.element):
         else:
              circle_style += 'background: var(--nd-surface-layer);'
              
-        # Shadows
-        if texture.shadows_enabled and texture.shadow_intensity > 0:
-            shadow_size = 'md'
-            if texture.shadow_intensity > 1.5:
-                shadow_size = 'xl'
-            elif texture.shadow_intensity > 1.0:
-                shadow_size = 'lg'
-            elif texture.shadow_intensity < 0.5:
-                shadow_size = 'sm'
-            circle_style += f' box-shadow: var(--nd-shadow-{shadow_size}) !important;'
-            
+             
         # Shape styling
         border_width_px = f"{max(1.0, float(texture.border_width) * 0.5)}px"
         

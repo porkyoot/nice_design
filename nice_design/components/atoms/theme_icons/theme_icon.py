@@ -1,5 +1,6 @@
 from nicegui import ui
 from ....core.definitions import Palette, Texture, Typography, Layout
+from ....core.utils import hex_to_rgb
 from .palette_icon import palette_icon
 
 class theme_icon(ui.element):
@@ -32,17 +33,19 @@ class theme_icon(ui.element):
             if texture.opacity < 1.0:
                 texture_container.style(f'opacity: {texture.opacity};')
             
-            # Apply shadows based on texture
-            if texture.shadows_enabled and texture.shadow_intensity > 0:
-                shadow_size = 'md'
-                if texture.shadow_intensity > 1.5:
-                    shadow_size = 'xl'
-                elif texture.shadow_intensity > 1.0:
-                    shadow_size = 'lg'
-                elif texture.shadow_intensity < 0.5:
-                    shadow_size = 'sm'
-                
-                texture_container.style(f'filter: drop-shadow(var(--nd-shadow-{shadow_size}));')
+            # Calculate actual shadow based on intensity
+            r, g, b = hex_to_rgb(palette.shadow)
+            si = texture.shadow_intensity
+            if si > 1.5:
+                shadow_def = f'0 20px 25px -5px rgba({r}, {g}, {b}, {0.4 * si:.2f}), 0 8px 10px -6px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
+            elif si > 1.0:
+                shadow_def = f'0 10px 15px -3px rgba({r}, {g}, {b}, {0.35 * si:.2f}), 0 4px 6px -4px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+            elif si > 0.5:
+                shadow_def = f'0 4px 6px -1px rgba({r}, {g}, {b}, {0.3 * si:.2f}), 0 2px 4px -2px rgba({r}, {g}, {b}, {0.25 * si:.2f})'
+            else:
+                shadow_def = f'0 1px 3px 0 rgba({r}, {g}, {b}, {0.3 * si:.2f}), 0 1px 2px -1px rgba({r}, {g}, {b}, {0.25 * si:.2f})'
+            
+            texture_container.style(f'filter: drop-shadow({shadow_def});')
             
             # Apply shape-based border and roundness (from Texture category)
             border_width_px = f"{max(1.0, float(texture.border_width) * 0.5)}px"  # Scaled for visual balance
@@ -102,15 +105,18 @@ class theme_icon(ui.element):
             texture_style += f' opacity: {texture.opacity};'
             
         if texture.shadows_enabled and texture.shadow_intensity > 0:
-            shadow_size = 'md'
-            if texture.shadow_intensity > 1.5:
-                shadow_size = 'xl'
-            elif texture.shadow_intensity > 1.0:
-                shadow_size = 'lg'
-            elif texture.shadow_intensity < 0.5:
-                shadow_size = 'sm'
+            r, g, b = hex_to_rgb(palette.shadow)
+            si = texture.shadow_intensity
+            if si > 1.5:
+                shadow_def = f'0 20px 25px -5px rgba({r}, {g}, {b}, {0.4 * si:.2f}), 0 8px 10px -6px rgba({r}, {g}, {b}, {0.35 * si:.2f})'
+            elif si > 1.0:
+                shadow_def = f'0 10px 15px -3px rgba({r}, {g}, {b}, {0.35 * si:.2f}), 0 4px 6px -4px rgba({r}, {g}, {b}, {0.3 * si:.2f})'
+            elif si > 0.5:
+                shadow_def = f'0 4px 6px -1px rgba({r}, {g}, {b}, {0.3 * si:.2f}), 0 2px 4px -2px rgba({r}, {g}, {b}, {0.25 * si:.2f})'
+            else:
+                shadow_def = f'0 1px 3px 0 rgba({r}, {g}, {b}, {0.3 * si:.2f}), 0 1px 2px -1px rgba({r}, {g}, {b}, {0.25 * si:.2f})'
             
-            texture_style += f' filter: drop-shadow(var(--nd-shadow-{shadow_size}));'
+            texture_style += f' filter: drop-shadow({shadow_def});'
             
         # Shape styling (from Texture)
         border_width_px = f"{max(1.0, float(texture.border_width) * 0.5)}px"
