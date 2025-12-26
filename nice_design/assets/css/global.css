@@ -20,3 +20,14 @@ body {
     background-color: var(--nd-surface-base);
     color: var(--nd-content-main);
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--nd-font-secondary, var(--nd-font-main, sans-serif));
+    text-transform: var(--nd-font-title-transform, none);
+    margin-top: 0;
+}

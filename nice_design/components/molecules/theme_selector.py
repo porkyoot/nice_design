@@ -37,7 +37,8 @@ class theme_selector(ui.element):
         self._current_theme_bundle_name = None
         self._current_palette_name = 'solarized'
         self._current_texture_name = 'standard'
-        self._current_font_name = 'standard'
+        self._current_font_main_name = 'Inter'
+        self._current_font_secondary_name = 'Inter'
         self._current_layout_name = 'standard'
         
         # 2. Category Objects (Working copies)
@@ -68,13 +69,18 @@ class theme_selector(ui.element):
                 )
         
     def _render_large_preview(self):
-        """Renders the large theme icon preview."""
-        with ui.row().classes('w-full justify-center py-6 bg-black/5 mb-2'):
+        """Renders the large theme icon preview with title."""
+        with ui.row().classes('w-full items-center nd-px-md nd-py-lg bg-black/5 mb-2 nd-gap-md'):
              theme_icon(
                 self._palette,
                 self._texture,
-                size="64px"
+                size="48px"
             )
+             with ui.column().classes('nd-gap-0'):
+                 name = self._current_theme_bundle_name or "Title"
+                 l = ui.label(name.replace('-', ' ').title()).classes('text-lg font-bold')
+                 l.tag = 'h3'
+                 ui.label('Here is some text !').classes('text-[10px] opacity-40 uppercase tracking-widest font-bold')
 
     def _render(self):
         self.clear()
@@ -230,13 +236,23 @@ class theme_selector(ui.element):
                                     m.on('hide', btn_typo.reset_rotation)
                                     ui.label('Typography').classes('text-xs font-bold opacity-60 mb-2')
                                     
-                                    f_val = self._current_font_name if self._current_font_name in self._all_font_opts else (next(iter(self._all_font_opts.keys())) if self._all_font_opts else None)
+                                    f_main_val = self._current_font_main_name if self._current_font_main_name in self._all_font_opts else (next(iter(self._all_font_opts.keys())) if self._all_font_opts else None)
 
-                                    self._font_select = select(
+                                    self._font_main_select = select(
                                         options=self._all_font_opts,
-                                        value=f_val,
+                                        value=f_main_val,
                                         label='Primary Font',
-                                        on_change=lambda e: self._update_font(e.value),
+                                        on_change=lambda e: self._update_font(e.value, is_main=True),
+                                        on_filter=self._filter_fonts
+                                    ).classes('w-full')
+
+                                    f_sec_val = self._current_font_secondary_name if self._current_font_secondary_name in self._all_font_opts else (next(iter(self._all_font_opts.keys())) if self._all_font_opts else None)
+
+                                    self._font_secondary_select = select(
+                                        options=self._all_font_opts,
+                                        value=f_sec_val,
+                                        label='Secondary Font',
+                                        on_change=lambda e: self._update_font(e.value, is_main=False),
                                         on_filter=self._filter_fonts
                                     ).classes('w-full')
 
@@ -250,6 +266,18 @@ class theme_selector(ui.element):
                                             
                                         self._scale_slider = slider(min=1.0, max=1.6, step=0.05, value=self._typography.scale_ratio,
                                                   on_change=self._update_text_scale).props('label color="primary"')
+
+                                    # Title Capitalization
+                                    with ui.column().classes('w-full nd-gap-xs mt-2'):
+                                        with ui.row().classes('w-full justify-between'):
+                                            ui.label('Title Case').classes('text-xs opacity-60')
+                                            tf_map_rev = {0: 'lower', 1: 'none', 2: 'title', 3: 'ALL'}
+                                            tf_val_map = {'lowercase': 0, 'none': 1, 'capitalize': 2, 'uppercase': 3}
+                                            curr_tf_int = tf_val_map.get(self._typography.title_transform, 1)
+                                            self._tf_label = ui.label(tf_map_rev.get(curr_tf_int)).classes('text-xs font-bold')
+                                            
+                                        self._tf_slider = ui.slider(min=0, max=3, step=1, value=curr_tf_int,
+                                                  on_change=self._update_capitalization).props('markers snap color="primary"')
 
                             # --- E. Layout Submenu ---
                             with select_button(icon='mdi-view-quilt', icon_only=True) as btn_layout:
@@ -347,19 +375,24 @@ class theme_selector(ui.element):
         self._texture.highlight_intensity = e['right'] / 50.0
         self._refresh_components()
 
-    def _update_font(self, value):
+    def _update_font(self, value, is_main: bool = True):
         if value:
-            self._current_font_name = value
+            if is_main:
+                self._current_font_main_name = value
+            else:
+                self._current_font_secondary_name = value
+
             # 1. Load font if it's a Google Font
             FontManager.load_font(value)
             
             # 2. Update Typography object
             typo = nice.registry.get_typography(value)
-            if typo:
-                self._typography.font_main = typo.font_main
+            font_family = typo.font_main if typo else f"'{value}', sans-serif"
+
+            if is_main:
+                self._typography.font_main = font_family
             else:
-                # Fallback for Google Fonts or others not in registry
-                self._typography.font_main = f"'{value}', sans-serif"
+                self._typography.font_secondary = font_family
             
             self._refresh_components()
 
@@ -372,6 +405,14 @@ class theme_selector(ui.element):
     def _update_text_scale(self, e):
         self._typography.scale_ratio = e.value
         self._scale_label.text = f'{e.value:.2f}'
+        self._refresh_components()
+
+    def _update_capitalization(self, e):
+        tf_map = {0: 'lowercase', 1: 'none', 2: 'capitalize', 3: 'uppercase'}
+        tf_map_rev = {0: 'lower', 1: 'none', 2: 'title', 3: 'ALL'}
+        val = tf_map.get(int(e.value), 'none')
+        self._typography.title_transform = val
+        self._tf_label.text = tf_map_rev.get(int(e.value))
         self._refresh_components()
 
     def _refresh_components(self):

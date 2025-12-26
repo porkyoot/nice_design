@@ -72,6 +72,7 @@ class Typography:
     font_secondary: str = "sans-serif"
     font_mono: str = "monospace"
     scale_ratio: float = 1.25 # Ratio between h1, h2, etc.
+    title_transform: str = "none" # lowercase, none, capitalize, uppercase
 
 @dataclass
 class Layout:

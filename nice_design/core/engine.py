@@ -102,7 +102,9 @@ class ThemeEngine:
             colors['color-' + color_name] = color_value
 
         tokens['font-main'] = typo.font_main
+        tokens['font-secondary'] = typo.font_secondary
         tokens['font-mono'] = typo.font_mono
+        tokens['font-title-transform'] = typo.title_transform
 
         # 8. Determine CSS Classes from Texture
         css_classes = [texture.texture_cls]

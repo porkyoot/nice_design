@@ -47,6 +47,11 @@ def handle_theme_change(e: Dict[str, Any]):
 with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
     
     # New Molecule: Theme Selector (Powered by 4 categories)
+    l1 = ui.label('Nice Design System').classes('text-4xl font-bold mb-2')
+    l1.tag = 'h1'
+    l2 = ui.label('The secondary font is used here').classes('text-xl opacity-60 nd-font-secondary mb-8')
+    l2.tag = 'h2'
+    
     nice.theme_selector(on_change=handle_theme_change)
 
     

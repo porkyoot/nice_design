@@ -388,6 +388,10 @@ body {
     min-height: 100vh;
 }
 
+.nd-font-secondary {
+    font-family: var(--nd-font-secondary, var(--nd-font-main, sans-serif)) !important;
+}
+
 /* Utility Classes for Quasar Integration */
 .-nd-u-text-on-primary {
     color: var(--nd-on-primary) !important;

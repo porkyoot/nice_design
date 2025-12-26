@@ -58,7 +58,7 @@ kill `lsof -t -i :$PORT` 2>/dev/null || true
 
 # Wait for port to be released (max 5 seconds)
 for i in {1..10}; do
-    if lsof -i :$PORT > /dev/null 2>&1; then
+    if ! lsof -i :$PORT > /dev/null 2>&1; then
         break
     fi
     echo "⏳ Waiting for port $PORT to be released... ($i/10)"
