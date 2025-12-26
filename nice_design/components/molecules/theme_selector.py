@@ -235,16 +235,16 @@ class theme_selector(ui.element):
                                         on_change=lambda e: self._update_texture(e.value)
                                     ).classes('w-full')
                                     
-                                    # 2. Shadow / Opacity
+                                    # 2. Shadow / Highlight
                                     with ui.column().classes('w-full nd-gap-sm mt-2'):
                                         ui.row().classes('w-full justify-between text-xs opacity-60 font-bold').style('margin-bottom: -10px').add_slot('default', r'''
                                            <span class="text-blue-400">Shadow</span>
-                                           <span class="text-teal-400">Opacity</span>
+                                           <span class="text-teal-400">Highlight</span>
                                         ''')
                                         split_slider(
                                             limit=100,
                                             value_left=self._texture.shadow_intensity * 50, 
-                                            value_right=self._texture.opacity * 100, 
+                                            value_right=self._texture.highlight_intensity * 50, 
                                             color_left='blue-4',
                                             color_right='teal-4',
                                             on_change=self._update_shadow_opacity
