@@ -350,4 +350,18 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
                  value='Theme 1'
              ).classes('w-[180px]')
 
+         # --- Select Input with Font Preview ---
+         with ui.row().classes('w-full items-center justify-between'):
+             ui.label('Font Select').classes('opacity-60 font-medium')
+             nice.select(
+                 options={
+                     'Inter': {'label': 'Inter', 'value': 'Inter', 'font': 'Inter'},
+                     'Roboto': {'label': 'Roboto', 'value': 'Roboto', 'font': 'Roboto'},
+                     'Monospace': {'label': 'Monospace', 'value': 'Monospace', 'font': 'monospace'},
+                     'Serif': {'label': 'Serif', 'value': 'Serif', 'font': 'serif'},
+                     'Cursive': {'label': 'Cursive', 'value': 'Cursive', 'font': 'cursive'},
+                 },
+                 value='Inter'
+             ).classes('w-[180px]')
+
 ui.run(title='Nice Design Tokens', reload=False, show=False)

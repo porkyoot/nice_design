@@ -5,9 +5,9 @@ import copy
 from nice_design.components.atoms.select_button import select_button
 from nice_design.components.atoms.menu import menu
 from nice_design.components.atoms.select import select
-from nice_design.components.atoms.theme_icon import theme_icon
-from nice_design.components.atoms.palette_icon import palette_icon
-from nice_design.components.atoms.texture_icon import texture_icon
+from nice_design.components.atoms.theme_icons.theme_icon import theme_icon
+from nice_design.components.atoms.theme_icons.palette_icon import palette_icon
+from nice_design.components.atoms.theme_icons.texture_icon import texture_icon
 
 from nice_design.core.presets import (
     SOLARIZED_PALETTE, 

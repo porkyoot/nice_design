@@ -32,7 +32,7 @@ class select(ui.select):
             isinstance(options, dict) and 
             options and 
             isinstance(val_iter := next(iter(options.values()), None), dict) and
-            ('icon' in val_iter or 'html' in val_iter)
+            ('icon' in val_iter or 'html' in val_iter or 'font' in val_iter)
         )
 
 
@@ -40,12 +40,12 @@ class select(ui.select):
             # SLOT: The Dropdown List ('option')
             self.add_slot('option', r'''
                 <q-item v-bind="props.itemProps">
-                    <q-item-section avatar>
+                    <q-item-section avatar v-if="props.opt.label.icon || props.opt.label.html">
                         <div v-if="props.opt.label.html" v-html="props.opt.label.html"></div>
                         <q-icon v-else :name="props.opt.label.icon" :color="props.opt.label.color" size="sm" />
                     </q-item-section>
                     <q-item-section>
-                        <q-item-label>{{ props.opt.label.label }}</q-item-label>
+                        <q-item-label :style="props.opt.label.font ? { 'font-family': props.opt.label.font } : {}">{{ props.opt.label.label }}</q-item-label>
                     </q-item-section>
                 </q-item>
             ''')
@@ -54,8 +54,8 @@ class select(ui.select):
             self.add_slot('selected-item', r'''
                 <div class="row items-center no-wrap -nd-u-gap-2">
                     <div v-if="props.opt.label.html" v-html="props.opt.label.html"></div>
-                    <q-icon v-else :name="props.opt.label.icon" :color="props.opt.label.color" size="sm" />
-                    <div>{{ props.opt.label.label }}</div>
+                    <q-icon v-else-if="props.opt.label.icon" :name="props.opt.label.icon" :color="props.opt.label.color" size="sm" />
+                    <div :style="props.opt.label.font ? { 'font-family': props.opt.label.font } : {}">{{ props.opt.label.label }}</div>
                 </div>
             ''')
             

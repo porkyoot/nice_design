@@ -1,6 +1,6 @@
 from nicegui import ui
 from typing import Optional
-from ...core.definitions import Shape
+from ....core.definitions import Shape
 
 class shape_icon(ui.element):
     """

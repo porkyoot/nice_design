@@ -1,5 +1,5 @@
 from nicegui import ui
-from ...core.definitions import Palette, Shape, Texture, Semantics
+from ....core.definitions import Palette, Shape, Texture, Semantics
 from .palette_icon import palette_icon
 
 class theme_icon(ui.element):

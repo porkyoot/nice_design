@@ -285,6 +285,7 @@ button.-nd-c-select-button .q-focus-helper {
 .-nd-c-select-menu .q-item {
     color: var(--nd-content-main) !important;
     transition: background var(--nd-transition-speed);
+    font-size: 1rem !important;
 }
 
 /* Default icon color in menu options */

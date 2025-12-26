@@ -1,6 +1,6 @@
 from nicegui import ui
 from typing import Optional
-from ...core.definitions import Texture
+from ....core.definitions import Texture
 
 class texture_icon(ui.element):
     """

@@ -7,10 +7,12 @@ from .components.atoms.card import card
 from .components.atoms.select import select
 from .components.atoms.menu import menu, menu_item
 from .components.atoms.icon import icon
-from .components.atoms.palette_icon import palette_icon
-from .components.atoms.theme_icon import theme_icon
-from .components.atoms.texture_icon import texture_icon
-from .components.atoms.shape_icon import shape_icon
+from .components.atoms.theme_icons.palette_icon import palette_icon
+from .components.atoms.theme_icons.theme_icon import theme_icon
+from .components.atoms.theme_icons.texture_icon import texture_icon
+from .components.atoms.theme_icons.shape_icon import shape_icon
+from .components.atoms.theme_icons.border_icon import border_icon
+from .components.atoms.theme_icons.shadow_highlight_icon import shadow_highlight_icon
 from .components.atoms.slider import slider, dual_slider, split_slider
 from .components.atoms.select_button import select_button
 from .components.molecules.theme_selector import theme_selector
