@@ -57,7 +57,7 @@ fuser -k $PORT/tcp 2>/dev/null || true
 
 # Wait for port to be released (max 5 seconds)
 for i in {1..10}; do
-    if ! lsof -i :$PORT > /dev/null 2>&1; then
+    if ! fuser $PORT/tcp > /dev/null 2>&1; then
         break
     fi
     echo "⏳ Waiting for port $PORT to be released... ($i/10)"

@@ -31,12 +31,12 @@ class select(ui.select):
         # Setup rich slots if needed
         if is_rich:
             self._setup_rich_slots()
-            self.props('option-label="label.label"')
+            self.props(r':option-label="(opt) => opt.label && opt.label.label ? opt.label.label : (opt.label || opt)"')
             
         # Apply styling
         self.props('outlined rounded standout="bg-primary text-on-primary" popup-content-class="-nd-c-select-menu"')
         self.classes('-nd-c-select')
-
+        
         # Setup search/filter
         if on_filter:
             self._on_filter_cb = on_filter
@@ -72,9 +72,9 @@ class select(ui.select):
             <div class="row items-center no-wrap -nd-u-gap-2" v-if="props.opt && props.opt.label">
                 <div v-if="props.opt.label.html" v-html="props.opt.label.html"></div>
                 <q-icon v-else-if="props.opt.label.icon" :name="props.opt.label.icon" :color="props.opt.label.color" size="sm" />
-                <div :style="props.opt.label.font ? { 'font-family': props.opt.label.font } : {}">
+                <q-item-label :style="props.opt.label.font ? { 'font-family': props.opt.label.font } : {}">
                     {{ props.opt.label.label }}
-                </div>
+                </q-item-label>
             </div>
         ''')
 
