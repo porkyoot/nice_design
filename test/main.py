@@ -132,6 +132,17 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
                  icon_only=True
              ).classes('w-[180px]')
 
+         with ui.row().classes('w-full items-center justify-between'):
+             ui.label('Multi Button').classes('opacity-60 font-medium')
+             nice.multi_button(
+                 options=[
+                     {'icon': 'mdi-white-balance-sunny', 'value': 'light', 'color': '#ff9800'},
+                     {'icon': 'mdi-brightness-auto', 'value': 'auto', 'color': '#9e9e9e'},
+                     {'icon': 'mdi-moon-waning-crescent', 'value': 'dark', 'color': '#2196f3'}
+                 ],
+                 value='auto'
+             )
+
     # Component Demo: Sliders
     with nice.card().classes('w-[32rem] items-center nd-gap-md nd-p-lg'):
          ui.label('Slider Variants').classes('text-sm font-bold uppercase opacity-40')

@@ -18,6 +18,7 @@ from .components.atoms.theme_icons.shape_icon import shape_icon
 from .components.atoms.theme_icons.border_icon import border_icon
 from .components.atoms.theme_icons.shadow_highlight_icon import shadow_highlight_icon
 from .components.atoms.slider import slider, split_slider, palette_slider
+from .components.atoms.multi_button import multi_button
 from .components.atoms.select_button import select_button
 from .components.molecules.theme_selector import theme_selector
 

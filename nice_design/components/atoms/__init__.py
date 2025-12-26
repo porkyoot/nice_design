@@ -10,3 +10,4 @@ from .theme_icons.shape_icon import shape_icon
 from .theme_icons.border_icon import border_icon
 from .theme_icons.shadow_highlight_icon import shadow_highlight_icon
 from .slider import slider, split_slider, palette_slider
+from .multi_button import multi_button

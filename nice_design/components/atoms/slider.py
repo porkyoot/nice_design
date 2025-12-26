@@ -25,8 +25,8 @@ class split_slider(ui.element):
     The Left Slider is visually reversed so that its '0' is at the right end (center of component).
     """
     def __init__(self,
-                 limit: float = 100.0,
-                 step: float = 1.0,
+                 limit: float = 2.0,
+                 step: float = 0.1,
                  value_left: float = 0.0,
                  value_right: float = 0.0,
                  color_left: str = 'primary',
@@ -46,24 +46,19 @@ class split_slider(ui.element):
         
         with self:
             # --- Left Side Container ---
-            # Flex-1 to take 50% width
             with ui.row().classes('col flex items-center justify-end relative-position px-0').style('height: 48px;'):
-                # Track Background (Fake continuous track)
-                # We need a track that runs along the middle.
-                # Since Quasar slider has its own track, we rely on it, but we need to ensure they join nicely.
-                # Actually, standard quasar track is fine.
-                
                 # Left Slider (Reverse Mode)
-                # Range 0 to Limit. 
-                # Reverse=True means Min (0) is at Right, Max (Limit) is at Left.
-                # Selection fills from Min (Right/Center) to Thumb.
                 self.slider_left = ui.slider(min=0, max=limit, step=step, value=value_left, on_change=self._handle_change_left)
                 # 'reverse' prop makes 0 be at the right side.
-                self.slider_left.props(f'reverse label color="{color_left}" track-size="4px" thumb-size="16px"')
+                self.slider_left.props(f'reverse label track-size="4px" thumb-size="16px" :label-value="modelValue.toFixed(1)"')
+                
+                # Apply color (handle hex)
+                if color_left.startswith('#'):
+                    self.slider_left.props(f':active-color="\'{color_left}\'" :thumb-color="\'{color_left}\'" :track-color="\'{color_left}\'"')
+                else:
+                    self.slider_left.props(f'color="{color_left}"')
+                
                 self.slider_left.classes('w-full')
-                # Remove padding to make it touch the center
-                # Quasar sliders have padding. We might need negative margins?
-                # Let's try standard first.
                 
             # --- Center Divider ---
             ui.element('div').classes('bg-grey-4').style('width: 2px; height: 12px; z-index: 10;')
@@ -71,11 +66,15 @@ class split_slider(ui.element):
             # --- Right Side Container ---
             with ui.row().classes('col flex items-center justify-start relative-position px-0').style('height: 48px;'):
                 # Right Slider (Normal Mode)
-                # Range 0 to Limit.
-                # Min (0) is at Left (Center).
-                # Selection fills from Min (Left/Center) to Thumb.
                 self.slider_right = ui.slider(min=0, max=limit, step=step, value=value_right, on_change=self._handle_change_right)
-                self.slider_right.props(f'label color="{color_right}" track-size="4px" thumb-size="16px"')
+                self.slider_right.props(f'label track-size="4px" thumb-size="16px" :label-value="modelValue.toFixed(1)"')
+                
+                # Apply color (handle hex)
+                if color_right.startswith('#'):
+                    self.slider_right.props(f':active-color="\'{color_right}\'" :thumb-color="\'{color_right}\'" :track-color="\'{color_right}\'"')
+                else:
+                    self.slider_right.props(f'color="{color_right}"')
+                
                 self.slider_right.classes('w-full')
 
     def _handle_change_left(self, e):
@@ -89,6 +88,20 @@ class split_slider(ui.element):
     def _notify(self):
         if self._on_change:
             self._on_change({'left': self._value_left, 'right': self._value_right})
+
+    def set_colors(self, color_left: str, color_right: str):
+        """Updates the colors of the sliders."""
+        self._color_left = color_left
+        self._color_right = color_right
+        
+        for s, c in [(self.slider_left, color_left), (self.slider_right, color_right)]:
+            # Clear old color props
+            # Quasar props are additive in NiceGUI unless we are careful, 
+            # but setting color="new" or :active-color="new" usually overrides.
+            if c.startswith('#'):
+                s.props(f':active-color="\'{c}\'" :thumb-color="\'{c}\'" :track-color="\'{c}\'"')
+            else:
+                s.props(f'color="{c}"')
 
 
 class palette_slider(ui.element):

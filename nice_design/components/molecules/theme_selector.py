@@ -18,6 +18,7 @@ from nice_design.core.presets import (
 )
 from nice_design.core.definitions import Palette, Texture, Layout, Typography, Theme
 from nice_design.components.atoms.slider import slider, split_slider, palette_slider
+from nice_design.components.atoms.multi_button import multi_button
 
 # Use the global registry
 import nice_design as nice
@@ -40,6 +41,7 @@ class theme_selector(ui.element):
         self._current_font_main_name = 'Inter'
         self._current_font_secondary_name = 'Inter'
         self._current_layout_name = 'standard'
+        self._current_mode = 'dark' # Default matching solarized
         
         # 2. Category Objects (Working copies)
         self._palette = copy.deepcopy(nice.registry.get_palette('solarized') or SOLARIZED_PALETTE)
@@ -130,7 +132,19 @@ class theme_selector(ui.element):
                                 self.btn_palette.classes('flex-1')
                                 with menu().classes('min-w-[240px] nd-p-md nd-gap-md') as m:
                                     m.on('hide', self.btn_palette.reset_rotation)
-                                    ui.label('Palette & Colors').classes('text-xs font-bold opacity-60 mb-2')
+                                    ui.label('Palette & Mode').classes('text-xs font-bold opacity-60 mb-2')
+                                    
+                                    # Theme Mode Multi-Button
+                                    with ui.row().classes('w-full justify-center mb-4'):
+                                        multi_button(
+                                            options=[
+                                                {'icon': 'mdi-white-balance-sunny', 'value': 'light', 'color': '#ff9800'}, # Orange
+                                                {'icon': 'mdi-brightness-auto', 'value': 'auto', 'color': '#9e9e9e'},     # Grey
+                                                {'icon': 'mdi-moon-waning-crescent', 'value': 'dark', 'color': '#2196f3'}  # Blue
+                                            ],
+                                            value=self._current_mode,
+                                            on_change=self._update_theme_mode
+                                        )
                                     
                                     # Primary Accent
                                     ui.label('Primary Accent').classes('text-xs opacity-60 font-bold mb-1')
@@ -195,17 +209,22 @@ class theme_selector(ui.element):
                                     ).classes('w-full')
                                     
                                     # Shadow / Highlight (Effect Intensities)
-                                    with ui.column().classes('w-full nd-gap-sm mt-2'):
-                                        ui.row().classes('w-full justify-between text-xs opacity-60 font-bold').style('margin-bottom: -10px').add_slot('default', r'''
-                                           <span class="text-blue-400">Shadow</span>
-                                           <span class="text-teal-400">Highlight</span>
-                                        ''')
+                                    with ui.column().classes('w-full nd-gap-xs mt-2'):
+                                        with ui.row().classes('w-full justify-between'):
+                                            with ui.column().classes('nd-gap-0'):
+                                                ui.label('Shadow').classes('text-xs opacity-60')
+                                                self._shadow_label = ui.label(f'{self._texture.shadow_intensity:.1f}').classes('text-xs font-bold')
+                                            with ui.column().classes('items-end nd-gap-0'):
+                                                ui.label('Highlight').classes('text-xs opacity-60')
+                                                self._highlight_label = ui.label(f'{self._texture.highlight_intensity:.1f}').classes('text-xs font-bold')
+                                        
                                         self._effect_slider = split_slider(
-                                            limit=100,
-                                            value_left=self._texture.shadow_intensity * 50, 
-                                            value_right=self._texture.highlight_intensity * 50, 
-                                            color_left='blue-4',
-                                            color_right='teal-4',
+                                            limit=2.0,
+                                            step=0.1,
+                                            value_left=self._texture.shadow_intensity, 
+                                            value_right=self._texture.highlight_intensity, 
+                                            color_left=self._palette.surface_overlay,
+                                            color_right=self._palette.content_subtle,
                                             on_change=self._update_intensities
                                         )
 
@@ -218,7 +237,7 @@ class theme_selector(ui.element):
                                             self._border_label = ui.label(f'{self._texture.border_width}px').classes('text-xs font-bold')
                                             
                                         self._border_slider = ui.slider(min=0, max=4, step=1, value=self._texture.border_width,
-                                                  on_change=self._update_border).props('markers snap color="primary" label')
+                                                  on_change=self._update_border).props('markers snap color="primary" label :label-value="modelValue + \'px\'"')
 
                                     # Roundness (Geometric)
                                     with ui.column().classes('w-full nd-gap-xs'):
@@ -227,7 +246,7 @@ class theme_selector(ui.element):
                                             self._roundness_label = ui.label(f'{self._texture.roundness:.1f}').classes('text-xs font-bold')
                                             
                                         self._roundness_slider = ui.slider(min=0, max=2.5, step=0.1, value=self._texture.roundness, 
-                                                  on_change=self._update_roundness).props('label color="primary"')
+                                                  on_change=self._update_roundness).props('label color="primary" :label-value="modelValue.toFixed(1)"')
 
                             # --- D. Typography Submenu ---
                             with select_button(icon='mdi-format-font', icon_only=True) as btn_typo:
@@ -265,7 +284,7 @@ class theme_selector(ui.element):
                                             self._scale_label = ui.label(f'{self._typography.scale_ratio:.2f}').classes('text-xs font-bold')
                                             
                                         self._scale_slider = slider(min=1.0, max=1.6, step=0.05, value=self._typography.scale_ratio,
-                                                  on_change=self._update_text_scale).props('label color="primary"')
+                                                  on_change=self._update_text_scale).props('label color="primary" :label-value="modelValue.toFixed(2)"')
 
                                     # Title Capitalization
                                     with ui.column().classes('w-full nd-gap-xs mt-2'):
@@ -277,7 +296,7 @@ class theme_selector(ui.element):
                                             self._tf_label = ui.label(tf_map_rev.get(curr_tf_int)).classes('text-xs font-bold')
                                             
                                         self._tf_slider = ui.slider(min=0, max=3, step=1, value=curr_tf_int,
-                                                  on_change=self._update_capitalization).props('markers snap color="primary"')
+                                                  on_change=self._update_capitalization).props('markers snap color="primary" label :label-value="[\'lower\', \'none\', \'title\', \'ALL\'][modelValue]"')
 
                             # --- E. Layout Submenu ---
                             with select_button(icon='mdi-view-quilt', icon_only=True) as btn_layout:
@@ -304,7 +323,7 @@ class theme_selector(ui.element):
                                             self._spacing_label = ui.label(f'{self._layout.base_space:.1f}x').classes('text-xs font-bold')
                                             
                                         self._spacing_slider = slider(min=0.5, max=2.0, step=0.1, value=self._layout.base_space,
-                                                  on_change=self._update_spacing).props('label color="primary"')
+                                                  on_change=self._update_spacing).props('label color="primary" :label-value="modelValue.toFixed(1) + \'x\'"')
 
     def _update_theme_bundle(self, bundle_name):
         """Applies a named 'Theme' bundle (combination of 4 pillars)."""
@@ -336,6 +355,31 @@ class theme_selector(ui.element):
 
     def _update_secondary_accent(self, color):
         self._palette.secondary = color
+        self._refresh_components()
+        
+    def _update_theme_mode(self, mode):
+        """Handle theme mode selection using multi_button."""
+        self._current_mode = mode
+        
+        # Apply logic for 'auto' detection or hardcoded values
+        effective_mode = mode
+        if mode == 'auto':
+            # For now, default to dark in 'auto'
+            effective_mode = 'dark' 
+            
+        # Try to find the matching palette in the registry for the target mode
+        p = nice.registry.get_palette(self._current_palette_name, mode=effective_mode)
+        if p:
+             # Store customized accents before swapping
+             old_primary = self._palette.primary
+             old_secondary = self._palette.secondary
+             
+             self._palette = copy.deepcopy(p)
+             
+             # Restore customized accents
+             self._palette.primary = old_primary
+             self._palette.secondary = old_secondary
+             
         self._refresh_components()
         
     def _update_texture_preset(self, value):
@@ -371,8 +415,12 @@ class theme_selector(ui.element):
         self._refresh_components()
         
     def _update_intensities(self, e):
-        self._texture.shadow_intensity = e['left'] / 50.0
-        self._texture.highlight_intensity = e['right'] / 50.0
+        si = e['left']
+        hi = e['right']
+        self._texture.shadow_intensity = si
+        self._texture.highlight_intensity = hi
+        self._shadow_label.text = f'{si:.1f}'
+        self._highlight_label.text = f'{hi:.1f}'
         self._refresh_components()
 
     def _update_font(self, value, is_main: bool = True):
@@ -423,6 +471,40 @@ class theme_selector(ui.element):
         with self._preview_container:
             self._render_large_preview()
             
+        # Sync Controls UI to current state (useful after bundle changes)
+        if hasattr(self, '_effect_slider'):
+            # Update values
+            self._effect_slider.slider_left.value = self._texture.shadow_intensity
+            self._effect_slider.slider_right.value = self._texture.highlight_intensity
+            # Update labels
+            self._shadow_label.text = f'{self._texture.shadow_intensity:.1f}'
+            self._highlight_label.text = f'{self._texture.highlight_intensity:.1f}'
+            # Update colors (from current palette)
+            self._effect_slider.set_colors(self._palette.surface_overlay, self._palette.content_subtle)
+
+        if hasattr(self, '_border_slider'):
+            self._border_slider.value = self._texture.border_width
+            self._border_label.text = f'{self._texture.border_width}px'
+        
+        if hasattr(self, '_roundness_slider'):
+            self._roundness_slider.value = self._texture.roundness
+            self._roundness_label.text = f'{self._texture.roundness:.1f}'
+            
+        if hasattr(self, '_scale_slider'):
+            self._scale_slider.value = self._typography.scale_ratio
+            self._scale_label.text = f'{self._typography.scale_ratio:.2f}'
+            
+        if hasattr(self, '_spacing_slider'):
+            self._spacing_slider.value = self._layout.base_space
+            self._spacing_label.text = f'{self._layout.base_space:.1f}x'
+            
+        if hasattr(self, '_tf_slider'):
+            tf_val_map = {'lowercase': 0, 'none': 1, 'capitalize': 2, 'uppercase': 3}
+            tf_map_rev = {0: 'lower', 1: 'none', 2: 'title', 3: 'ALL'}
+            curr_val = tf_val_map.get(self._typography.title_transform, 1)
+            self._tf_slider.value = curr_val
+            self._tf_label.text = tf_map_rev.get(curr_val)
+
         if hasattr(self, 'btn_palette'):
             self.btn_palette.refresh()
         if hasattr(self, 'btn_texture'):
