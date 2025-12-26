@@ -184,10 +184,9 @@ button.-nd-c-select-button .q-focus-helper {
     /* Smooth Rotation */
 }
 
-.-nd-state-rotated .q-icon,
+/* Rotation State (Active/Menu Open) - Only rotate the dropdown chevron */
 .-nd-state-rotated .q-icon.on-right,
 .-nd-state-rotated .q-icon:last-of-type {
-    color: var(--nd-on-primary) !important;
     transform: rotate(180deg);
 }
 
@@ -418,14 +417,16 @@ body {
 }
 
 /* Rotation State (Active/Menu Open) - Match Select Standout State */
+/* Rotation State (Active/Menu Open) - Match Select Focus State (Primary Border) */
+/* We remove the background flip because it obscures custom icons/previews */
 .-nd-state-rotated {
-    background-color: var(--nd-primary) !important;
-    color: var(--nd-on-primary) !important;
     border-color: var(--nd-primary) !important;
+    box-shadow: 0 0 0 1px var(--nd-primary) !important;
+    /* Slight glow to feel 'active' */
 }
 
 .-nd-state-rotated:hover {
-    filter: brightness(1.1);
+    filter: brightness(1.05);
 }
 
 .-nd-state-rotated:hover {

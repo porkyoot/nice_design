@@ -208,26 +208,6 @@ with ui.column().classes('w-full items-center nd-p-xl nd-gap-xl'):
              
          ui.separator().classes('my-2 opacity-10')
 
-         # Dual Slider Explanation
-         ui.label('Dual Slider (Centered)').classes('text-xs opacity-60')
-         ui.label('Moves from center (0) to left or right.').classes('text-[10px] opacity-40')
-
-         # Dual Slider (Shadow / Highlight)
-         with ui.column().classes('w-full gap-2'):
-             ui.row().classes('w-full justify-between text-xs opacity-60 font-bold').style('margin-bottom: -10px').add_slot('default', r'''
-                <span class="text-blue-400">Shadow</span>
-                <span class="text-amber-400">Highlight</span>
-             ''')
-             
-             nice.dual_slider(min=-100, max=100, step=1, value=0, color_left='blue-4', color_right='amber-4')
-             
-         # Dual Slider (Positive / Negative)
-         with ui.column().classes('w-full gap-2'):
-             ui.row().classes('w-full justify-between text-xs opacity-60 font-bold').style('margin-bottom: -10px').add_slot('default', r'''
-                <span class="text-red-400">Loss</span>
-                <span class="text-green-400">Gain</span>
-             ''')
-             nice.dual_slider(min=-1.0, max=1.0, step=0.1, value=0.5, color_left='red-4', color_right='green-4')
 
          ui.separator().classes('my-2 opacity-10')
          

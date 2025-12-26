@@ -259,7 +259,7 @@ class theme_selector(ui.element):
                                             self._border_label = ui.label(f'{self._shape.base_border}px').classes('text-xs font-bold')
                                             
                                         ui.slider(min=0, max=4, step=1, value=self._shape.base_border,
-                                                  on_change=self._update_border).props('markers snap color="primary"')
+                                                  on_change=self._update_border).props('markers snap color="primary" label')
 
                                     # 4. Roundness
                                     with ui.column().classes('w-full nd-gap-xs'):
@@ -268,7 +268,7 @@ class theme_selector(ui.element):
                                             self._roundness_label = ui.label(f'{self._shape.roundness:.1f}').classes('text-xs font-bold')
                                             
                                         ui.slider(min=0, max=2.5, step=0.1, value=self._shape.roundness, 
-                                                  on_change=self._update_roundness).props('label-always color="primary"')
+                                                  on_change=self._update_roundness).props('label color="primary"')
 
                             # --- C. Typography Submenu Button ---
                             with select_button(icon='mdi-format-font', icon_only=True) as btn_typo:
@@ -305,7 +305,7 @@ class theme_selector(ui.element):
                                             self._scale_label = ui.label(f'{self._typography.scale_ratio:.2f}').classes('text-xs font-bold')
                                             
                                         slider(min=1.0, max=1.6, step=0.05, value=self._typography.scale_ratio,
-                                                  on_change=self._update_text_scale).props('label-always color="primary"')
+                                                  on_change=self._update_text_scale).props('label color="primary"')
 
                         # Spacing (Outside Submenus)
                         with ui.column().classes('w-full nd-gap-xs mt-2'):
@@ -314,7 +314,7 @@ class theme_selector(ui.element):
                                 self._spacing_label = ui.label(f'{self._layout.base_space:.1f}x').classes('text-xs font-bold')
                                 
                             slider(min=0.5, max=2.0, step=0.1, value=self._layout.base_space,
-                                      on_change=self._update_spacing).props('label-always color="primary"')
+                                      on_change=self._update_spacing).props('label color="primary"')
 
     def _update_palette(self, value):
         if value:
