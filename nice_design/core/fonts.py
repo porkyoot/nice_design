@@ -16,7 +16,7 @@ GOOGLE_FONTS = [
     "Manrope", "Outfit", "Space Grotesk", "Sora", "Plus Jakarta Sans", "Be Vietnam Pro",
     "Public Sans", "IBM Plex Sans", "IBM Plex Serif", "IBM Plex Mono", "Syne", "Urbanist",
     "Schibsted Grotesk", "Fraunces", "Young Serif", "Bricolage Grotesk", "Instrument Sans",
-    "Figtree", "Geologica", "Reddit Sans", "Afacad", "Onest", "Golos Text", "Uncut Sans",
+    "Figtree", "Geologica", "Reddit Sans", "Afacad", "Onest", "Golos Text", "Uncut Sans", "Recursive",
 ]
 
 # Adding more to make it "all" feel real

@@ -157,6 +157,14 @@ button.-nd-c-select-button .q-focus-helper {
     opacity: 1 !important;
 }
 
+/* Fix: Enforce text color and size on rich content inside select (e.g. font select) */
+.-nd-c-select .q-field__native .q-item__label,
+.-nd-c-select .q-field__native>div:not(.q-icon),
+.-nd-c-select .q-field__input {
+    color: inherit !important;
+    font-size: inherit !important;
+}
+
 /* Icons: Primary Accent by Default */
 .-nd-c-select .q-icon,
 .-nd-c-select-button .q-icon {

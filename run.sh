@@ -54,15 +54,17 @@ pip install -e . -q
 # Kill any processes using the port
 echo "🔍 Checking for processes on port $PORT..."
 fuser -k $PORT/tcp 2>/dev/null || true
+kill `lsof -t -i :$PORT` 2>/dev/null || true
 
 # Wait for port to be released (max 5 seconds)
 for i in {1..10}; do
-    if ! fuser $PORT/tcp > /dev/null 2>&1; then
+    if lsof -i :$PORT > /dev/null 2>&1; then
         break
     fi
     echo "⏳ Waiting for port $PORT to be released... ($i/10)"
     sleep 0.5
 done
+
 
 # Final check
 if lsof -i :$PORT > /dev/null 2>&1; then

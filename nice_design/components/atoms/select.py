@@ -42,6 +42,7 @@ class select(ui.select):
             self._on_filter_cb = on_filter
             self.props('use-input fill-input input-debounce="0" hide-selected')
             self.on('input-value', self._handle_filter)
+            self.on('click', self._handle_click)
 
         # Icon-only mode
         if icon_only:
@@ -78,9 +79,18 @@ class select(ui.select):
             </div>
         ''')
 
+    def _handle_click(self, e):
+        """Clear input and show all options on click"""
+        self.run_method('updateInputValue', '')
+        self._do_filter('')
+
     def _handle_filter(self, e):
         """Handle server-side filtering when user types"""
         val = (e.args if isinstance(e.args, str) else "").lower()
+        self._do_filter(val)
+
+    def _do_filter(self, val):
+        """Execute filter callback and update options"""
         new_opts = self._on_filter_cb(val)
         
         # Normalize if callback returned a list
