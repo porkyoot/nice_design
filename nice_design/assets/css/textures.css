@@ -3,16 +3,16 @@
 /* 1. Glossy Texture */
 .-nd-t-glossy .-nd-c-card,
 .-nd-t-glossy .-nd-c-btn {
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.05));
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    background-image: linear-gradient(to bottom, color-mix(in srgb, var(--nd-highlight), transparent 90%), color-mix(in srgb, var(--nd-shadow), transparent 95%));
+    border-top: 1px solid color-mix(in srgb, var(--nd-highlight), transparent 80%);
 }
 
 /* 3. Glassmorphism Texture */
 .-nd-t-glass .-nd-c-card {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: color-mix(in srgb, var(--nd-highlight), transparent 95%) !important;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid color-mix(in srgb, var(--nd-highlight), transparent 90%);
 }
 
 .-nd-t-glass .-nd-c-btn--ghost {

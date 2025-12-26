@@ -80,7 +80,7 @@
 /* Secondary Variant */
 .-nd-c-btn--secondary {
     background-color: var(--nd-secondary);
-    color: white;
+    color: var(--nd-on-secondary);
 }
 
 .-nd-c-btn--secondary:hover {
@@ -100,12 +100,13 @@
 
 /* Card Styles */
 .-nd-c-card {
-    background-color: var(--nd-background-2);
+    background-color: var(--nd-surface-layer);
     border-radius: var(--nd-radius-lg);
-    border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1);
+    border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%);
     padding: var(--nd-space-xl);
     transition: all var(--nd-transition-speed) ease;
     box-shadow: var(--nd-shadow-md);
+    color: var(--nd-content-main);
 }
 
 .-nd-c-card:hover {
@@ -118,15 +119,15 @@
 }
 
 .-nd-c-select .q-field__control {
-    background-color: var(--nd-background-3) !important;
+    background-color: var(--nd-surface-layer) !important;
     border-radius: var(--nd-radius-md) !important;
-    color: var(--nd-foreground-1) !important;
+    color: var(--nd-content-main) !important;
 }
 
 .-nd-c-select .q-field__label,
 .-nd-c-select .q-field__native,
 .-nd-c-select .q-icon {
-    color: var(--nd-foreground-1) !important;
+    color: var(--nd-content-main) !important;
     opacity: 0.8;
 }
 
@@ -134,7 +135,7 @@
 .-nd-c-select--minimal {
     width: auto !important;
     padding: 0 8px !important;
-    background-color: var(--nd-background-3) !important;
+    background-color: var(--nd-surface-layer) !important;
     border-radius: var(--nd-radius-md) !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -145,7 +146,7 @@
 /* Support for Buttons using this style */
 .-nd-c-select--minimal.q-btn {
     padding: 0 !important;
-    color: var(--nd-foreground-1) !important;
+    color: var(--nd-content-main) !important;
 }
 
 .-nd-c-select--minimal.q-btn:hover {
@@ -199,14 +200,14 @@
 
 /* Select Menu (Dropdown) */
 .-nd-c-select-menu {
-    background-color: var(--nd-background-2) !important;
-    border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1) !important;
+    background-color: var(--nd-surface-overlay) !important;
+    border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
     border-radius: var(--nd-radius-md) !important;
     box-shadow: var(--nd-shadow-lg) !important;
 }
 
 .-nd-c-select-menu .q-item {
-    color: var(--nd-foreground-1) !important;
+    color: var(--nd-content-main) !important;
     transition: background var(--nd-transition-speed);
 }
 
@@ -216,20 +217,20 @@
 }
 
 .-nd-c-select-menu .q-item:hover:not(.q-item--active) {
-    background-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: color-mix(in srgb, var(--nd-highlight), transparent 95%) !important;
 }
 
 /* Menu Styles */
 .-nd-c-menu {
-    background-color: var(--nd-background-2) !important;
-    border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1) !important;
+    background-color: var(--nd-surface-overlay) !important;
+    border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
     border-radius: var(--nd-radius-md) !important;
     box-shadow: var(--nd-shadow-lg) !important;
     overflow: hidden;
 }
 
 .-nd-c-menu-item {
-    color: var(--nd-foreground-1) !important;
+    color: var(--nd-content-main) !important;
     font-size: 0.9rem;
     font-weight: 500;
     transition: all var(--nd-transition-speed) ease;
@@ -245,25 +246,20 @@
 /* Note: body class might be .-nd-t-glossy later, but here we still target elements */
 /* I will update these when I touch textures.css, but here I should match the expected texture class name */
 body.-nd-t-glossy .-nd-c-btn {
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.05));
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    background-image: linear-gradient(to bottom, color-mix(in srgb, var(--nd-highlight), transparent 85%), color-mix(in srgb, var(--nd-shadow), transparent 95%));
+    border-top: 1px solid color-mix(in srgb, var(--nd-highlight), transparent 70%);
 }
 
 /* Global Body Styling from Theme */
 body {
-    background-color: var(--nd-background-1);
-    color: var(--nd-foreground-1, #f8f9fa);
+    background-color: var(--nd-surface-base);
+    color: var(--nd-content-main);
     font-family: var(--nd-font-main);
     margin: 0;
     min-height: 100vh;
 }
 
 /* Utility Classes for Quasar Integration */
-/* Keeping this as it might be used by Quasar or legacy loops? */
-/* Actually user said "Remove generic utility styles", this looks like a utility. I'll replace it with dynamic utility if possible. */
-/* .text-on-primary is useful but maybe we have .-nd-u-text-on-primary? */
-/* I will keep it but rename it to conform if I can find usage. */
-/* For now I'll rename to .-nd-u-text-on-primary just in case. */
 .-nd-u-text-on-primary {
     color: var(--nd-on-primary) !important;
 }

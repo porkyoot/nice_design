@@ -20,25 +20,37 @@ SOLARIZED_PALETTE = Palette(
 SOLARIZED_SEMANTICS = Semantics(
     name="solarized-dark",
     mode="dark",
+    
+    # Accents
     primary="#268bd2",
+    on_primary="#ffffff",
     secondary="#2aa198",
-    backgrounds=[
-        '#002b36',  # Base03 - darkest background
-        '#073642',  # Base02 - dark background
-        '#586e75',  # Base01 - medium (comments)
-    ],
-    foregrounds=[
-        '#fdf6e3',  # Base3 - emphasized content
-        '#eee8d5',  # Base2 - body content
-        '#93a1a1',  # Base1 - secondary content
-    ],
-    status={
-        'success': '#859900',
-        'error': '#dc322f',
-        'warning': '#b58900',
-        'info': '#268bd2',
-        'debug': '#586e75',  # Base01 - grey for debug/logging
-    },
+    on_secondary="#ffffff", 
+    
+    # Surfaces
+    surface_base='#002b36',   # Base03
+    surface_layer='#073642',  # Base02
+    surface_overlay='#586e75', # Base01
+    
+    # Content
+    content_main='#fdf6e3',   # Base3
+    content_muted='#93a1a1',  # Base1
+    content_subtle='#586e75', # Base01
+    
+    # Status
+    success='#859900',
+    on_success='#002b36',
+    
+    error='#dc322f',
+    on_error='#ffffff',
+    
+    warning='#b58900',
+    on_warning='#002b36',
+    
+    info='#268bd2',
+    on_info='#ffffff',
+    
+    # Effects
     highlight="#ffffff",
     shadow="#000000"
 )

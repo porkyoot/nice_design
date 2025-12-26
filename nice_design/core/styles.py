@@ -11,28 +11,38 @@ def generate_theme_css(theme: Theme) -> str:
     # --- COLORS: ACCENTS ---
     lines.append("  /* --- Accents --- */")
     lines.append(f"  --{p}-primary: {sem.primary};")
+    lines.append(f"  --{p}-on-primary: {sem.on_primary};")
     lines.append(f"  --{p}-secondary: {sem.secondary};")
+    lines.append(f"  --{p}-on-secondary: {sem.on_secondary};")
     lines.append(f"  --{p}-highlight: {sem.highlight};")
     lines.append(f"  --{p}-shadow: {sem.shadow};")
 
-    # --- COLORS: SCALES (List -> Indexed Vars) ---
-    lines.append("  /* --- Background Scale (0=Deepest) --- */")
-    for i, color in enumerate(sem.backgrounds):
-        lines.append(f"  --{p}-bg-{i}: {color};")
+    # --- COLORS: SURFACES ---
+    lines.append("  /* --- Surfaces --- */")
+    lines.append(f"  --{p}-surface-base: {sem.surface_base};")
+    lines.append(f"  --{p}-surface-layer: {sem.surface_layer};")
+    lines.append(f"  --{p}-surface-overlay: {sem.surface_overlay};")
         
-    lines.append("  /* --- Foreground Scale (0=Strongest) --- */")
-    for i, color in enumerate(sem.foregrounds):
-        lines.append(f"  --{p}-fg-{i}: {color};")
+    lines.append("  /* --- Content --- */")
+    lines.append(f"  --{p}-content-main: {sem.content_main};")
+    lines.append(f"  --{p}-content-muted: {sem.content_muted};")
+    lines.append(f"  --{p}-content-subtle: {sem.content_subtle};")
 
     # --- COLORS: PALETTE (Dict -> Named Vars) ---
     lines.append("  /* --- Hue Palette --- */")
     for name, hex_val in pal.colors.items():
         lines.append(f"  --{p}-color-{name}: {hex_val};")
 
-    # --- COLORS: STATUS (Dict -> Named Vars) ---
+    # --- COLORS: STATUS ---
     lines.append("  /* --- Semantic Status --- */")
-    for status, hex_val in sem.status.items():
-        lines.append(f"  --{p}-status-{status}: {hex_val};")
+    lines.append(f"  --{p}-status-success: {sem.success};")
+    lines.append(f"  --{p}-on-status-success: {sem.on_success};")
+    lines.append(f"  --{p}-status-error: {sem.error};")
+    lines.append(f"  --{p}-on-status-error: {sem.on_error};")
+    lines.append(f"  --{p}-status-warning: {sem.warning};")
+    lines.append(f"  --{p}-on-status-warning: {sem.on_warning};")
+    lines.append(f"  --{p}-status-info: {sem.info};")
+    lines.append(f"  --{p}-on-status-info: {sem.on_info};")
 
     # --- SHAPE & TYPOGRAPHY ---
     lines.append("  /* --- Shape & Type --- */")
@@ -80,17 +90,33 @@ def generate_theme_css(theme: Theme) -> str:
         lines.append(f".-{p}-u-bg-{role} {{ background-color: var({var_name}) !important; }}")
 
     add_color_utils('primary', f"--{p}-primary")
+    add_color_utils('on-primary', f"--{p}-on-primary")
     add_color_utils('secondary', f"--{p}-secondary")
+    add_color_utils('on-secondary', f"--{p}-on-secondary")
     add_color_utils('highlight', f"--{p}-highlight")
     
-    for i in range(len(sem.backgrounds)):
-        add_color_utils(f"bg-{i}", f"--{p}-bg-{i}")
+    # Surfaces
+    add_color_utils('surface-base', f"--{p}-surface-base")
+    add_color_utils('surface-layer', f"--{p}-surface-layer")
+    add_color_utils('surface-overlay', f"--{p}-surface-overlay")
         
-    for i in range(len(sem.foregrounds)):
-        add_color_utils(f"fg-{i}", f"--{p}-fg-{i}")
+    # Content
+    add_color_utils('content-main', f"--{p}-content-main")
+    add_color_utils('content-muted', f"--{p}-content-muted")
+    add_color_utils('content-subtle', f"--{p}-content-subtle")
         
-    for status in sem.status:
-        add_color_utils(status, f"--{p}-status-{status}")
+    # Status
+    add_color_utils('success', f"--{p}-status-success")
+    add_color_utils('on-success', f"--{p}-on-status-success")
+    
+    add_color_utils('error', f"--{p}-status-error")
+    add_color_utils('on-error', f"--{p}-on-status-error")
+    
+    add_color_utils('warning', f"--{p}-status-warning")
+    add_color_utils('on-warning', f"--{p}-on-status-warning")
+    
+    add_color_utils('info', f"--{p}-status-info")
+    add_color_utils('on-info', f"--{p}-on-status-info")
 
     # --- Radius Utilities ---
     # sm, md, lg, full, none

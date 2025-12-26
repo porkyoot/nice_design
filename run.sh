@@ -27,7 +27,8 @@ echo "📥 Checking dependencies..."
 pip install --upgrade pip
 pip install -r requirements.txt
 pip install -e .
-
+echo "Stopping previous NiceGUI instance..."
+fuser -k 8080/tcp 2>/dev/null || true
 echo "✨ Starting NiceGUI with Hot Reload..."
 echo "📂 Watching: test/, nice_design/"
 

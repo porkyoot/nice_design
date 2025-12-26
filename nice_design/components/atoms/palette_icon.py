@@ -18,8 +18,8 @@ class palette_icon(ui.element):
         super().__init__('svg')
         
         # Extract colors from the palette and semantics
-        background_color = semantics.backgrounds[0] if semantics.backgrounds else '#002b36'
-        foreground_color = semantics.foregrounds[0] if semantics.foregrounds else '#fdf6e3'
+        background_color = semantics.surface_base
+        foreground_color = semantics.content_main
         colors = palette.colors
         
         # Set SVG attributes

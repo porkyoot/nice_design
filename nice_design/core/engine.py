@@ -68,30 +68,35 @@ class ThemeEngine:
             if opacity >= 1.0: return hex_color
             return f"color-mix(in srgb, {hex_color}, transparent {int((1-opacity)*100)}%)"
 
-        def get_color(color_list, index, default):
-            try:
-                return color_list[index]
-            except IndexError:
-                return default
-
         colors = {
             'primary': semantics.primary,
+            'on-primary': semantics.on_primary,
             'secondary': semantics.secondary,
-            'foreground-1': mix(get_color(semantics.foregrounds, 0, '#ffffff'), texture.opacity),
-            'foreground-2': mix(get_color(semantics.foregrounds, 1, '#f0f0f0'), texture.opacity),
-            'foreground-3': mix(get_color(semantics.foregrounds, 2, '#e0e0e0'), texture.opacity),
-            'background-1': mix(get_color(semantics.backgrounds, 0, '#000000'), texture.opacity),
-            'background-2': mix(get_color(semantics.backgrounds, 1, '#111111'), texture.opacity),
-            'background-3': mix(get_color(semantics.backgrounds, 2, '#222222'), texture.opacity),
+            'on-secondary': semantics.on_secondary,
+            
+            'content-main': semantics.content_main,
+            'content-muted': semantics.content_muted,
+            'content-subtle': semantics.content_subtle,
+            
+            'surface-base': semantics.surface_base,
+            'surface-layer': mix(semantics.surface_layer, texture.opacity),
+            'surface-overlay': mix(semantics.surface_overlay, texture.opacity),
+            
             'highlight': semantics.highlight,
+
+            'status-success': semantics.success,
+            'on-status-success': semantics.on_success,
+            'status-error': semantics.error,
+            'on-status-error': semantics.on_error,
+            'status-warning': semantics.warning,
+            'on-status-warning': semantics.on_warning,
+            'status-info': semantics.info,
+            'on-status-info': semantics.on_info,
         }
         
         # Add named colors from palette
         for color_name, color_value in palette.colors.items():
             colors['color-' + color_name] = color_value
-        
-        for s_type, s_color in semantics.status.items():
-            colors['status-' + s_type] = s_color
 
         radii['font-main'] = typo.font_main
         radii['font-mono'] = typo.font_mono

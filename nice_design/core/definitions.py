@@ -22,22 +22,39 @@ class Semantics:
     name: str
     mode: Literal['dark', 'light']
     
-    # 1. Main Accents
+    # 1. Main Accents & Contrast
     primary: str = "#000000"
+    on_primary: str = "#ffffff"
     secondary: str = "#ffffff"
+    on_secondary: str = "#000000"
     
-    # 2. Tonal Scales (Ordered by intensity)
-    # Backgrounds: 0=Deepest/Base, 1=Surface, 2=Overlay, etc.
-    backgrounds: List[str] = field(default_factory=list)
+    # 2. Surfaces (Backgrounds)
+    # Replaces 'backgrounds' list
+    surface_base: str = "#000000"     # Deepest/App background
+    surface_layer: str = "#111111"    # Cards/Floating surfaces
+    surface_overlay: str = "#222222"  # Modals/Dropdowns
     
-    # Foregrounds: 0=Strongest, 1=Normal, 2=Muted, 3=Faint
-    foregrounds: List[str] = field(default_factory=list)
+    # 3. Content (Foregrounds)
+    # Replaces 'foregrounds' list
+    content_main: str = "#ffffff"     # High contrast text
+    content_muted: str = "#aaaaaa"    # Medium contrast
+    content_subtle: str = "#666666"   # Low contrast/Disabled
     
-    # 3. Semantic Status Colors
-    # e.g. {'success': '#...', 'error': '#...', 'warning': '#...'}
-    status: Dict[str, str] = field(default_factory=dict)
+    # 4. Semantic Status Colors & Contrast
+    # Replaces 'status' dict
+    success: str = "#00ff00"
+    on_success: str = "#000000"
     
-    # 4. Effects
+    error: str = "#ff0000"
+    on_error: str = "#ffffff"
+    
+    warning: str = "#ffff00"
+    on_warning: str = "#000000"
+    
+    info: str = "#0000ff"
+    on_info: str = "#ffffff"
+
+    # 5. Effects
     highlight: str = "#ffffff"  # For glass/glossy effects
     shadow: str = "#000000"      # Base shadow color
 

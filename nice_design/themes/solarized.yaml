@@ -30,24 +30,26 @@ themes:
       - name: solarized
         mode: dark
         primary: "#268bd2"
+        on_primary: "#ffffff"
         secondary: "#cb4b16"
+        on_secondary: "#ffffff"
         
-        backgrounds:
-          - "#002b36" # BASE03
-          - "#073642" # BASE02
-          - "#586e75" # BASE01
+        surface_base: "#002b36"
+        surface_layer: "#073642"
+        surface_overlay: "#586e75"
       
-        foregrounds:
-          - "#fdf6e3" # BASE3
-          - "#93a1a1" # BASE1
-          - "#586e75" # BASE01
+        content_main: "#fdf6e3"
+        content_muted: "#93a1a1"
+        content_subtle: "#586e75"
       
-        status:
-          success: "#859900"
-          warning: "#b58900"
-          error: "#dc322f"
-          info: "#268bd2"
-          debug: "#586e75"
+        success: "#859900"
+        on_success: "#002b36"
+        warning: "#b58900"
+        on_warning: "#002b36"
+        error: "#dc322f"
+        on_error: "#ffffff"
+        info: "#268bd2"
+        on_info: "#ffffff"
         
         highlight: "#fdf6e3"
         shadow: "#fdf6e3"
@@ -55,24 +57,26 @@ themes:
       - name: solarized
         mode: light
         primary: "#268bd2"
+        on_primary: "#ffffff"
         secondary: "#cb4b16"
+        on_secondary: "#ffffff"
         
-        backgrounds:
-          - "#fdf6e3" # BASE3
-          - "#93a1a1" # BASE1
-          - "#586e75" # BASE01
+        surface_base: "#fdf6e3"
+        surface_layer: "#93a1a1"
+        surface_overlay: "#586e75"
       
-        foregrounds:
-          - "#fdf6e3" # BASE3
-          - "#93a1a1" # BASE1
-          - "#586e75" # BASE01
+        content_main: "#fdf6e3"
+        content_muted: "#93a1a1"
+        content_subtle: "#586e75"
         
-        status:
-          success: "#859900"
-          warning: "#b58900"
-          error: "#dc322f"
-          info: "#268bd2"
-          debug: "#586e75"
+        success: "#859900"
+        on_success: "#002b36"
+        warning: "#b58900"
+        on_warning: "#002b36"
+        error: "#dc322f"
+        on_error: "#ffffff"
+        info: "#268bd2"
+        on_info: "#ffffff"
           
         highlight: "#002b36"
         shadow: "#002b36"

@@ -8,8 +8,11 @@ class StatusStyles:
     @staticmethod
     def get_color(theme: Theme, status: str) -> str:
         # 1. Try semantic status (error, warning, success, info)
-        if status in theme.semantics.status:
-            return theme.semantics.status[status]
+        # 1. Try semantic status (error, warning, success, info)
+        if status == 'success': return theme.semantics.success
+        if status == 'error': return theme.semantics.error
+        if status == 'warning': return theme.semantics.warning
+        if status == 'info': return theme.semantics.info
         
         # 2. Fallback to palette colors if status matches a color name
         if status in theme.palette.colors:
