@@ -15,9 +15,11 @@ from nice_design.core.presets import (
     STANDARD_SHAPE, 
     STANDARD_SHAPE, 
     STANDARD_TEXTURE,
+    STANDARD_TEXTURE,
     STANDARD_LAYOUT,
+    STANDARD_TYPO,
 )
-from nice_design.core.definitions import Palette, Texture, Shape, Layout
+from nice_design.core.definitions import Palette, Texture, Shape, Layout, Typography
 from nice_design.components.atoms.slider import slider, split_slider
 
 # --- Mock Data for Selects ---
@@ -66,6 +68,14 @@ GLOSSY_TEXTURE.shadow_intensity = 1.5
 GLOSSY_TEXTURE.opacity = 0.95
 TEXTURE_OPTIONS['Glossy'] = GLOSSY_TEXTURE
 
+# Typography Fonts (Mock)
+FONT_OPTIONS = {
+    'Inter': 'Inter, sans-serif',
+    'Roboto': 'Roboto, sans-serif', 
+    'Poppins': 'Poppins, sans-serif',
+    'Mono': 'Fira Code, monospace',
+    'Serif': 'Merriweather, serif'
+}
 
 class theme_selector(ui.element):
     """
@@ -78,13 +88,16 @@ class theme_selector(ui.element):
         self._on_change = on_change
         
         # Initial State
+        # Initial State
         self._current_palette_name = 'Solarized'
         self._current_texture_name = 'Flat'
+        self._current_font_name = 'Inter'
         
         # Working copies of objects to allow modification (e.g. roundness)
         self._shape = copy.deepcopy(STANDARD_SHAPE)
         self._texture = copy.deepcopy(TEXTURE_OPTIONS['Flat'])
         self._layout = copy.deepcopy(STANDARD_LAYOUT)
+        self._typography = copy.deepcopy(STANDARD_TYPO)
         
         self._render()
 
@@ -153,7 +166,7 @@ class theme_selector(ui.element):
                         with ui.column().classes('w-full p-4 gap-4'):
                             ui.label('Theme Configuration').classes('text-[10px] font-bold opacity-40 uppercase tracking-widest')
 
-                        # Palette Select
+                        # 1. Palette
                         palette_opts = {}
                         for name, data in PALETTE_OPTIONS.items():
                             html = palette_icon.to_html(data['palette'], data['semantics'], size="20px")
@@ -167,7 +180,7 @@ class theme_selector(ui.element):
                             on_change=lambda e: self._update_palette(e.value)
                         ).classes('w-full')
                         
-                        # Texture Select
+                        # 2. Texture
                         texture_opts = {}
                         for name, tex in TEXTURE_OPTIONS.items():
                             html = texture_icon.to_html(tex, size="20px")
@@ -183,16 +196,25 @@ class theme_selector(ui.element):
                         
                         ui.separator().classes('opacity-10 my-1')
 
-                        # Roundness Slider
-                        with ui.column().classes('w-full gap-1'):
-                            with ui.row().classes('w-full justify-between'):
-                                ui.label('Roundness').classes('text-xs opacity-60')
-                                self._roundness_label = ui.label(f'{self._shape.roundness:.1f}').classes('text-xs font-bold')
-                                
-                            ui.slider(min=0, max=2.5, step=0.1, value=self._shape.roundness, 
-                                      on_change=self._update_roundness).props('label-always color="primary"')
-                                      
-                        # Border Slider
+                        # 3. Shadow / Highlight (Opacity)
+                        with ui.column().classes('w-full gap-2'):
+                            ui.row().classes('w-full justify-between text-xs opacity-60 font-bold').style('margin-bottom: -10px').add_slot('default', r'''
+                               <span class="text-blue-400">Shadow</span>
+                               <span class="text-teal-400">Opacity</span>
+                            ''')
+                            
+                            split_slider(
+                                limit=100,
+                                value_left=self._texture.shadow_intensity * 50, 
+                                value_right=self._texture.opacity * 100, 
+                                color_left='blue-4',
+                                color_right='teal-4',
+                                on_change=self._update_shadow_opacity
+                            )
+
+                        ui.separator().classes('opacity-10 my-1')
+                        
+                        # 4. Border
                         with ui.column().classes('w-full gap-1'):
                             with ui.row().classes('w-full justify-between'):
                                 ui.label('Border').classes('text-xs opacity-60')
@@ -201,9 +223,42 @@ class theme_selector(ui.element):
                             ui.slider(min=0, max=4, step=1, value=self._shape.base_border,
                                       on_change=self._update_border).props('markers snap color="primary"')
 
+                        # 5. Roundness
+                        with ui.column().classes('w-full gap-1'):
+                            with ui.row().classes('w-full justify-between'):
+                                ui.label('Roundness').classes('text-xs opacity-60')
+                                self._roundness_label = ui.label(f'{self._shape.roundness:.1f}').classes('text-xs font-bold')
+                                
+                            ui.slider(min=0, max=2.5, step=0.1, value=self._shape.roundness, 
+                                      on_change=self._update_roundness).props('label-always color="primary"')
+                                      
+                        ui.separator().classes('opacity-10 my-1')
+
+                        # 6. Font
+                        font_opts = {}
+                        for name, family in FONT_OPTIONS.items():
+                           # Using the new 'font' property supported by our custom select
+                           font_opts[name] = {'label': name, 'value': name, 'font': family}
+
+                        select(
+                            options=font_opts,
+                            value=self._current_font_name,
+                            label='Font Family',
+                            on_change=lambda e: self._update_font(e.value)
+                        ).classes('w-full')
+
+                        # 7. Text Size (Scale Ratio)
+                        with ui.column().classes('w-full gap-1'):
+                            with ui.row().classes('w-full justify-between'):
+                                ui.label('Text Scale').classes('text-xs opacity-60')
+                                self._scale_label = ui.label(f'{self._typography.scale_ratio:.2f}').classes('text-xs font-bold')
+                                
+                            slider(min=1.0, max=1.6, step=0.05, value=self._typography.scale_ratio,
+                                      on_change=self._update_text_scale).props('label-always color="primary"')
+
                         ui.separator().classes('opacity-10 my-1')
                         
-                        # Spacing Slider
+                        # 8. Spacing
                         with ui.column().classes('w-full gap-1'):
                             with ui.row().classes('w-full justify-between'):
                                 ui.label('Spacing').classes('text-xs opacity-60')
@@ -211,22 +266,6 @@ class theme_selector(ui.element):
                                 
                             slider(min=0.5, max=2.0, step=0.1, value=self._layout.base_space,
                                       on_change=self._update_spacing).props('label-always color="primary"')
-                                      
-                        # Shadow / Highlight (Opacity) Split Slider
-                        with ui.column().classes('w-full gap-2'):
-                            ui.row().classes('w-full justify-between text-xs opacity-60 font-bold').style('margin-bottom: -10px').add_slot('default', r'''
-                               <span class="text-blue-400">Shadow</span>
-                               <span class="text-teal-400">Opacity</span>
-                            ''')
-                            
-                            split_slider(
-                                limit=100, # Using 0-100 scale for UI control
-                                value_left=self._texture.shadow_intensity * 50, # Scale 2.0 -> 100
-                                value_right=self._texture.opacity * 100, # Scale 1.0 -> 100
-                                color_left='blue-4',
-                                color_right='teal-4',
-                                on_change=self._update_shadow_opacity
-                            )
 
     def _update_palette(self, value):
         if value:
@@ -262,6 +301,17 @@ class theme_selector(ui.element):
         self._texture.opacity = e['right'] / 100.0 # 100 -> 1.0
         self._refresh_components()
 
+    def _update_font(self, value):
+        if value:
+            self._current_font_name = value
+            self._typography.font_main = FONT_OPTIONS[value]
+            self._refresh_components()
+
+    def _update_text_scale(self, e):
+        self._typography.scale_ratio = e.value
+        self._scale_label.text = f'{e.value:.2f}'
+        self._refresh_components()
+
     def _refresh_components(self):
         """Refreshes the dynamic visualizations and triggers change event."""
         # Update UI visualizations
@@ -278,5 +328,6 @@ class theme_selector(ui.element):
                 'semantics': self.current_semantics,
                 'texture': self._texture,
                 'shape': self._shape,
-                'layout': self._layout
+                'layout': self._layout,
+                'typography': self._typography
             })
