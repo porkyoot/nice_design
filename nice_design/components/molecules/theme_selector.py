@@ -20,7 +20,7 @@ from nice_design.core.presets import (
     STANDARD_TYPO,
 )
 from nice_design.core.definitions import Palette, Texture, Shape, Layout, Typography
-from nice_design.components.atoms.slider import slider, split_slider
+from nice_design.components.atoms.slider import slider, split_slider, palette_slider
 
 # --- Mock Data for Selects ---
 # In a real app, these would come from the ThemeEngine registry or a configuration object
@@ -99,6 +99,9 @@ class theme_selector(ui.element):
         self._layout = copy.deepcopy(STANDARD_LAYOUT)
         self._typography = copy.deepcopy(STANDARD_TYPO)
         
+        # Initialize semantics from current palette
+        self._semantics = copy.deepcopy(PALETTE_OPTIONS[self._current_palette_name]['semantics'])
+        
         self._render()
 
     @property
@@ -107,7 +110,7 @@ class theme_selector(ui.element):
         
     @property
     def current_semantics(self):
-        return PALETTE_OPTIONS[self._current_palette_name]['semantics']
+        return self._semantics
         
     def _render_trigger_icon(self):
         """Builder for the select_button icon. Creates a container we can update later."""
@@ -164,9 +167,25 @@ class theme_selector(ui.element):
                     # Use a safer height and move padding inside to ensure bottom elements aren't clipped
                     with ui.scroll_area().classes('w-full h-[50vh]'):
                         with ui.column().classes('w-full p-4 gap-4'):
-                            ui.label('Theme Configuration').classes('text-[10px] font-bold opacity-40 uppercase tracking-widest')
+                            # 1. Primary Accent
+                            ui.label('Primary Accent').classes('text-xs opacity-60 font-bold mb-1')
+                            palette_slider(
+                                colors=list(self.current_palette.colors.values()),
+                                value=self._semantics.primary,
+                                on_change=self._update_primary_accent
+                            )
 
-                        # 1. Palette
+                            # 2. Secondary Accent
+                            ui.label('Secondary Accent').classes('text-xs opacity-60 font-bold mb-1')
+                            palette_slider(
+                                colors=list(self.current_palette.colors.values()),
+                                value=self._semantics.secondary,
+                                on_change=self._update_secondary_accent
+                            )
+
+                            ui.separator().classes('opacity-10 my-1')
+
+                            # 3. Palette
                         palette_opts = {}
                         for name, data in PALETTE_OPTIONS.items():
                             html = palette_icon.to_html(data['palette'], data['semantics'], size="20px")
@@ -270,7 +289,17 @@ class theme_selector(ui.element):
     def _update_palette(self, value):
         if value:
             self._current_palette_name = value
+            # Reset semantics to the new palette's defaults
+            self._semantics = copy.deepcopy(PALETTE_OPTIONS[value]['semantics'])
             self._refresh_components()
+            
+    def _update_primary_accent(self, color):
+        self._semantics.primary = color
+        self._refresh_components()
+
+    def _update_secondary_accent(self, color):
+        self._semantics.secondary = color
+        self._refresh_components()
         
     def _update_texture(self, value):
         if value:

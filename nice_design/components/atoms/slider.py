@@ -207,3 +207,87 @@ class split_slider(ui.element):
     def _notify(self):
         if self._on_change:
             self._on_change({'left': self._value_left, 'right': self._value_right})
+
+
+class palette_slider(ui.element):
+    """
+    A horizontal color selection bar resembling a slider.
+    Displays a set of colors and emphasizes the selected one by expanding it.
+    Ideal for selecting a color from a palette (e.g., 8 accent colors).
+    
+    Visual Structure:
+    [  ][  ][    SELECTED    ][  ][  ]
+    """
+    def __init__(self, 
+                 colors: list,
+                 value: Optional[str] = None, 
+                 height: str = '12px',
+                 on_change: Optional[Callable[[str], None]] = None):
+        super().__init__('div')
+        # Container styling
+        self.classes('relative w-full rounded-full overflow-hidden flex row no-wrap shadow-sm cursor-pointer')
+        self.style(f'height: {height};')
+        
+        # Validations
+        if not colors:
+             colors = ['#cccccc'] # Fallback
+             
+        self._colors = colors
+        self._value = value if value in colors else colors[0]
+        self._on_change = on_change
+        self._items = {} # Map color -> element
+        
+        self._render_items()
+
+    def _render_items(self):
+        with self:
+            for color in self._colors:
+                # We use specific flex styles for animation
+                # Flex-1 for unselected, Flex-4 for selected
+                is_selected = (color == self._value)
+                flex_val = '4' if is_selected else '1'
+                
+                item = ui.element('div').classes('h-full transition-all duration-300 ease-out relative hover:opacity-90')
+                item.style(f'background-color: {color}; flex: {flex_val};')
+                
+                # Selection indicator
+                if is_selected:
+                    self._inject_indicator(item)
+                    
+                # Click event
+                # Note: Capture color in lambda default arg
+                item.on('click', lambda _, c=color: self.set_value(c))
+                
+                self._items[color] = item
+
+    def _inject_indicator(self, container):
+        with container:
+            # A subtle dot to indicate active state clearly
+             ui.element('div').classes('absolute-center w-1.5 h-1.5 rounded-full bg-white/90 shadow-sm ring-1 ring-black/10')
+
+    def set_value(self, value: str):
+        if value == self._value:
+            return
+        if value not in self._items:
+            # If for some reason the value is not in our keys (e.g. hex case difference), try to find it or ignore
+            # Simple check:
+            if value not in self._colors:
+                return
+            
+        self._value = value
+        
+        # Update styles efficiently
+        for color, item in self._items.items():
+            item.clear() # Remove any indicators
+            
+            if color == self._value:
+                # Expand
+                item.style(f'background-color: {color}; flex: 4;')
+                self._inject_indicator(item)
+            else:
+                # Contract
+                item.style(f'background-color: {color}; flex: 1;')
+                
+        if self._on_change:
+            self._on_change(value)
+
