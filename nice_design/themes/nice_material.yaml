@@ -1,0 +1,5 @@
+theme:
+  name: nice-material
+  palette: material
+  texture: frosted
+  layout: rounded-standard

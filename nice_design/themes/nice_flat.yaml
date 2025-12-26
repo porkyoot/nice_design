@@ -1,0 +1,5 @@
+theme:
+  name: nice-flat
+  palette: flat_ui
+  texture: frosted
+  layout: rounded-standard

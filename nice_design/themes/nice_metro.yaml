@@ -1,0 +1,5 @@
+theme:
+  name: nice-metro
+  palette: metro
+  texture: frosted
+  layout: rounded-standard

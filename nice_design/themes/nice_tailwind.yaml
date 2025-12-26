@@ -1,0 +1,5 @@
+theme:
+  name: nice-tailwind
+  palette: tailwind
+  texture: frosted
+  layout: rounded-standard

@@ -1,0 +1,97 @@
+- name: metro
+  mode: light
+  colors:
+    lime: "#a4c400"
+    green: "#60a917"
+    emerald: "#008a00"
+    teal: "#00aba9"
+    cyan: "#1ba1e2"
+    cobalt: "#0050ef"
+    indigo: "#6a00ff"
+    violet: "#aa00ff"
+    pink: "#f472d0"
+    magenta: "#d80073"
+    crimson: "#a20025"
+    red: "#e51400"
+    orange: "#fa6800"
+    amber: "#f0a30a"
+    yellow: "#e3c800"
+    brown: "#825a2c"
+    olive: "#6d8764"
+    steel: "#647687"
+    mauve: "#76608a"
+    sienna: "#a0522d"
+
+  primary: "#0050ef"       # Cobalt
+  on_primary: "#ffffff"
+  secondary: "#a20025"     # Crimson
+  on_secondary: "#ffffff"
+
+  surface_base: "#ffffff"
+  surface_layer: "#f2f2f2"
+  surface_overlay: "#e5e5e5"
+
+  content_main: "#000000"
+  content_muted: "#333333"
+  content_subtle: "#666666"
+
+  success: "#60a917"         # Green
+  on_success: "#ffffff"
+  warning: "#f0a30a"         # Amber
+  on_warning: "#ffffff"
+  error: "#e51400"           # Red
+  on_error: "#ffffff"
+  info: "#1ba1e2"            # Cyan
+  on_info: "#ffffff"
+
+  highlight: "#ffffff"
+  shadow: "#647687"
+
+- name: metro
+  mode: dark
+  colors:
+    lime: "#a4c400"
+    green: "#60a917"
+    emerald: "#008a00"
+    teal: "#00aba9"
+    cyan: "#1ba1e2"
+    cobalt: "#0050ef"
+    indigo: "#6a00ff"
+    violet: "#aa00ff"
+    pink: "#f472d0"
+    magenta: "#d80073"
+    crimson: "#a20025"
+    red: "#e51400"
+    orange: "#fa6800"
+    amber: "#f0a30a"
+    yellow: "#e3c800"
+    brown: "#825a2c"
+    olive: "#6d8764"
+    steel: "#647687"
+    mauve: "#76608a"
+    sienna: "#a0522d"
+
+  primary: "#1ba1e2"       # Cyan
+  on_primary: "#ffffff"
+  secondary: "#f0a30a"     # Amber
+  on_secondary: "#000000"
+
+  surface_base: "#1d1d1d"
+  surface_layer: "#252525"
+  surface_overlay: "#333333"
+
+  content_main: "#ffffff"
+  content_muted: "#cccccc"
+  content_subtle: "#999999"
+
+  success: "#008a00"         # Emerald
+  on_success: "#ffffff"
+  warning: "#fa6800"         # Orange
+  on_warning: "#ffffff"
+  error: "#e51400"           # Red
+  on_error: "#ffffff"
+  info: "#0050ef"            # Cobalt
+  on_info: "#ffffff"
+
+  highlight: "#333333"
+  shadow: "#000000"
