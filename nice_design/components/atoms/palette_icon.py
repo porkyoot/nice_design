@@ -38,9 +38,6 @@ class palette_icon(ui.element):
     def _generate_icon(self, bg_color: str, fg_color: str, colors: Dict[str, str]):
         """Generate the SVG elements for the theme icon."""
         
-        # Color order for the arcs (clockwise from top)
-        color_names = ['blue', 'cyan', 'green', 'yellow', 'orange', 'red', 'magenta', 'purple']
-        
         # Center point
         cx, cy = 12, 12
         
@@ -54,8 +51,9 @@ class palette_icon(ui.element):
         
         svg_content = []
         
+        i = 0
         # Draw the 8 colored arcs
-        for i, color_name in enumerate(color_names):
+        for color_name in colors:
             color = colors.get(color_name, '#888888')
             
             # Calculate start and end angles (in degrees, starting from top)
@@ -88,6 +86,7 @@ class palette_icon(ui.element):
             """.strip()
             
             svg_content.append(f'<path d="{path_d}" fill="{color}" />')
+            i += 1
         
         # Draw center background half-disk (left side)
         svg_content.append(f'''
