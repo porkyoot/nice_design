@@ -44,17 +44,6 @@ class theme_icon(ui.element):
                 
                 texture_container.style(f'filter: drop-shadow(var(--nd-shadow-{shadow_size}));')
             
-            # Apply highlight density if applicable
-            if texture.highlight_intensity > 1.2:
-                # Add a subtle gloss effect
-                ui.element('div').style(f'''
-                    position: absolute;
-                    top: 0; left: 0; width: 100%; height: 50%;
-                    background: linear-gradient(to bottom, rgba(255,255,255,{0.1 * texture.highlight_intensity}), transparent);
-                    pointer-events: none;
-                    z-index: 10;
-                ''')
-
             # Apply shape-based border and roundness (from Texture category)
             border_width_px = f"{max(1.0, float(texture.border_width) * 0.5)}px"  # Scaled for visual balance
             
@@ -86,6 +75,17 @@ class theme_icon(ui.element):
                 with container:
                     # Reuse the palette_icon for color visualization
                     palette_icon(palette, size=size, circular=False)
+
+                    # Apply highlight density if applicable - moved here to be inside clipped container
+                    if texture.highlight_intensity > 1.2:
+                        # Add a subtle gloss effect
+                        ui.element('div').style(f'''
+                            position: absolute;
+                            top: 0; left: 0; width: 100%; height: 50%;
+                            background: linear-gradient(to bottom, rgba(255,255,255,{0.1 * texture.highlight_intensity}), transparent);
+                            pointer-events: none;
+                            z-index: 10;
+                        ''')
 
     @staticmethod
     def to_html(
@@ -145,7 +145,7 @@ class theme_icon(ui.element):
              gloss_html = f'<div style="position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,{0.1 * texture.highlight_intensity}), transparent); pointer-events: none; z-index: 10;"></div>'
 
         # Inner Container (Palette Container)
-        html_palette_container = f'<div class="-nd-c-theme-icon__palette-container" style="{container_style}">{gloss_html}{inner_html}</div>'
+        html_palette_container = f'<div class="-nd-c-theme-icon__palette-container" style="{container_style}">{inner_html}{gloss_html}</div>'
         
         # Texture Container
         html_texture_container = f'<div class="nd-theme-icon__container" style="{texture_style}">{html_palette_container}</div>'

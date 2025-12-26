@@ -58,8 +58,21 @@ class texture_icon(ui.element):
                 border-radius: 50%;
                 width: 100%;
                 height: 100%;
+                overflow: hidden;
                 transition: all var(--nd-transition-speed) ease;
             ''')
+            
+            with circle:
+                 # Apply highlight density if applicable
+                if texture.highlight_intensity > 1.2:
+                    # Add a subtle gloss effect
+                    ui.element('div').style(f'''
+                        position: absolute;
+                        top: 0; left: 0; width: 100%; height: 50%;
+                        background: linear-gradient(to bottom, rgba(255,255,255,{0.1 * texture.highlight_intensity}), transparent);
+                        pointer-events: none;
+                        z-index: 10;
+                    ''')
             
             # Add hover effect
             circle.classes('-nd-c-texture-icon__circle--interactive')
@@ -92,12 +105,17 @@ class texture_icon(ui.element):
             circle_style += f' box-shadow: var(--nd-shadow-{shadow_size}) !important;'
             
         # Border and general
-        circle_style += ' border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1); border-radius: 50%; width: 100%; height: 100%; transition: all var(--nd-transition-speed) ease;'
+        circle_style += ' border: var(--nd-border-sm) solid rgba(255, 255, 255, 0.1); border-radius: 50%; width: 100%; height: 100%; overflow: hidden; transition: all var(--nd-transition-speed) ease;'
         
         # Clean up
         circle_style = circle_style.replace('\n', ' ').strip()
         
+        # Gloss effect HTML if highlight_intensity is high
+        gloss_html = ""
+        if texture.highlight_intensity > 1.2:
+             gloss_html = f'<div style="position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to bottom, rgba(255,255,255,{0.1 * texture.highlight_intensity}), transparent); pointer-events: none; z-index: 10;"></div>'
+
         # The circle div
-        circle_html = f'<div class="-nd-c-texture-icon__circle {texture.texture_cls}" style="{circle_style}"></div>'
+        circle_html = f'<div class="-nd-c-texture-icon__circle {texture.texture_cls}" style="{circle_style}">{gloss_html}</div>'
         
         return f'<div class="-nd-c-texture-icon" style="{wrapper_style}">{circle_html}</div>'
