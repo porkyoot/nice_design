@@ -28,23 +28,173 @@
         background-color: var(--nd-secondary) !important;
     }
 
-    /* --- Slider Overrides --- */
-    /* Only override colors, preserve Quasar's default shapes and sizes */
-    .q-slider__selection {
-        background: var(--nd-primary) !important;
-    }
-
-    .q-slider__thumb {
+    /* --- Button Overrides --- */
+    /* Ensure button icons use primary accent by default */
+    .q-btn .q-icon {
         color: var(--nd-primary) !important;
     }
 
-    .q-slider__thumb-shape {
-        background-color: currentColor !important;
-        border-radius: var(--nd-radius-full) !important;
+    /* Primary button icons should match on-primary color */
+    .q-btn--unelevated .q-icon,
+    .-nd-c-btn--primary .q-icon {
+        color: var(--nd-on-primary) !important;
     }
 
-    .q-slider__track {
+    /* Secondary button icons should match on-secondary color */
+    .-nd-c-btn--secondary .q-icon {
+        color: var(--nd-on-secondary) !important;
+    }
+
+    /* Ghost/Outline button icons use primary accent */
+    .q-btn--outline .q-icon,
+    .-nd-c-btn--ghost .q-icon {
+        color: var(--nd-primary) !important;
+    }
+
+    /* Button text color defaults */
+    .q-btn__content {
+        color: inherit !important;
+    }
+
+    /* Button text colors by variant */
+    .q-btn--unelevated,
+    .-nd-c-btn--primary {
+        color: var(--nd-on-primary) !important;
+    }
+
+    .-nd-c-btn--secondary {
+        color: var(--nd-on-secondary) !important;
+    }
+
+    .q-btn--outline,
+    .-nd-c-btn--ghost,
+    .q-btn--flat {
+        color: var(--nd-primary) !important;
+    }
+
+    /* Outline button borders must use accent color */
+    .q-btn--outline::before,
+    .q-btn.q-btn--outline::before,
+    .-nd-c-btn--ghost::before {
+        border: 2px solid var(--nd-primary) !important;
+    }
+
+    /* Override Quasar's default border color for outline buttons */
+    .q-btn--outline.text-primary::before {
+        border-color: var(--nd-primary) !important;
+    }
+
+    /* Ensure any button with text-primary uses our accent color */
+    .q-btn.text-primary,
+    .q-btn.text-primary .q-btn__content,
+    .q-btn.text-primary .q-icon {
+        color: var(--nd-primary) !important;
+    }
+
+    /* Button interaction overlays - use themed colors */
+    /* Focus helper (subtle overlay on keyboard focus) */
+    .q-btn .q-focus-helper {
+        background: currentColor !important;
+        opacity: 0 !important;
+    }
+
+    .q-btn:focus .q-focus-helper {
+        opacity: 0.12 !important;
+    }
+
+    /* Hover overlay */
+    .q-btn:hover .q-focus-helper {
+        opacity: 0.08 !important;
+    }
+
+    /* Active/Pressed state overlay */
+    .q-btn:active .q-focus-helper,
+    .q-btn--active .q-focus-helper {
+        opacity: 0.16 !important;
+    }
+
+    /* Ripple effect - use themed primary color */
+    .q-ripple {
+        background: var(--nd-primary) !important;
         opacity: 0.3 !important;
+    }
+
+    /* Ripple on primary buttons should use on-primary color */
+    .q-btn--unelevated .q-ripple,
+    .-nd-c-btn--primary .q-ripple {
+        background: var(--nd-on-primary) !important;
+        opacity: 0.25 !important;
+    }
+
+    /* Ripple on secondary buttons */
+    .-nd-c-btn--secondary .q-ripple {
+        background: var(--nd-on-secondary) !important;
+        opacity: 0.25 !important;
+    }
+
+    /* Ensure disabled buttons are visually distinct */
+    .q-btn--disabled {
+        opacity: 0.4 !important;
+    }
+
+    .q-btn--disabled .q-icon,
+    .q-btn--disabled .q-btn__content {
+        color: var(--nd-content-muted) !important;
+    }
+
+    /* --- Slider Overrides --- */
+    /* Apply accent color as DEFAULT only - allow color prop to override */
+    /* NO !important so that inline color styles take precedence */
+
+    /* Active selection uses accent color by default */
+    .q-slider__selection {
+        background: var(--nd-primary);
+    }
+
+    /* Thumb/handle uses accent color by default */
+    .q-slider__thumb {
+        color: var(--nd-primary);
+    }
+
+    .q-slider__thumb-shape {
+        background-color: currentColor;
+        border-radius: var(--nd-radius-full);
+    }
+
+    /* Force slider label (tooltip) to use themed colors */
+    .q-slider__label {
+        background-color: var(--nd-primary) !important;
+        color: var(--nd-on-primary) !important;
+    }
+
+    /* Fix: Override the inner text container that was showing beige */
+    .q-slider__label .q-slider__text-container {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    /* For sliders with color="primary", force the primary color to use our accent */
+    .q-slider--primary .q-slider__thumb {
+        color: var(--nd-primary);
+    }
+
+    .q-slider--primary .q-slider__selection {
+        background: var(--nd-primary);
+    }
+
+    .q-slider--primary .q-slider__label {
+        background-color: var(--nd-primary) !important;
+    }
+
+    /* Track background - make it visible with themed color */
+    .q-slider__track {
+        background-color: color-mix(in srgb, var(--nd-content-main), transparent 85%) !important;
+        opacity: 1 !important;
+    }
+
+    /* Track container background */
+    .q-slider__track-container {
+        background-color: transparent;
     }
 
     .q-slider__marker-labels {
@@ -229,3 +379,145 @@
 }
 
 /* End @layer nice-design-overrides */
+
+/* ============================================
+   CRITICAL OVERRIDES - Maximum Specificity
+   These sit outside layers to ensure they win
+   ============================================ */
+
+/* Force all Quasar primary references to use our accent color */
+:root {
+    --q-primary: var(--nd-primary) !important;
+    --q-secondary: var(--nd-secondary) !important;
+}
+
+/* Eliminate any blue from text-primary utility */
+.text-primary,
+button.text-primary,
+.q-btn.text-primary {
+    color: var(--nd-primary) !important;
+}
+
+/* Force outline button borders to use accent color */
+.q-btn--outline::before {
+    border-color: var(--nd-primary) !important;
+}
+
+/* Ensure outline button text uses accent color */
+.q-btn--outline {
+    color: var(--nd-primary) !important;
+}
+
+.q-btn--outline .q-icon {
+    color: var(--nd-primary) !important;
+}
+
+/* Override any lingering Quasar color utilities */
+.bg-primary {
+    background-color: var(--nd-primary) !important;
+}
+
+.text-secondary {
+    color: var(--nd-secondary) !important;
+}
+
+.bg-secondary {
+    background-color: var(--nd-secondary) !important;
+}
+
+/* --- Color Mapping Utilities (Critical Focus) --- */
+/* We move these outside the layer to win vs Quasar's defaults */
+.text-primary,
+button.text-primary,
+.q-btn.text-primary,
+.q-slider--primary .q-slider__thumb,
+.q-slider__thumb.text-primary {
+    color: var(--nd-primary) !important;
+}
+
+.bg-primary,
+.q-slider--primary .q-slider__selection,
+.q-slider__selection.bg-primary {
+    background-color: var(--nd-primary) !important;
+}
+
+.text-secondary,
+.q-slider__thumb.text-secondary {
+    color: var(--nd-secondary) !important;
+}
+
+.bg-secondary,
+.q-slider__selection.bg-secondary {
+    background-color: var(--nd-secondary) !important;
+}
+
+/* Critical slider overrides - fallback to primary accent if no specific color is detected */
+.q-slider__thumb:not([class*="text-"]) {
+    color: var(--nd-primary) !important;
+}
+
+.q-slider__selection:not([class*="bg-"]) {
+    background-color: var(--nd-primary) !important;
+}
+
+/* Force slider tooltip/label and its arrowhead to use themed colors and dynamic roundness */
+.q-slider__label {
+    background-color: var(--nd-primary) !important;
+    /* Default fallback */
+    color: var(--nd-on-primary) !important;
+    border-radius: var(--nd-radius-md) !important;
+    /* Dynamically follow theme roundness */
+}
+
+/* Tooltip arrowhead (triangle) color sync */
+.q-slider__pin:before {
+    border-top-color: var(--nd-primary) !important;
+}
+
+/* Match pin arrowhead to the thumb color if not primary */
+.q-slider__thumb.text-secondary~.q-slider__pin:before,
+.q-slider__thumb.text-secondary .q-slider__pin:before {
+    border-top-color: var(--nd-secondary) !important;
+}
+
+/* Ensure the arrowhead follows the current accent even if changed dynamically */
+.q-slider__thumb.text-primary~.q-slider__pin:before,
+.q-slider__thumb.text-primary .q-slider__pin:before {
+    border-top-color: var(--nd-primary) !important;
+}
+
+/* Handle colored sliders: pin arrowhead should inherit or use primary as fallback */
+.q-slider:not(.q-slider--primary) .q-slider__pin:before {
+    border-top-color: inherit !important;
+}
+
+/* Ensure the background follows the slider color if not primary */
+.q-slider:not(.q-slider--primary) .q-slider__label {
+    background-color: inherit !important;
+    color: inherit !important;
+}
+
+/* Critical fix: Make the inner text container transparent to show our rounding and background */
+.q-slider__label .q-slider__text-container {
+    background-color: transparent !important;
+    color: inherit !important;
+    border-radius: inherit !important;
+}
+
+/* Ensure the thumb shape follows the thumb color AND roundness */
+.q-slider__thumb-shape {
+    background-color: currentColor !important;
+    fill: currentColor !important;
+    border-radius: var(--nd-radius-md) !important;
+    /* Dynamically follow theme roundness */
+}
+
+/* If it's an SVG handle, we hide the hardcoded path to let our CSS bg + radius define the shape */
+.q-slider__thumb-shape svg path {
+    display: none !important;
+}
+
+/* If the SVG itself has the class */
+svg.q-slider__thumb-shape path {
+    display: none !important;
+}

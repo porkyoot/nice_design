@@ -98,6 +98,12 @@ def apply_theme(theme: CompiledTheme, initial: bool = False):
     
     if initial:
         # Initial setup: Use static CSS injection
+        # Add Quasar brand sync to the static vars
+        if theme.colors.get('primary'):
+            css_vars['--q-primary'] = theme.colors['primary']
+        if theme.colors.get('secondary'):
+            css_vars['--q-secondary'] = theme.colors['secondary']
+            
         css_vars_str = "\n  ".join([f"{k}: {v};" for k, v in css_vars.items()])
         ui.add_head_html(f"<style>:root {{\n  {css_vars_str}\n}}</style>")
         
@@ -115,14 +121,12 @@ def apply_theme(theme: CompiledTheme, initial: bool = False):
                 root.style.setProperty(key, value);
             }}
             
-            // Sync Quasar brand colors with our theme
-            const primaryColor = getComputedStyle(root).getPropertyValue('--nd-primary').trim();
-            const secondaryColor = getComputedStyle(root).getPropertyValue('--nd-secondary').trim();
-            if (primaryColor) {{
-                root.style.setProperty('--q-primary', primaryColor);
+            // Sync Quasar brand colors with our theme values directly
+            if (vars['--nd-primary']) {{
+                root.style.setProperty('--q-primary', vars['--nd-primary']);
             }}
-            if (secondaryColor) {{
-                root.style.setProperty('--q-secondary', secondaryColor);
+            if (vars['--nd-secondary']) {{
+                root.style.setProperty('--q-secondary', vars['--nd-secondary']);
             }}
         ''')
         
@@ -177,6 +181,12 @@ def setup(theme: Optional[CompiledTheme] = None):
             else:
                 css_vars[f'--nd-radius-{name}'] = value
         
+        # Add Quasar brand sync
+        if theme.colors.get('primary'):
+            css_vars['--q-primary'] = theme.colors['primary']
+        if theme.colors.get('secondary'):
+            css_vars['--q-secondary'] = theme.colors['secondary']
+
         # Inject CSS variables BEFORE loading design system CSS
         css_vars_str = "\n  ".join([f"{k}: {v};" for k, v in css_vars.items()])
         ui.add_head_html(f"<style>:root {{\n  {css_vars_str}\n}}</style>")
