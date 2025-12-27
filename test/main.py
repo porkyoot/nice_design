@@ -1,15 +1,16 @@
 from typing import Dict, Any, Optional
 from nicegui import ui
 import nice_design as nice
+from nice_design.core.configure import configure_global_styles
 import copy
-from nice_design.core.engine import ThemeEngine
+
+# Configure global styles from Nice Design
+configure_global_styles()
+from nice_design.core.definitions import Theme, Palette, Texture, Layout, Typography
 from nice_design.core.presets import SOLARIZED_PALETTE, STANDARD_TEXTURE, STANDARD_LAYOUT, STANDARD_TYPO
 
-# 1. Initialize the Theme Engine
-engine = ThemeEngine()
-
 # Create custom texture (includes shape) to demonstrate the new systems
-custom_texture = STANDARD_TEXTURE
+custom_texture = copy.deepcopy(STANDARD_TEXTURE)
 custom_texture.roundness = 1.2
 custom_texture.border_width = 1     
 custom_texture.texture_cls = 'texture-glossy'
@@ -17,27 +18,33 @@ custom_texture.shadow_intensity = 1.2 # Stronger shadows
 custom_texture.highlight_intensity = 1.1 # Subtle highlight
 
 # Create custom layout (includes animation)
-custom_layout = STANDARD_LAYOUT
+custom_layout = copy.deepcopy(STANDARD_LAYOUT)
 custom_layout.base_space = 1.0
 custom_layout.transition_speed = 0.6  # Slower, more dramatic transitions
 
 # Customize the palette
 custom_palette = copy.deepcopy(SOLARIZED_PALETTE)
-# (Shadow is handled by the theme engine now)
 
-# Compile 4 pillar theme
-theme = engine.compile(custom_palette, custom_texture, STANDARD_TYPO, custom_layout)
+# Create custom theme object
+theme = Theme(
+    name="Solarized Custom",
+    palette=custom_palette,
+    texture=custom_texture,
+    typography=STANDARD_TYPO,
+    layout=custom_layout
+)
 
 # 2. Setup the Design System
 nice.setup(theme)
 
 # Handle Theme Change
 def handle_theme_change(e: Dict[str, Any]):
-    # Compile a new theme from the 4 categorical pillars
-    new_theme = engine.compile(
+    # Build a new Theme from the 4 categorical pillars
+    new_theme = Theme(
+        name="Dynamic Theme",
         palette=e['palette'],
         texture=e['texture'],
-        typo=e['typography'],
+        typography=e['typography'],
         layout=e['layout']
     )
     # Apply it globally

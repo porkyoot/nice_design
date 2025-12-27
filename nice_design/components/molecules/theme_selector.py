@@ -9,6 +9,7 @@ from nice_design.components.atoms.theme_icons.theme_icon import theme_icon
 from nice_design.components.atoms.theme_icons.palette_icon import palette_icon
 from nice_design.components.atoms.theme_icons.texture_icon import texture_icon
 from nice_design.core.fonts import FontManager
+from nice_design.core.definitions import Palette, Texture, Layout, Typography, Theme
 
 from nice_design.core.presets import (
     SOLARIZED_PALETTE, 
@@ -16,9 +17,9 @@ from nice_design.core.presets import (
     STANDARD_LAYOUT,
     STANDARD_TYPO,
 )
-from nice_design.core.definitions import Palette, Texture, Layout, Typography, Theme
 from nice_design.components.atoms.slider import slider, split_slider, palette_slider
 from nice_design.components.atoms.multi_button import multi_button
+from nice_design.core.manager import theme_manager
 
 # Use the global registry
 import nice_design as nice
@@ -515,6 +516,16 @@ class theme_selector(ui.element):
             self.btn_palette.refresh()
         if hasattr(self, 'btn_texture'):
             self.btn_texture.refresh()
+
+        # 3. Apply Theme Globally via ThemeManager
+        new_theme = Theme(
+            name="Dynamic Theme",
+            palette=self._palette,
+            texture=self._texture,
+            typography=self._typography,
+            layout=self._layout
+        )
+        theme_manager.apply_theme(new_theme)
 
         if self._on_change:
             self._on_change({

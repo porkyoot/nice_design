@@ -33,9 +33,8 @@ class select(ui.select):
             self._setup_rich_slots()
             self.props(r':option-label="(opt) => opt.label && opt.label.label ? opt.label.label : (opt.label || opt)"')
             
-        # Apply styling (standout enables highlighted state, CSS handles colors)
-        self.props('outlined rounded standout popup-content-class="-nd-c-select-menu"')
-        self.classes('-nd-c-select')
+        # Apply structural props
+        self.props('popup-content-class="nd-select-menu"')
         
         # Setup search/filter
         if on_filter:
@@ -46,7 +45,7 @@ class select(ui.select):
 
         # Icon-only mode
         if icon_only:
-            self.classes('-nd-hide-label -nd-mode-icon-only')
+            self.classes('nd-hide-label nd-mode-icon-only')
             
         # Prepend slot
         if prepend:
@@ -70,7 +69,7 @@ class select(ui.select):
         ''')
 
         self.add_slot('selected-item', r'''
-            <div class="row items-center no-wrap -nd-u-gap-2" v-if="props.opt && props.opt.label">
+            <div class="row items-center no-wrap nd-gap-2" v-if="props.opt && props.opt.label">
                 <div v-if="props.opt.label.html" v-html="props.opt.label.html"></div>
                 <q-icon v-else-if="props.opt.label.icon" :name="props.opt.label.icon" :color="props.opt.label.color" size="sm" />
                 <q-item-label :style="props.opt.label.font ? { 'font-family': props.opt.label.font } : {}">

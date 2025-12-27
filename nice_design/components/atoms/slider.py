@@ -7,8 +7,9 @@ class slider(ui.slider):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Quasar 'primary' is now globally mapped to var(--nd-primary) in CSS
-        self.props('color="primary" label')
+        # We keep 'label' as a functional default for the design system
+        # Quasar 'primary' color is now globally defaulted in ThemeManager
+        self.props('label')
         self.classes('w-full')
 
 

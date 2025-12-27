@@ -3,30 +3,32 @@ from .definitions import Theme
 def generate_theme_css(theme: Theme) -> str:
     p = theme.prefix
     pal = theme.palette
-    sem = theme.semantics
+    tex = theme.texture
+    typ = theme.typography
+    lay = theme.layout
     
     # 1. CSS Variables
     lines = [":root {"]
 
     # --- COLORS: ACCENTS ---
     lines.append("  /* --- Accents --- */")
-    lines.append(f"  --{p}-primary: {sem.primary};")
-    lines.append(f"  --{p}-on-primary: {sem.on_primary};")
-    lines.append(f"  --{p}-secondary: {sem.secondary};")
-    lines.append(f"  --{p}-on-secondary: {sem.on_secondary};")
-    lines.append(f"  --{p}-highlight: {sem.highlight};")
-    lines.append(f"  --{p}-shadow: {sem.shadow};")
+    lines.append(f"  --{p}-primary: {pal.primary};")
+    lines.append(f"  --{p}-on-primary: {pal.on_primary};")
+    lines.append(f"  --{p}-secondary: {pal.secondary};")
+    lines.append(f"  --{p}-on-secondary: {pal.on_secondary};")
+    lines.append(f"  --{p}-highlight: {pal.highlight};")
+    lines.append(f"  --{p}-shadow: {pal.shadow};")
 
     # --- COLORS: SURFACES ---
     lines.append("  /* --- Surfaces --- */")
-    lines.append(f"  --{p}-surface-base: {sem.surface_base};")
-    lines.append(f"  --{p}-surface-layer: {sem.surface_layer};")
-    lines.append(f"  --{p}-surface-overlay: {sem.surface_overlay};")
+    lines.append(f"  --{p}-surface-base: {pal.surface_base};")
+    lines.append(f"  --{p}-surface-layer: {pal.surface_layer};")
+    lines.append(f"  --{p}-surface-overlay: {pal.surface_overlay};")
         
     lines.append("  /* --- Content --- */")
-    lines.append(f"  --{p}-content-main: {sem.content_main};")
-    lines.append(f"  --{p}-content-muted: {sem.content_muted};")
-    lines.append(f"  --{p}-content-subtle: {sem.content_subtle};")
+    lines.append(f"  --{p}-content-main: {pal.content_main};")
+    lines.append(f"  --{p}-content-muted: {pal.content_muted};")
+    lines.append(f"  --{p}-content-subtle: {pal.content_subtle};")
 
     # --- COLORS: PALETTE (Dict -> Named Vars) ---
     lines.append("  /* --- Hue Palette --- */")
@@ -35,21 +37,21 @@ def generate_theme_css(theme: Theme) -> str:
 
     # --- COLORS: STATUS ---
     lines.append("  /* --- Semantic Status --- */")
-    lines.append(f"  --{p}-status-success: {sem.success};")
-    lines.append(f"  --{p}-on-status-success: {sem.on_success};")
-    lines.append(f"  --{p}-status-error: {sem.error};")
-    lines.append(f"  --{p}-on-status-error: {sem.on_error};")
-    lines.append(f"  --{p}-status-warning: {sem.warning};")
-    lines.append(f"  --{p}-on-status-warning: {sem.on_warning};")
-    lines.append(f"  --{p}-status-info: {sem.info};")
-    lines.append(f"  --{p}-on-status-info: {sem.on_info};")
+    lines.append(f"  --{p}-status-success: {pal.success};")
+    lines.append(f"  --{p}-on-status-success: {pal.on_success};")
+    lines.append(f"  --{p}-status-error: {pal.error};")
+    lines.append(f"  --{p}-on-status-error: {pal.on_error};")
+    lines.append(f"  --{p}-status-warning: {pal.warning};")
+    lines.append(f"  --{p}-on-status-warning: {pal.on_warning};")
+    lines.append(f"  --{p}-status-info: {pal.info};")
+    lines.append(f"  --{p}-on-status-info: {pal.on_info};")
 
     # --- SHAPE & TYPOGRAPHY ---
     lines.append("  /* --- Shape & Type --- */")
-    lines.append(f"  --{p}-radius-base: {theme.shape.roundness * 0.5}rem;")
-    lines.append(f"  --{p}-border-width: {theme.shape.base_border}px;")
-    lines.append(f"  --{p}-font-main: {theme.typography.font_main};")
-    lines.append(f"  --{p}-font-mono: {theme.typography.font_mono};")
+    lines.append(f"  --{p}-radius-base: {tex.roundness * 0.5}rem;")
+    lines.append(f"  --{p}-border-width: {tex.border_width}px;")
+    lines.append(f"  --{p}-font-main: {typ.font_main};")
+    lines.append(f"  --{p}-font-mono: {typ.font_mono};")
     lines.append("}")
 
     # 2. Utility Classes
@@ -57,7 +59,7 @@ def generate_theme_css(theme: Theme) -> str:
     
     # --- Spacing Utilities ---
     # Sizes: 0, 1, 2, 3, 4, 5, 6, 8, 10, 12
-    base_space = theme.layout.base_space
+    base_space = lay.base_space
     sizes = [0, 1, 2, 3, 4, 5, 6, 8, 10, 12]
     
     for size in sizes:
@@ -120,7 +122,7 @@ def generate_theme_css(theme: Theme) -> str:
 
     # --- Radius Utilities ---
     # sm, md, lg, full, none
-    base_r = theme.shape.roundness * 0.5 # rem
+    base_r = tex.roundness * 0.5 # rem
     radii = {
         'none': '0px',
         'sm': f"{base_r * 0.5}rem",

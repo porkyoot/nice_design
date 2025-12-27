@@ -1,105 +1,50 @@
 /* Texture Icon Styles */
-.-nd-c-texture-icon {
+.nd-texture-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-.-nd-c-texture-icon__circle--interactive:hover {
+.nd-texture-icon__circle--interactive:hover {
     transform: scale(1.1);
     filter: brightness(1.1);
 }
 
 /* Shape Icon Styles */
-.-nd-c-shape-icon {
+.nd-shape-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 2px;
 }
 
-.-nd-c-shape-icon__element--interactive:hover {
+.nd-shape-icon__element--interactive:hover {
     transform: scale(1.15);
     border-color: var(--nd-primary);
 }
 
-/* Theme Icon Styles (Comprehensive) */
-.-nd-c-theme-icon {
+/* Theme Icon Styles */
+.nd-theme-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-.-nd-c-theme-icon__palette-container:hover {
+.nd-theme-icon__palette-container:hover {
     transform: scale(1.05);
 }
 
-/* Base Button Styles */
-.-nd-c-btn {
-    border-radius: var(--nd-radius-md);
-    font-family: var(--nd-font-main);
-    font-weight: 600;
-    padding: var(--nd-space-sm) var(--nd-space-md);
-    transition: all var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-    border: var(--nd-border-sm) solid transparent;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--nd-space-sm);
-    text-transform: none;
-    letter-spacing: 0.025em;
-}
-
-/* Icon Rotation Support */
-.-nd-c-btn--rotate .q-icon {
+/* Base Button Extensions (Minimal) */
+.nd-btn-rotate .q-icon {
     transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-.-nd-c-btn--rotated .q-icon {
+.nd-btn-rotated .q-icon {
     transform: rotate(180deg);
 }
 
-/* Primary Variant */
-.-nd-c-btn--primary {
-    background-color: var(--nd-primary);
-    color: var(--nd-on-primary);
-    box-shadow: var(--nd-shadow-sm);
-}
-
-.-nd-c-btn--primary:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
-    box-shadow: var(--nd-shadow-md);
-}
-
-.-nd-c-btn--primary:active {
-    transform: translateY(0);
-}
-
-/* Secondary Variant */
-.-nd-c-btn--secondary {
-    background-color: var(--nd-secondary);
-    color: var(--nd-on-secondary);
-}
-
-.-nd-c-btn--secondary:hover {
-    filter: brightness(1.1);
-}
-
-/* Ghost Variant */
-.-nd-c-btn--ghost {
-    background-color: transparent;
-    color: var(--nd-primary);
-    border-color: var(--nd-primary);
-}
-
-.-nd-c-btn--ghost:hover {
-    background-color: color-mix(in srgb, var(--nd-primary), transparent 90%);
-}
-
 /* Card Styles */
-.-nd-c-card {
+.nd-card {
     background-color: var(--nd-surface-layer);
     border-radius: var(--nd-radius-lg);
     border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%);
@@ -109,216 +54,66 @@
     color: var(--nd-content-main);
 }
 
-.-nd-c-card:hover {
+.nd-card:hover {
     box-shadow: var(--nd-shadow-xl);
 }
 
-/* Select Styles */
-/* Select Styles */
-.-nd-c-select {
-    width: 100%;
-}
-
-/* Input Control Background & Card-style Border */
-.-nd-c-select.q-field--outlined .q-field__control,
-button.-nd-c-select-button {
+/* Select & Select Button Layout */
+.nd-select-button {
     background-color: var(--nd-surface-layer) !important;
     border-radius: var(--nd-radius-md) !important;
-
-    /* Button Specific Setup to match Field Control */
+    border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
     min-height: 56px;
     padding: 0 12px !important;
     text-transform: none !important;
     font-weight: 400 !important;
     font-size: 1rem !important;
-    letter-spacing: 0.00937em !important;
     box-shadow: none !important;
-    /* Ensure no shadow */
+    transition: all var(--nd-transition-speed) ease;
 }
 
-/* Border enforcement for outlined mode (mimicking card border) */
-.-nd-c-select.q-field--outlined .q-field__control:before,
-button.-nd-c-select-button {
-    border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
-    transition: border-color var(--nd-transition-speed) ease;
+.nd-select-button:hover {
+    border-color: var(--nd-content-main) !important;
 }
 
-/* Suppress default button hover overlay (focus-helper) to match Input simple hover */
-button.-nd-c-select-button .q-focus-helper {
-    background: transparent !important;
-    opacity: 0 !important;
+.nd-select-button .q-btn__content {
+    width: 100%;
+    justify-content: flex-start !important;
+    flex-wrap: nowrap;
 }
 
-/* Default State Text Colors */
-.-nd-c-select .q-field__label,
-.-nd-c-select .q-field__native,
-.-nd-c-select-button {
-    color: var(--nd-content-main) !important;
-    opacity: 1 !important;
+.nd-select-button .q-icon.on-left {
+    font-size: 24px !important;
+    margin-right: 8px !important;
 }
 
-/* Fix: Enforce text color and size on rich content inside select (e.g. font select) */
-.-nd-c-select .q-field__native .q-item__label,
-.-nd-c-select .q-field__native>div:not(.q-icon),
-.-nd-c-select .q-field__input {
-    color: inherit !important;
-    font-size: inherit !important;
-}
-
-/* Icons: Primary Accent by Default */
-.-nd-c-select .q-icon,
-.-nd-c-select-button .q-icon {
-    color: var(--nd-primary);
-    /* No !important to allow prop overrides */
-    opacity: 1;
-    transition: color var(--nd-transition-speed) ease;
-}
-
-/* Dropdown Arrow: Foreground Color (Content Main) */
-.-nd-c-select .q-select__dropdown-icon,
-.-nd-c-select-button .q-icon.on-right,
-.-nd-c-select-button .q-icon:last-of-type {
-    color: var(--nd-content-main) !important;
-    opacity: 0.8;
-}
-
-/* Match Right Dropdown Icon size (24px) */
-.-nd-c-select-button .q-icon.on-right,
-.-nd-c-select-button .q-icon:last-of-type {
+.nd-select-button .q-icon.on-right,
+.nd-select-button .q-icon:last-of-type {
     font-size: 24px !important;
     margin-left: auto !important;
-    /* This pushes it to the far right */
     transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
-    /* Smooth Rotation */
 }
 
-/* Rotation State (Active/Menu Open) - Only rotate the dropdown chevron */
-.-nd-state-rotated .q-icon.on-right,
-.-nd-state-rotated .q-icon:last-of-type {
+.nd-state-rotated {
+    border-color: var(--nd-primary) !important;
+    box-shadow: 0 0 0 1px var(--nd-primary) !important;
+}
+
+.nd-state-rotated .q-icon.on-right,
+.nd-state-rotated .q-icon:last-of-type {
     transform: rotate(180deg);
 }
 
-/* Minimal Mode overrides */
-.-nd-c-select--minimal {
-    width: auto !important;
-    padding: 0 8px !important;
-    background-color: var(--nd-surface-layer) !important;
-    border-radius: var(--nd-radius-md) !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    transition: all var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.-nd-c-select--minimal.q-btn {
-    padding: 0 !important;
-    color: var(--nd-content-main) !important;
-}
-
-.-nd-c-select--minimal.q-btn:hover {
-    color: var(--nd-on-primary) !important;
-}
-
-.-nd-c-select--minimal .q-field__control,
-.-nd-c-select--minimal .q-field__marginal {
-    padding: 0 !important;
-    min-height: unset !important;
-    height: 36px !important;
-    display: flex !important;
-    align-items: center !important;
-}
-
-.-nd-c-select--minimal .q-field__native,
-.-nd-c-select--minimal .q-field__label,
-.-nd-c-select--minimal .q-field__control-container {
+.nd-mode-icon-only .q-field__native div>div:last-child {
     display: none !important;
 }
 
-.-nd-c-select--minimal .q-field__append {
-    padding-left: 2px !important;
-    padding-right: 0 !important;
-}
-
-.-nd-c-select--minimal .q-field__prepend {
-    padding-right: 2px !important;
-}
-
-.-nd-c-select__icon {
-    font-size: 1.1rem;
-}
-
-.-nd-c-icon {
-    font-size: 1.25rem;
-    color: inherit;
-    transition: color var(--nd-transition-speed) ease;
-}
-
-/* Active/Focused State Styling */
-/* Standout/Focused State - Active Background Accent */
-/* We need to ensure text and icons contrast with the primary background */
-.-nd-c-select.q-field--highlighted .q-field__control .q-field__native,
-.-nd-c-select.q-field--highlighted .q-field__control .q-field__label,
-.-nd-c-select.q-field--highlighted .q-field__control .q-icon,
-.-nd-c-select.q-field--highlighted .q-field__control .q-select__dropdown-icon {
-    color: var(--nd-on-primary) !important;
-    opacity: 1;
-}
-
-/* Ensure border matches or is hidden/merged in standout */
-.-nd-c-select.q-field--highlighted .q-field__control:before {
-    border-color: var(--nd-primary) !important;
-}
-
-/* Smooth Chevron Rotation */
-.-nd-c-select .q-select__dropdown-icon {
-    transition: transform var(--nd-transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-.-nd-c-select.q-field--focused .q-select__dropdown-icon {
-    transform: rotate(180deg);
-}
-
-
-/* Select Menu (Dropdown) */
-.-nd-c-select-menu {
-    background-color: var(--nd-surface-base) !important;
-    border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
-    border-radius: var(--nd-radius-md) !important;
-    box-shadow: var(--nd-shadow-lg) !important;
-    color: var(--nd-content-main) !important;
-    padding: 0 !important;
-    /* Remove default padding from menu container if any */
-}
-
-.-nd-c-select-menu .q-item {
-    color: var(--nd-content-main) !important;
-    transition: background var(--nd-transition-speed);
-    font-size: 1rem !important;
-}
-
-/* Default icon color in menu options */
-.-nd-c-select-menu .q-item .q-icon {
-    color: var(--nd-primary);
-}
-
-.-nd-c-select-menu .q-item--active {
-    /* "Deeper" background: Using primary, but maybe a bit darker/richer if possible? 
-       Sticking to primary as it matches "accent color" request and provides depth relative to surface. */
-    background-color: var(--nd-primary) !important;
-    color: var(--nd-on-primary) !important;
-}
-
-/* Active item icons should contrast */
-.-nd-c-select-menu .q-item--active .q-icon {
-    color: var(--nd-on-primary) !important;
-}
-
-.-nd-c-select-menu .q-item:hover:not(.q-item--active) {
-    /* Hover state: surface_layer as requested */
-    background-color: var(--nd-surface-layer) !important;
+.nd-hide-label .q-field__label {
+    display: none !important;
 }
 
 /* Menu Styles */
-.-nd-c-menu {
+.nd-menu {
     background-color: var(--nd-surface-base) !important;
     border: var(--nd-border-sm) solid color-mix(in srgb, var(--nd-highlight), transparent 90%) !important;
     border-radius: var(--nd-radius-md) !important;
@@ -327,59 +122,39 @@ button.-nd-c-select-button .q-focus-helper {
     padding: 0 !important;
 }
 
-.-nd-c-menu-item {
+.nd-menu-item {
     color: var(--nd-content-main) !important;
     font-size: 0.9rem;
     font-weight: 500;
     transition: all var(--nd-transition-speed) ease;
     padding: var(--nd-space-sm) var(--nd-space-md) !important;
     display: flex !important;
-    /* Ensure flex for icon alignment if needed */
     align-items: center;
     gap: var(--nd-space-sm);
 }
 
-.-nd-c-menu-item .q-icon {
+.nd-menu-item .q-icon {
     font-size: 24px;
     color: var(--nd-primary);
-    /* Primary accent for icons by default */
     transition: color var(--nd-transition-speed) ease;
 }
 
-.-nd-c-menu-item:hover {
-    /* Hover state: surface_layer as requested */
+.nd-menu-item:hover {
     background-color: var(--nd-surface-layer) !important;
-    color: var(--nd-content-main) !important;
 }
 
-/* Ensure icons on hover don't change unless actively selected (if menu supported selection state) */
-/* Or if we want hover to be primary highlight like select: NO, user asked for 'active' to be accent. */
-/* But menu items are usually actions, so hover IS the active interaction. */
-/* Let's follow the standard button/interactive feel or the Select Option feel. */
-/* Select Option Hover: background mix. Select Option Active: Primary bg. */
-/* Menu Items (actions) - usually just hover. Let's stick to the Select Option Hover style for consistency. */
-
-/* If active/selected state is needed for menu items (like checkable menu items) */
-.-nd-c-menu-item.q-item--active,
-.-nd-c-menu-item:active {
+.nd-menu-item.q-item--active,
+.nd-menu-item:active {
     background-color: var(--nd-primary) !important;
     color: var(--nd-on-primary) !important;
 }
 
-.-nd-c-menu-item.q-item--active .q-icon,
-.-nd-c-menu-item:active .q-icon {
+.nd-menu-item.q-item--active .q-icon,
+.nd-menu-item:active .q-icon {
     color: var(--nd-on-primary) !important;
 }
 
-/* Texture Overrides */
-/* Note: body class might be .-nd-t-glossy later, but here we still target elements */
-/* I will update these when I touch textures.css, but here I should match the expected texture class name */
-body.-nd-t-glossy .-nd-c-btn {
-    background-image: linear-gradient(to bottom, color-mix(in srgb, var(--nd-highlight), transparent 85%), color-mix(in srgb, var(--nd-shadow), transparent 95%));
-    border-top: 1px solid color-mix(in srgb, var(--nd-highlight), transparent 70%);
-}
-
-/* Global Body Styling from Theme */
+/* Global Body Styling */
 body {
     background-color: var(--nd-surface-base);
     color: var(--nd-content-main);
@@ -392,55 +167,15 @@ body {
     font-family: var(--nd-font-secondary, var(--nd-font-main, sans-serif)) !important;
 }
 
-/* Utility Classes for Quasar Integration */
-.-nd-u-text-on-primary {
+/* Utility Classes */
+.nd-u-text-on-primary {
     color: var(--nd-on-primary) !important;
 }
 
-.-nd-u-gap-1 {
+.nd-gap-1 {
     gap: 4px !important;
 }
 
-.-nd-u-gap-2 {
+.nd-gap-2 {
     gap: 8px !important;
-}
-
-.-nd-hide-label .q-field__native div>div:last-child {
-    display: none !important;
-}
-
-/* Select Button Internal Structure Alignment */
-.-nd-c-select-button .q-btn__content {
-    width: 100%;
-    justify-content: flex-start !important;
-    /* Start, so Left Icon and Text are together */
-    flex-wrap: nowrap;
-}
-
-/* Match Left Icon size to Select 'sm' icon (24px) and gap (8px) */
-.-nd-c-select-button .q-icon.on-left {
-    font-size: 24px !important;
-    margin-right: 8px !important;
-}
-
-/* Hover state for Select Button to match Input hover border behavior */
-.-nd-c-select-button:hover {
-    border-color: var(--nd-content-main) !important;
-}
-
-/* Rotation State (Active/Menu Open) - Match Select Standout State */
-/* Rotation State (Active/Menu Open) - Match Select Focus State (Primary Border) */
-/* We remove the background flip because it obscures custom icons/previews */
-.-nd-state-rotated {
-    border-color: var(--nd-primary) !important;
-    box-shadow: 0 0 0 1px var(--nd-primary) !important;
-    /* Slight glow to feel 'active' */
-}
-
-.-nd-state-rotated:hover {
-    filter: brightness(1.05);
-}
-
-.-nd-state-rotated:hover {
-    filter: brightness(1.1);
 }

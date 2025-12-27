@@ -13,10 +13,10 @@ class select_button(ui.button):
                  icon_right: str = 'arrow_drop_down', 
                  icon_only: bool = False, 
                  custom_icon_builder: Optional[Callable] = None,
-                 **kwargs):
-        # Default color to None to prevent 'bg-primary' class nicely
-        if 'color' not in kwargs:
-            kwargs['color'] = 'transparent' # Use transparent so our CSS background takes over
+                 *args, **kwargs):
+        
+        # Default color to transparent so our CSS background takes over
+        kwargs.setdefault('color', 'transparent')
         
         self._icon_only = icon_only
         self._original_label = label
@@ -26,22 +26,22 @@ class select_button(ui.button):
         self._icon_container = None
         
         # If using a custom builder, we suppress the default label to render it manually
-        # alongside the icon for proper grouping and behavior with align="between".
         display_text = '' if (icon_only or custom_icon_builder) else label
         
-        # Don't pass icon to super if using custom builder (we insert it manually)
+        # Don't pass icon to super if using custom builder
         super_icon = icon if not custom_icon_builder else None
         
-        super().__init__(text=display_text, icon=super_icon, **kwargs)
+        super().__init__(text=display_text, icon=super_icon, *args, **kwargs)
         
         # Apply strict styling classes
-        self.classes('-nd-c-select-button')
+        self.classes('nd-select-button')
         
         if icon_only:
-            self.classes('-nd-mode-icon-only')
+            self.classes('nd-mode-icon-only')
         
         # Structure the button to allow space-between alignment
-        self.props(f'unelevated no-caps align="between" icon-right="{icon_right}"')
+        # unelevated, no-caps are now global defaults but keeping here doesn't hurt if we want to be explicit
+        self.props(f'align="between" icon-right="{icon_right}"')
         
         # Internal state for rotation
         self._is_rotated = False
@@ -51,12 +51,10 @@ class select_button(ui.button):
         
         # Insert Custom Icon if provided
         if self._custom_icon_builder:
-            # Allow overflow for shadows
             self.style('overflow: visible')
             
             with self:
-                # Group Icon and Label so they stay together on the left.
-                with ui.element('div').classes('row no-wrap items-center').style('overflow: visible'):
+                with ui.element('div').classes('row no-wrap items-center nd-gap-2').style('overflow: visible'):
                     # Icon Container
                     self._icon_container = ui.element('div').classes('on-left flex flex-center order-first').style('overflow: visible')
                     with self._icon_container:
@@ -99,6 +97,6 @@ class select_button(ui.button):
         
     def _update_rotation_class(self):
         if self._is_rotated:
-            self.classes(add='-nd-state-rotated')
+            self.classes(add='nd-state-rotated')
         else:
-            self.classes(remove='-nd-state-rotated')
+            self.classes(remove='nd-state-rotated')
